@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Каталог-манифест — Этап 3. Матвей Богатырёв</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --gold-soft:rgba(168,138,74,.14);
+    --pearl:#FAF3DD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* RIBBON */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1240px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:80px 40px 64px}
+
+  /* MANIFEST HERO */
+  .manifest{padding:0 0 80px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,6vw,80px);line-height:1.0;letter-spacing:-.01em;margin:0 0 28px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:760px;font-size:19px;color:var(--text-2);line-height:1.65}
+
+  /* PILLARS */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:64px}
+  .pillar{background:var(--panel);padding:36px 32px;display:flex;flex-direction:column;gap:14px}
+  .pillar-num{font-family:var(--serif);font-style:italic;font-size:42px;color:var(--gold);line-height:1}
+  .pillar-ttl{font-family:var(--serif);font-size:26px;color:var(--ink);line-height:1.15}
+  .pillar-body{color:var(--text-2);font-size:14.5px;line-height:1.65}
+
+  /* SECTION HEADS */
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;margin:80px 0 32px;gap:24px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.04em}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,46px);line-height:1.1;margin:0;color:var(--ink)}
+  .sec-tagline{color:var(--text-3);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+
+  /* PREP BLOCK */
+  .prep{padding:36px 40px;background:var(--panel);border:1px solid var(--line);display:grid;grid-template-columns:1fr 2fr;gap:32px}
+  .prep-l .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .prep-l h3{font-family:var(--serif);font-size:26px;color:var(--ink);margin:0;line-height:1.2}
+  .prep-r{color:var(--text-2);font-size:14.5px;line-height:1.65}
+  .prep-r p{margin:0 0 12px}
+  .prep-r p:last-child{margin:0}
+  .prep-r b{color:var(--ink);font-weight:500}
+
+  /* FORMAT CARDS */
+  .formats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+  .fmt{background:var(--panel);border:1px solid var(--line);padding:36px 32px 32px;display:flex;flex-direction:column;gap:16px;position:relative;transition:background .3s,border-color .3s,transform .3s;min-height:680px}
+  .fmt:hover{background:var(--panel-2);border-color:var(--gold);transform:translateY(-3px)}
+  .fmt-num{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);letter-spacing:.18em;text-transform:uppercase}
+  .fmt-name{font-family:var(--serif);font-size:34px;line-height:1.1;color:var(--ink);margin:0}
+  .fmt-sub{font-family:var(--serif);font-style:italic;color:var(--text-2);font-size:16px;line-height:1.45}
+  .fmt-sep{height:1px;background:var(--line);margin:8px 0}
+  .fmt-row{display:flex;flex-direction:column;gap:6px}
+  .fmt-lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .fmt-val{color:var(--text);font-size:13.5px;line-height:1.6}
+  .fmt-val ul{margin:6px 0 0;padding:0;list-style:none}
+  .fmt-val li{padding-left:14px;position:relative;margin-bottom:4px}
+  .fmt-val li::before{content:"·";position:absolute;left:4px;top:-2px;color:var(--gold);font-weight:600;font-size:18px}
+  .fmt-price{margin-top:auto;padding-top:20px;border-top:1px solid var(--line)}
+  .fmt-price .amount{font-family:var(--serif);font-size:42px;color:var(--ink);line-height:1}
+  .fmt-price .amount .ccy{font-size:22px;color:var(--gold);font-style:italic;margin-left:4px}
+  .fmt-price .terms{font-size:11.5px;color:var(--text-3);font-style:italic;margin-top:4px}
+  .fmt-cta{margin-top:14px;padding:11px 18px;background:transparent;border:1px solid var(--ink);color:var(--ink);font-family:inherit;font-size:11px;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;text-align:center;cursor:pointer;transition:background .25s,color .25s;display:block}
+  .fmt-cta:hover{background:var(--ink-bg);color:var(--pearl);border-color:var(--ink-bg)}
+  .fmt.flagship{background:var(--ink-bg);color:var(--ink-fg)}
+  .fmt.flagship:hover{background:var(--ink-bg-2)}
+  .fmt.flagship .fmt-name{color:var(--pearl)}
+  .fmt.flagship .fmt-sub{color:var(--ink-fg-2)}
+  .fmt.flagship .fmt-val{color:var(--ink-fg)}
+  .fmt.flagship .fmt-sep{background:rgba(168,138,74,.4)}
+  .fmt.flagship .fmt-price{border-top-color:rgba(168,138,74,.4)}
+  .fmt.flagship .fmt-price .amount{color:var(--pearl)}
+  .fmt.flagship .fmt-cta{border-color:var(--gold);color:var(--gold)}
+  .fmt.flagship .fmt-cta:hover{background:var(--gold);color:var(--ink-bg);border-color:var(--gold)}
+  .fmt-badge{position:absolute;top:-1px;right:-1px;background:var(--gold);color:var(--ink-bg);font-size:9px;letter-spacing:.22em;padding:5px 10px;font-weight:600}
+
+  /* FOR / NOT FOR */
+  .ff{display:grid;grid-template-columns:1fr;gap:14px;font-size:12.5px;line-height:1.55}
+  .ff-block{padding:14px 16px;background:rgba(168,138,74,.06);border-left:2px solid var(--gold)}
+  .fmt.flagship .ff-block{background:rgba(168,138,74,.12)}
+  .ff-block .ff-lab{font-size:9.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:block}
+  .ff-block.no{border-left-color:#A84C3A;background:rgba(168,76,58,.08)}
+  .ff-block.no .ff-lab{color:#A84C3A}
+  .fmt.flagship .ff-block.no{background:rgba(168,76,58,.18)}
+
+  /* SUPPORT FOOTNOTE */
+  .support-note{margin-top:32px;padding:32px 36px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start}
+  .support-note .note-tag{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);white-space:nowrap;padding-top:4px;font-weight:500}
+  .support-note h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0 0 10px;line-height:1.3;font-weight:400}
+  .support-note h4 em{color:var(--gold);font-style:italic}
+  .support-note p{color:var(--text-2);font-size:14.5px;line-height:1.65;margin:0 0 8px}
+  .support-note p:last-child{margin:0}
+  @media (max-width:780px){
+    .support-note{grid-template-columns:1fr;padding:24px 22px;gap:14px}
+  }
+
+  /* SUFFERING NOTE */
+  .suffering{margin-top:64px;padding:48px;background:var(--panel);border:1px solid var(--line);display:grid;grid-template-columns:.6fr 1.4fr;gap:48px}
+  .suffering h3{font-family:var(--serif);font-size:34px;color:var(--ink);margin:0;line-height:1.1;font-weight:400}
+  .suffering h3 em{color:var(--gold);font-style:italic}
+  .suffering .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .suffering-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+  .suffering-col h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:0 0 8px;line-height:1.2;font-weight:400}
+  .suffering-col h4 em{color:var(--gold);font-style:italic}
+  .suffering-col p{color:var(--text-2);font-size:14px;line-height:1.65;margin:0}
+  .suffering-col .examples{margin-top:10px;font-size:12px;color:var(--text-3);line-height:1.6;font-style:italic}
+
+  /* ANTI-ICP — DARK BAND */
+  .anti{margin:80px -40px 0;padding:64px 80px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .anti .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  .anti h2{color:var(--pearl);margin:0 0 18px;max-width:780px}
+  .anti h2 em{color:var(--gold);font-style:italic}
+  .anti .intro{max-width:780px;color:var(--ink-fg-2);font-size:16px;line-height:1.65;margin-bottom:36px}
+  .anti-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(168,138,74,.3)}
+  .anti-item{background:var(--ink-bg);padding:24px 28px;display:flex;flex-direction:column;gap:6px}
+  .anti-item:hover{background:var(--ink-bg-2)}
+  .anti-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:18px}
+  .anti-ttl{font-family:var(--serif);font-size:20px;color:var(--pearl);line-height:1.25}
+  .anti-body{color:var(--ink-fg-2);font-size:13.5px;line-height:1.6}
+
+  /* THESIS */
+  .thesis{margin:80px -40px 0;padding:60px 80px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);text-align:center}
+  .thesis .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+  .thesis blockquote{font-family:var(--serif);font-size:clamp(24px,3vw,38px);line-height:1.3;color:var(--pearl);margin:0 auto;max-width:900px;font-style:italic}
+  .thesis cite{display:block;margin-top:24px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.16em;text-transform:uppercase}
+
+  /* FOOTER */
+  footer{margin-top:48px;padding-top:28px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);line-height:1.7;letter-spacing:.04em;text-align:center}
+  footer p{margin:0}
+
+  @media (max-width:1100px){
+    .formats{grid-template-columns:1fr}
+    .fmt{min-height:auto}
+  }
+  @media (max-width:980px){
+    .ribbon-inner,.wrap{padding-left:24px;padding-right:24px}
+    .pillars{grid-template-columns:1fr}
+    .prep{grid-template-columns:1fr;padding:28px 24px}
+    .suffering{grid-template-columns:1fr;padding:32px 24px;gap:24px}
+    .suffering-cols{grid-template-columns:1fr;gap:18px}
+    .anti{margin-left:-24px;margin-right:-24px;padding:40px 24px}
+    .anti-list{grid-template-columns:1fr}
+    .thesis{margin-left:-24px;margin-right:-24px;padding:40px 24px}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .anti,.thesis,.fmt.flagship{background:#fff;color:#111;border:1px solid #ddd}
+    .fmt.flagship .fmt-name,.anti h2,.thesis blockquote{color:#3F4A36}
+  }
+
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Этап <strong>III / IX</strong> · Каталог-манифест · Апрель 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- MANIFEST -->
+  <div class="manifest reveal">
+    <div class="eyebrow">Каталог · Манифест · Форматы работы</div>
+    <h1>Три формы.<br/><em>Одна работа.</em></h1>
+    <p class="lede">Я не делаю «терапию вообще». Я работаю в трёх форматах — и каждый из них устроен так, чтобы клиент получил конкретный результат за конкретное число встреч. Это не пакеты услуг — это три масштаба одной работы. Под названием «работа» я имею в виду то, что нельзя сделать за тебя.</p>
+  </div>
+
+  <!-- PILLARS -->
+  <div class="pillars reveal">
+    <div class="pillar">
+      <div class="pillar-num">I</div>
+      <div class="pillar-ttl">Глубина без эзотерики.</div>
+      <div class="pillar-body">Экзистенциализм как ось, психоанализ для глубины, КПТ для механики, юнгианский слой для трансцендентного. Это не эклектика — это методологическая дисциплина с приоритетом смысла. Я принимаю мистическое измерение опыта, но не подменяю им работу.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">II</div>
+      <div class="pillar-ttl">Скорость без поверхностности.</div>
+      <div class="pillar-body">Фундаментальный сдвиг — за обозримое число встреч. Не «5 лет терапии», но и не «5 правил счастья». Я не удерживаю клиента ради дохода и не обещаю мгновенного просветления. Я работаю до результата — и точкой выхода становится сам результат.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">III</div>
+      <div class="pillar-ttl">Бескомпромиссная честность.</div>
+      <div class="pillar-body">Я на твоей стороне — даже когда тебе кажется, что нет. Я не утешаю, не путаю поддержку с жалостью, не ищу виноватых. Я разделяю вынужденное и невынужденное страдание и работаю со вторым. Я возвращаю тебе субъектность — даже когда удобнее быть объектом.</div>
+    </div>
+  </div>
+
+  <!-- PREP -->
+  <div class="sec-head"><div><div class="num">I</div><h2>Подготовка</h2></div><div class="sec-tagline">Часть продукта, не «приходи и поговорим»</div></div>
+
+  <div class="prep reveal">
+    <div class="prep-l">
+      <div class="lab">Перед первой встречей</div>
+      <h3>Короткая анкета — точка входа.</h3>
+    </div>
+    <div class="prep-r">
+      <p>Перед первым разбором — <b>анкета</b>: биографический минимум, запрос «своими словами», что уже пробовал и почему не сработало, что ты НЕ хочешь от встречи, что должно произойти, чтобы встреча была не зря.</p>
+      <p>Это нужно для двух вещей. Первая — дать мне понять, с чем ты приходишь, чтобы не тратить твоё время на «расскажи о себе». Вторая — дать тебе самому <b>сформулировать запрос</b>. Часто формулировка — уже половина работы.</p>
+      <p>Дальше — никакой обязательной «домашки» между встречами. Я предпочитаю живой разговор, а не отчёты по бланку. Если по ходу появятся вопросы «на подумать» — мы вместе решим, что с ними делать. Анкету первой встречи и удобную точку контакта поможет собрать <b>Telegram-бот</b> (см. этап VIII), но он не будет дёргать тебя каждую неделю.</p>
+    </div>
+  </div>
+
+  <!-- FORMATS -->
+  <div class="sec-head"><div><div class="num">II</div><h2>Три формата</h2></div><div class="sec-tagline">Выбирается по масштабу задачи · не по бюджету</div></div>
+
+  <div class="formats reveal">
+
+    <!-- 01 — FLAGSHIP -->
+    <div class="fmt flagship">
+      <div class="fmt-badge">ФЛАГМАН</div>
+      <div class="fmt-num">Формат 01</div>
+      <h3 class="fmt-name">Глубинный разбор</h3>
+      <div class="fmt-sub">Одна встреча. 90–180 минут. До результата.</div>
+      <div class="fmt-sep"></div>
+
+      <div class="fmt-row">
+        <div class="fmt-lab">Что внутри</div>
+        <div class="fmt-val"><ul>
+          <li>Подготовительная анкета через бота</li>
+          <li>Встреча без таймера: идём, пока не пройдём точку</li>
+          <li>Не «отрабатываю час» — работаю до сдвига</li>
+          <li>Финальный «выход» с конкретным практическим выводом</li>
+        </ul></div>
+      </div>
+
+      <div class="fmt-row">
+        <div class="fmt-lab">Что получаешь</div>
+        <div class="fmt-val">Ясность по конкретной точке. Не «начало терапии» — а конкретный сдвиг за один заход. Один разбор ≈ месяц «обычной» терапии — не дороже, плотнее.</div>
+      </div>
+
+      <div class="ff">
+        <div class="ff-block">
+          <span class="ff-lab">Кому подойдёт</span>
+          Точка кризиса · конкретный вопрос-дилемма · «застрял в одном месте» · нужен честный взгляд со стороны без долгих процедур.
+        </div>
+        <div class="ff-block no">
+          <span class="ff-lab">Кому не подойдёт</span>
+          Тем, кто ищет долгого утешения или «просто поговорить». Это формат для работы, не для разговора.
+        </div>
+      </div>
+
+      <div class="fmt-price">
+        <div class="amount">12 000<span class="ccy">₽</span></div>
+        <div class="terms">Фикс. Длительность встречи на цене не отражается.</div>
+        <a class="fmt-cta" href="#">Забронировать разбор</a>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="fmt">
+      <div class="fmt-num">Формат 02</div>
+      <h3 class="fmt-name">Сопровождение<br/>до результата</h3>
+      <div class="fmt-sub">5–7 встреч за 6–10 недель. Прохождение перелома.</div>
+      <div class="fmt-sep"></div>
+
+      <div class="fmt-row">
+        <div class="fmt-lab">Что внутри</div>
+        <div class="fmt-val"><ul>
+          <li>Стартовый разбор для расстановки</li>
+          <li>Регулярные сессии 60–90 мин раз в 1–2 недели</li>
+          <li>Между-встречная переписка по фокус-вопросам</li>
+          <li>Точка выхода фиксируется заранее, по ней мы и работаем</li>
+        </ul></div>
+      </div>
+
+      <div class="fmt-row">
+        <div class="fmt-lab">Что получаешь</div>
+        <div class="fmt-val">Прохождение конкретного перелома: смена работы, разрыв, переезд, утрата, идентичность. Не «ходить-ходить», а — пройти.</div>
+      </div>
+
+      <div class="ff">
+        <div class="ff-block">
+          <span class="ff-lab">Кому подойдёт</span>
+          Когда задача понятна и нужна структурированная работа на 1,5–2,5 месяца. Когда хочется не одного среза, а пройти процесс.
+        </div>
+        <div class="ff-block no">
+          <span class="ff-lab">Кому не подойдёт</span>
+          Тем, кто ищет бесконечной терапии «как образ жизни». Здесь есть точка выхода — она часть продукта.
+        </div>
+      </div>
+
+      <div class="fmt-price">
+        <div class="amount">от 30 000<span class="ccy">₽</span></div>
+        <div class="terms">5 встреч — 30 000 ₽ · 7 встреч — 42 000 ₽. Включена между-сессионная связь.</div>
+        <a class="fmt-cta" href="#">Обсудить программу</a>
+      </div>
+    </div>
+
+    <!-- 03 — VELIKOE DELANIE -->
+    <div class="fmt">
+      <div class="fmt-num">Формат 03</div>
+      <h3 class="fmt-name">Великое<br/>делание</h3>
+      <div class="fmt-sub">12 встреч за 3 месяца. Длинная трансформация.</div>
+      <div class="fmt-sep"></div>
+
+      <div class="fmt-row">
+        <div class="fmt-lab">Что внутри</div>
+        <div class="fmt-val"><ul>
+          <li>Стартовый разбор + регулярная встреча раз в неделю</li>
+          <li>«Пути домой» — практики между встречами</li>
+          <li>Между-сессионная связь, ответы 1–2 раза в неделю</li>
+          <li>Промежуточный разбор на 6-й и 12-й неделе</li>
+        </ul></div>
+      </div>
+
+      <div class="fmt-row">
+        <div class="fmt-lab">Что получаешь</div>
+        <div class="fmt-val">Перенастройку отношений с собой, со смыслом и со свободой. Не «навыки» — пересборку основ. Юнгианское <i>opus magnum</i> в честном масштабе: три месяца плотной работы, не три года вялотекущего разговора.</div>
+      </div>
+
+      <div class="ff">
+        <div class="ff-block">
+          <span class="ff-lab">Кому подойдёт</span>
+          Серьёзный экзистенциальный сдвиг · перепрошивка идентичности · поиск своего пути · готовность работать 3 месяца последовательно.
+        </div>
+        <div class="ff-block no">
+          <span class="ff-lab">Кому не подойдёт</span>
+          Тем, кто не готов к длительности, или ищет «быстрого ответа». Великое делание — это медленно, даже когда плотно.
+        </div>
+      </div>
+
+      <div class="fmt-price">
+        <div class="amount">90 000<span class="ccy">₽</span></div>
+        <div class="terms">12 встреч + поддержка между ними. Ритм гибкий, итоговый объём фиксированный.</div>
+        <a class="fmt-cta" href="#">Записаться на встречу-знакомство</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUPPORT FOOTNOTE -->
+  <div class="support-note reveal">
+    <div class="note-tag">Дополнительно</div>
+    <div>
+      <h4>Поддерживающая <em>терапия</em> — после того, как основная работа сделана.</h4>
+      <p>Если по итогам разбора, сопровождения или великого делания ты чувствуешь, что нужен <b>постоянный ритм</b> — встреча раз в 1–2 недели без ограничений по числу сессий — это возможно. Стоимость и периодичность обсуждаются индивидуально.</p>
+      <p>Это не отдельный формат для входа. Сначала мы понимаем, кто мы друг для друга и где у тебя точки опоры — потом, при необходимости, переходим в длительный поддерживающий ритм. Так это и работает по-настоящему: «постоянка» — не вход, а продолжение.</p>
+    </div>
+  </div>
+
+  <!-- SUFFERING NOTE -->
+  <div class="sec-head"><div><div class="num">III</div><h2>Методологический ключ</h2></div><div class="sec-tagline">С чем я работаю и с чем — нет</div></div>
+
+  <div class="suffering reveal">
+    <div>
+      <div class="lab">Различение</div>
+      <h3>Вынужденное и <em>невынужденное</em> страдание.</h3>
+      <p style="color:var(--text-3);font-size:13.5px;line-height:1.6;margin-top:14px;font-style:italic">Это методологический ключ, по которому я строю работу — независимо от формата. Не граница «беру/не беру», а навигатор: куда именно прикладывать усилие.</p>
+    </div>
+    <div>
+      <div class="suffering-cols">
+        <div class="suffering-col">
+          <h4>Вынужденное</h4>
+          <p>То, что вшито в ткань жизни и не убирается работой над собой.</p>
+          <p class="examples">Смерть близких. Хронические болезни от рождения. Осознание собственной конечности. Утрата того, что нельзя вернуть. Дождь за окном.</p>
+        </div>
+        <div class="suffering-col">
+          <h4><em>Невынужденное</em></h4>
+          <p>То, что человек продолжает производить сам — потому что так выходит легче, чем взять ответственность.</p>
+          <p class="examples">Избегание выбора. Жизнь в обиде. Поиск виновных. Удержание идентичности «жертвы». Бесконечное «я подумаю». «Так получилось».</p>
+        </div>
+      </div>
+      <p style="color:var(--text-2);font-size:14.5px;line-height:1.65;margin-top:24px;border-top:1px solid var(--line);padding-top:20px"><b>Я работаю с обоими типами — по-разному.</b></p>
+      <p style="color:var(--text-2);font-size:14px;line-height:1.65;margin-top:8px">С <i>невынужденным</i> — ищем точку, где ты делаешь выбор и не видишь его. Это работа на изменение: пересборка реакций, отношений, способов думать.</p>
+      <p style="color:var(--text-2);font-size:14px;line-height:1.65;margin-top:8px">С <i>вынужденным</i> — ищем способ <i>быть</i> с тем, что не убирается. Не «справиться», не «переработать» — а найти, где здесь живёт жизнь. Скорбь по близкому, диагноз, утрата того, что нельзя вернуть — это не «надо проработать»: это надо прожить так, чтобы оно тебя не разрушило. Это другая задача — и она такая же серьёзная.</p>
+      <p style="color:var(--text-2);font-size:14px;line-height:1.65;margin-top:8px">В одном запросе почти всегда есть и то, и другое. Часть твоей боли можно изменить, часть — пройти. Различение — это про <b>точность</b> того, где именно мы прикладываем усилие.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ANTI-ICP -->
+<div class="anti">
+  <div class="lab">Кому я НЕ подойду</div>
+  <h2>Жёсткий фильтр на входе.<br/><em>Это часть качества работы.</em></h2>
+  <p class="intro">Этот список — не кокетство. Это честное предупреждение. Если ты узнаёшь себя в одном из пунктов — лучше не приходи: я не дам того, что ты хочешь, а ты не получишь того, что я даю. Это — про взаимное уважение времени.</p>
+  <div class="anti-list">
+    <div class="anti-item">
+      <div class="anti-num">01</div>
+      <div class="anti-ttl">«Утешь меня и обещай.»</div>
+      <div class="anti-body">Если тебе нужно тёплое одобрение и заверения, что всё будет хорошо — это не сюда. Я не утешитель и не предсказатель. Я работаю с тем, что есть.</div>
+    </div>
+    <div class="anti-item">
+      <div class="anti-num">02</div>
+      <div class="anti-ttl">«Найди мне виновного.»</div>
+      <div class="anti-body">Если ты ищешь, на кого свалить — я не помогу. У всех в твоей жизни были свои причины и свои ограничения. Работа здесь — про тебя, а не про их вину.</div>
+    </div>
+    <div class="anti-item">
+      <div class="anti-num">03</div>
+      <div class="anti-ttl">«Сделай за меня.»</div>
+      <div class="anti-body">Я не сделаю выбор вместо тебя. Не дам список «как надо жить». Не возьму на себя твою свободу. Это твоя работа — на то она и «великое делание».</div>
+    </div>
+    <div class="anti-item">
+      <div class="anti-num">04</div>
+      <div class="anti-ttl">«Дай мне 5 правил.»</div>
+      <div class="anti-body">Если хочешь готовых правил, инфографик и универсальных рецептов — есть Лабковский. У меня нет «правил для всех» — есть твой случай, твой выбор и твоя ответственность.</div>
+    </div>
+    <div class="anti-item">
+      <div class="anti-num">05</div>
+      <div class="anti-ttl">«Поработай в долг моих обстоятельств.»</div>
+      <div class="anti-body">«У меня сейчас тяжело — давай я заплачу потом / получу скидку / получу больше времени бесплатно». Нет. Это размывает работу и нас с тобой обоих.</div>
+    </div>
+    <div class="anti-item">
+      <div class="anti-num">06</div>
+      <div class="anti-ttl">«Я хочу остаться, как есть.»</div>
+      <div class="anti-body">Если в глубине ты не готов меняться — не подменяй встречу со мной встречей с собой. Не трать ни своих денег, ни моего времени. Сначала будь готов — потом приходи.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THESIS -->
+<div class="thesis">
+  <div class="lab">Главная формула</div>
+  <blockquote>«Психолог не работает за тебя. Он создаёт условия, в которых работа становится возможной. Мои условия — глубина, скорость и честность. Твой ход — прийти и взять».</blockquote>
+  <cite>— Манифест · этап III</cite>
+</div>
+
+<div class="wrap" style="padding-top:48px;padding-bottom:48px">
+  <footer>
+    <p>Каталог-манифест · этап III бренда «Матвей Богатырёв» · апрель 2026.<br/>Все три формата работают на одном методологическом основании. Цены могут пересматриваться по мере наполнения практики.</p>
+  </footer>
+</div>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

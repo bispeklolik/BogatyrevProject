@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Стратегия таргетной рекламы — Этап X. Матвей Богатырёв</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236;
+    --pearl:#FAF3DD;
+    --red:#A84C3A;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    --mono:"SF Mono","Menlo","Monaco",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:64px 40px 96px}
+
+  .hero{padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:64px}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.2vw,64px);line-height:1.0;letter-spacing:-.005em;margin:0 0 22px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:780px;font-size:17px;color:var(--text-2);line-height:1.7;margin:0 0 14px}
+  .lede:last-child{margin:0}
+  .lede b{color:var(--ink);font-weight:500}
+
+  nav.toc{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:0 0 64px}
+  nav.toc a{background:var(--panel);padding:18px 12px;text-decoration:none;color:var(--text-3);font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:color .25s,background .25s;text-align:center}
+  nav.toc a:hover{color:var(--ink);background:var(--panel-2)}
+  nav.toc a span.num{display:block;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:6px;letter-spacing:0;text-transform:none}
+
+  section{padding:48px 0;border-top:1px solid var(--line-soft)}
+  section:first-of-type{border-top:none;padding-top:0}
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px;gap:24px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.04em}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;color:var(--ink)}
+  .sec-tagline{color:var(--text-3);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+  h3{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);margin:32px 0 14px;line-height:1.2}
+  h3 em{color:var(--gold);font-style:italic}
+  p{margin:0 0 14px;line-height:1.7}
+  p b{color:var(--ink);font-weight:500}
+  ul.clean{padding-left:0;list-style:none;margin:14px 0}
+  ul.clean li{padding-left:24px;position:relative;margin-bottom:10px;line-height:1.65}
+  ul.clean li::before{content:"·";position:absolute;left:6px;top:-3px;color:var(--gold);font-size:28px;font-weight:600;font-family:var(--serif);line-height:1}
+  ul.clean li b{color:var(--ink);font-weight:500}
+
+  /* PHILOSOPHY */
+  .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin:24px 0}
+  .vs-col{padding:32px 30px}
+  .vs-col.no{background:var(--bg-2)}
+  .vs-col.yes{background:var(--ink-bg);color:var(--ink-fg)}
+  .vs-col.yes h4{color:var(--pearl)}
+  .vs-col.yes ul.clean li b{color:var(--gold)}
+  .vs-col .lab{font-size:11px;letter-spacing:.32em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .vs-col.no .lab{color:var(--red)}
+  .vs-col.yes .lab{color:var(--gold)}
+  .vs-col h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0 0 18px;font-weight:400;line-height:1.2}
+
+  /* PLATFORM CARDS */
+  .platform{background:var(--panel);border:1px solid var(--line);padding:30px 36px;margin-bottom:18px;display:grid;grid-template-columns:1.4fr 2fr;gap:36px;align-items:start}
+  .platform.no{background:var(--bg-2);border-style:dashed;opacity:.85}
+  .platform-name{font-family:var(--serif)}
+  .platform-name .name{font-size:30px;color:var(--ink);font-weight:400;line-height:1;margin-bottom:6px}
+  .platform-name .role{font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .platform-name .priority{display:inline-block;font-family:var(--sans);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-3);margin-top:10px;padding:3px 10px;border:1px solid var(--line)}
+  .platform-name .priority.p1{color:var(--gold);border-color:var(--gold)}
+  .platform-name .priority.skip{color:var(--red);border-color:var(--red)}
+  .platform.no .platform-name .name{color:var(--text-3);text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1px}
+  .platform-info p{margin:0 0 10px;font-size:14.5px;line-height:1.65}
+  .platform-info p:last-child{margin:0}
+  .platform-info .stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px}
+  .platform-info .stats span{color:var(--text-3)}
+  .platform-info .stats b{color:var(--ink);font-weight:500}
+
+  /* AUDIENCE TARGETING */
+  .target-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .target-card{background:var(--panel);padding:22px 24px}
+  .target-card .lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+  .target-card h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:0 0 8px;font-weight:400;line-height:1.25}
+  .target-card p{font-size:13px;line-height:1.6;color:var(--text-2);margin:0}
+  .target-card code{font-family:var(--mono);font-size:11.5px;background:var(--bg-2);padding:1px 5px;color:var(--ink)}
+
+  /* CREATIVE SAMPLES */
+  .creative{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);padding:24px 28px;margin-bottom:14px}
+  .creative-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:14px;margin-bottom:10px}
+  .creative-platform{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .creative-type{font-size:11px;color:var(--text-3);font-style:italic;letter-spacing:.06em}
+  .creative .ad-title{font-family:var(--serif);font-size:20px;color:var(--ink);font-weight:500;line-height:1.25;margin-bottom:8px}
+  .creative .ad-body{font-family:var(--serif);font-size:15px;color:var(--text);line-height:1.6;font-style:italic}
+  .creative .ad-cta{font-family:var(--sans);display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .creative .why{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--text-3);line-height:1.55}
+  .creative .why b{color:var(--gold);font-weight:600}
+
+  /* BUDGET PHASES */
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .phase-card{background:var(--panel);padding:28px;display:flex;flex-direction:column;gap:8px}
+  .phase-card.test{background:var(--panel-2)}
+  .phase-card.scale{background:var(--ink-bg);color:var(--ink-fg)}
+  .phase-card.scale h4{color:var(--pearl)}
+  .phase-card.scale .meta{color:var(--ink-fg-2);border-top-color:rgba(168,138,74,.4)}
+  .phase-card.scale ul.clean li{color:var(--ink-fg)}
+  .phase-card.scale ul.clean li b{color:var(--gold)}
+  .ph-num{font-family:var(--serif);font-style:italic;font-size:42px;color:var(--gold);line-height:1}
+  .phase-card h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:6px 0 4px;font-weight:400;line-height:1.2}
+  .phase-card .budget{font-family:var(--serif);font-size:30px;color:var(--ink);line-height:1;margin:6px 0 4px}
+  .phase-card.scale .budget{color:var(--pearl)}
+  .phase-card .budget small{font-size:13px;color:var(--gold);font-style:italic;margin-left:4px}
+  .phase-card .meta{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);padding-top:8px;border-top:1px solid var(--line);margin-top:auto}
+
+  /* METRICS */
+  .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+  .metric{background:var(--panel);padding:22px 24px}
+  .metric-lab{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+  .metric h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:0 0 6px;font-weight:400;line-height:1.25}
+  .metric .val{font-family:var(--serif);font-size:22px;color:var(--ink);margin-bottom:4px}
+  .metric .val small{font-size:13px;color:var(--gold);font-style:italic;margin-left:4px}
+  .metric p{font-size:13px;line-height:1.55;color:var(--text-2);margin:0}
+
+  /* RED LINES */
+  .red-block{background:var(--bg-2);border:1px solid var(--line);border-left:4px solid var(--red);padding:30px 36px;margin-top:24px}
+  .red-block .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--red);margin-bottom:14px;font-weight:600}
+  .red-block h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0 0 14px;font-weight:400;line-height:1.2}
+  .red-block ul.clean li{font-size:14px;color:var(--text)}
+  .red-block ul.clean li::before{color:var(--red)}
+
+  /* THESIS */
+  .thesis{margin-top:64px;padding:44px 48px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .thesis .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .thesis blockquote{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.4;color:var(--pearl);margin:0;font-style:italic;max-width:840px}
+  .thesis cite{display:block;margin-top:16px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.16em;text-transform:uppercase}
+
+  footer{margin-top:48px;padding-top:28px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);line-height:1.7;letter-spacing:.04em;text-align:center}
+
+  @media (max-width:980px){
+    .ribbon-inner,.wrap{padding-left:24px;padding-right:24px}
+    nav.toc{grid-template-columns:repeat(3,1fr)}
+    .vs-grid,.target-grid,.phases,.metrics{grid-template-columns:1fr}
+    .platform{grid-template-columns:1fr;gap:18px}
+  }
+</style>
+</head>
+<body>
+
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Этап <strong>X / XI</strong> · Таргетная реклама · Апрель 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Платный трафик · стратегия для бренда без воронок</div>
+    <h1>Платная реклама,<br/><em>которая не разрушит бренд.</em></h1>
+    <p class="lede">Главный конфликт: бренд построен на <b>анти-маркетинговой</b> позиции, а реклама — это маркетинг. Решение в том, что реклама может быть <b>сигналом качества</b>, а не вызовом «купи!». Этот документ — карта того, как платный трафик встраивается в стратегию без потери тона.</p>
+    <p class="lede">Логика: реклама ведёт не на «оставь контакт» и не на «получи бесплатный гайд», а на <b>фильтр готовности</b> или на конкретное YouTube-видео. Конверсия идёт через ценность, не через хук.</p>
+  </div>
+
+  <nav class="toc">
+    <a href="#philosophy"><span class="num">I</span>Философия</a>
+    <a href="#platforms"><span class="num">II</span>Платформы</a>
+    <a href="#targeting"><span class="num">III</span>Таргетинг</a>
+    <a href="#creatives"><span class="num">IV</span>Креативы</a>
+    <a href="#budget"><span class="num">V</span>Бюджет</a>
+    <a href="#metrics"><span class="num">VI</span>Метрики</a>
+  </nav>
+
+  <!-- I. PHILOSOPHY -->
+  <section id="philosophy">
+    <div class="sec-head">
+      <div><div class="num">I</div><h2>Философия рекламы</h2></div>
+      <div class="sec-tagline">Что бренд может себе позволить · и что разрушит</div>
+    </div>
+
+    <p>Платная реклама в нашей нише — обычно поле infocygan-методов: clickbait-заголовки, обещания «5 шагов», стоковые «счастливые лица», «успей до полуночи». Использовать эти инструменты — <b>значит подменить бренд</b>: то, что ты строил месяцами серьёзным контентом, сметается одним рекламным баннером в неверном тоне.</p>
+
+    <div class="vs-grid">
+      <div class="vs-col no">
+        <div class="lab">Чего НЕ делаем в рекламе</div>
+        <h4>Анти-форматы</h4>
+        <ul class="clean">
+          <li>«5 секретов», «7 шагов», «избавься от тревоги за неделю»</li>
+          <li>Стоковые фото улыбающихся людей</li>
+          <li>Обратные таймеры «до конца акции»</li>
+          <li>Бесплатные «вебинары» с воронкой в курс</li>
+          <li>Креативы с восклицательными знаками</li>
+          <li>Пакетные размещения у инфоцыган-блогеров</li>
+          <li>Ретаргетинг с «вы забыли что-то» в стиле e-commerce</li>
+        </ul>
+      </div>
+      <div class="vs-col yes">
+        <div class="lab">Что делаем</div>
+        <h4>Реклама как сигнал</h4>
+        <ul class="clean">
+          <li>Тексты в авторском тоне Матвея — те же, что в TG</li>
+          <li>Фото без постановочности (если есть фото — то реальные)</li>
+          <li>Цитаты из манифеста · из видео · из постов</li>
+          <li>Точечный поисковый таргет на <b>сформированный запрос</b></li>
+          <li>Одно касание с реальной ценностью, а не с обещанием</li>
+          <li>Закупка постов в нишевых TG-каналах с <b>проверенной аудиторией</b></li>
+          <li>Ретаргет — только на тех, кто прошёл фильтр готовности</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Ключевой принцип</h3>
+    <p>Реклама ведёт не на «лендинг с кнопкой записаться», а на <b>содержательную точку</b>: фильтр готовности с PDF, конкретное YouTube-видео по релевантной теме, манифест. Если человек не готов читать длинный текст или смотреть 25 минут — он не наш ICP, и платить за его клик бессмысленно.</p>
+  </section>
+
+  <!-- II. PLATFORMS -->
+  <section id="platforms">
+    <div class="sec-head">
+      <div><div class="num">II</div><h2>Платформы</h2></div>
+      <div class="sec-tagline">Где есть наш ICP · и где его нет</div>
+    </div>
+
+    <div class="platform">
+      <div class="platform-name">
+        <div class="name">Yandex Direct <em>· поиск</em></div>
+        <div class="role">Главный канал · сформированный спрос</div>
+        <div class="priority p1">Приоритет 1</div>
+      </div>
+      <div class="platform-info">
+        <p>Ловим людей, которые <b>уже ищут</b> психолога, экзистенциальную терапию, помощь с кризисом. Они — самая зрелая часть рынка, готовая к платному действию. Реклама в поиске не «убеждает», она просто <b>попадает в момент выбора</b>.</p>
+        <p><b>Как настраиваем:</b> широкий пул запросов (50–80) в нескольких группах. Релевантные посадочные страницы (фильтр готовности или соответствующее видео). Минус-слова — <code>бесплатно</code>, <code>отзывы развод</code>, <code>как стать психологом</code>.</p>
+        <div class="stats">
+          <span>Орг. спрос: <b>средний-высокий</b></span>
+          <span>CPC: <b>40–120 ₽</b></span>
+          <span>Конверсия в подписку TG: <b>5–10 %</b></span>
+          <span>Качество аудитории: <b>высокое</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="platform">
+      <div class="platform-name">
+        <div class="name">Telegram Ads</div>
+        <div class="role">Через агрегаторы · нативный формат</div>
+        <div class="priority p1">Приоритет 2</div>
+      </div>
+      <div class="platform-info">
+        <p>Реклама внутри Telegram через официальный кабинет (доступен через агрегаторы — eLama, Click.ru). Размещение <b>в каналах, читаемых ICP</b>: психология, философия, литература, культурология, ВШЭ-сообщества. Нативный формат — короткий текст в TG-канале.</p>
+        <p><b>Как настраиваем:</b> отбор каналов вручную (не «пакеты»), таргет на интересы и тематики, креативы — короткие цитаты в стиле постов Матвея. Лучше 3 точечных размещения в качественных каналах, чем 30 в массовых.</p>
+        <div class="stats">
+          <span>Минимальный бюджет: <b>от 250к ₽ через агрегаторы / от 0 при ручной закупке постов</b></span>
+          <span>CPM: <b>200–800 ₽</b></span>
+          <span>Качество: <b>очень высокое при правильном отборе</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="platform">
+      <div class="platform-name">
+        <div class="name">Закупка постов <em>· TG-каналы</em></div>
+        <div class="role">Альтернатива официальному Telegram Ads</div>
+        <div class="priority p1">Приоритет 2</div>
+      </div>
+      <div class="platform-info">
+        <p>Прямая закупка одного-двух постов в нишевых психологических, философских, книжных TG-каналах. Часто <b>дешевле и лучше</b>, чем официальный Telegram Ads — потому что это не «нативная реклама», а почти <b>рекомендация автора</b>.</p>
+        <p><b>Как настраиваем:</b> через TGStat / Telega.in / Tgrm.io ищем каналы 5–50к подписчиков с подходящей аудиторией. Просим рекламный пост, желательно — с минимальной редактурой автора (не «перепечатать», а «своими словами рассказать»). 1–3 закупки в месяц.</p>
+        <div class="stats">
+          <span>Бюджет за пост: <b>3–25к ₽</b></span>
+          <span>Конверсия в подписку: <b>0,5–3 %</b> от просмотров</span>
+          <span>ROI часто выше, чем у любого таргета</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="platform">
+      <div class="platform-name">
+        <div class="name">VK Ads <em>· таргет</em></div>
+        <div class="role">Тестировать осторожно</div>
+        <div class="priority">Приоритет 3</div>
+      </div>
+      <div class="platform-info">
+        <p>Таргет в ВК на сообщества и интересы. Можно ловить ICP через сообщества <b>«Психология»</b>, <b>«Философия»</b>, <b>«Достоевский»</b>, <b>«Юнг»</b>, <b>«ВШЭ»</b>, <b>«Антрополог»</b>, <b>«Esquire / Сноб / Нож»</b>. Аудитория есть, но качество ниже Yandex и TG.</p>
+        <p><b>Риск:</b> ВК-аудитория более развлекательная и реактивная, плохо вписывается в длинный контент. Если запускаем — только на <b>конкретное короткое видео или пост</b>, не на фильтр готовности.</p>
+        <div class="stats">
+          <span>CPC: <b>15–60 ₽</b></span>
+          <span>Качество: <b>среднее</b></span>
+          <span>Запускать после того, как Yandex и TG работают</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="platform no">
+      <div class="platform-name">
+        <div class="name">Instagram · TikTok · Reels</div>
+        <div class="role">Не идём принципиально</div>
+        <div class="priority skip">Skip</div>
+      </div>
+      <div class="platform-info">
+        <p><b>Почему нет.</b> Instagram заблокирован в РФ (требует VPN); TikTok ограничен; Reels — поверхностный визуальный поток, который ломает бренд. Платный трафик отсюда конвертируется хуже, чем органика на YouTube и TG.</p>
+        <p><b>Когда пересмотрим.</b> Только если Telegram-канал устойчиво растёт и появится смысл «расширить доступ» — но не как ад-канал, а как edition бренда.</p>
+      </div>
+    </div>
+
+    <div class="platform no">
+      <div class="platform-name">
+        <div class="name">Google Ads · Meta Ads</div>
+        <div class="role">Недоступны в РФ</div>
+        <div class="priority skip">Skip</div>
+      </div>
+      <div class="platform-info">
+        <p>Google Ads и Meta Ads недоступны для российских рекламодателей (с 2022 года). Использовать через VPN — нарушение ToS, риск бана аккаунта. Не рассматриваем.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- III. TARGETING -->
+  <section id="targeting">
+    <div class="sec-head">
+      <div><div class="num">III</div><h2>Точный таргетинг</h2></div>
+      <div class="sec-tagline">Где живёт ICP «не нормис» 18–35</div>
+    </div>
+
+    <p>Главное правило таргетинга в этом бренде — узкая фокусировка. Лучше <b>50 правильных кликов</b>, чем 5 000 нерелевантных. Целимся в маркеры, по которым человек выдаёт свою «глубину»: образованность, чтение, рефлексивность, специфические интересы.</p>
+
+    <h3>Yandex Direct — поисковые запросы</h3>
+    <div class="target-grid">
+      <div class="target-card">
+        <div class="lab">Прямой запрос</div>
+        <h5>Психолог-экзистенциалист, психолог-юнгианец, экзистенциальная терапия</h5>
+        <p>Самые точные запросы. Малый объём, очень высокая конверсия.</p>
+      </div>
+      <div class="target-card">
+        <div class="lab">Локация + услуга</div>
+        <h5>Психолог Москва, психолог онлайн, частный психолог</h5>
+        <p>Стандартные запросы. Конкуренция выше, но трафика больше. Минусуем «недорого», «бесплатно».</p>
+      </div>
+      <div class="target-card">
+        <div class="lab">Состояние</div>
+        <h5>Кризис среднего возраста, потеря смысла, экзистенциальный кризис, выгорание</h5>
+        <p>Прямой попадание в боль ICP. Не «как избавиться от тревоги» — а более глубокие формулировки.</p>
+      </div>
+      <div class="target-card">
+        <div class="lab">Авторы и школы</div>
+        <h5>Терапия по Юнгу, психология Франкла, логотерапия</h5>
+        <p>Узкие, но горячие запросы. Этот человек уже знает, что ищет — он почти готовый клиент.</p>
+      </div>
+    </div>
+
+    <h3>VK Ads · Telegram Ads — таргет на интересы и сообщества</h3>
+    <div class="target-grid">
+      <div class="target-card">
+        <div class="lab">Возраст · доход</div>
+        <h5>22–38 лет · доход средний и выше</h5>
+        <p>Не отрезаем по доходу слишком жёстко — ICP включает студентов и начинающих специалистов, которые могут потянуть один разбор раз в 1–2 месяца.</p>
+      </div>
+      <div class="target-card">
+        <div class="lab">Сообщества</div>
+        <h5>Юнг · Достоевский · Камю · Сноб · Нож · ВШЭ · The Village · Arzamas</h5>
+        <p>Качественные сообщества с думающей аудиторией. Размещения и таргет именно туда.</p>
+      </div>
+      <div class="target-card">
+        <div class="lab">Интересы</div>
+        <h5>Философия · литература · психология · искусство · документальное кино</h5>
+        <p>Широкие интересы для расширения охвата. Используем как вторичный фильтр после сообществ.</p>
+      </div>
+      <div class="target-card">
+        <div class="lab">Look-alike</div>
+        <h5>Подписчики канала Матвея + look-alike по ним</h5>
+        <p>После 500+ подписчиков в TG — VK позволит создать LAL. Это самый точный таргет на «таких же».</p>
+      </div>
+    </div>
+
+    <h3>Антитаргет (исключения)</h3>
+    <ul class="clean">
+      <li><b>Сообщества «эзотерика», «магия», «таро»</b> — пересечение есть, но это не наш ICP, привлечение разрушит бренд.</li>
+      <li><b>Поисковые «как стать психологом», «обучение психологии»</b> — это аудитория для будущей линии «коллег», не сейчас.</li>
+      <li><b>Сообщества бизнес-коучинга, MLM, успеха</b> — другой угол, другой ICP.</li>
+      <li><b>Те, кто уже подписан на TG Матвея</b> — исключаем, не платим за свою аудиторию.</li>
+    </ul>
+  </section>
+
+  <!-- IV. CREATIVES -->
+  <section id="creatives">
+    <div class="sec-head">
+      <div><div class="num">IV</div><h2>Образцы креативов</h2></div>
+      <div class="sec-tagline">7 примеров под платформы</div>
+    </div>
+
+    <p>Креативы построены так же, как и весь контент бренда: серьёзный тон, без восклицаний, без хуков. Точная фраза вместо удара. Ниже — шаблоны, которые можно адаптировать.</p>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">Yandex Direct · поиск</span>
+        <span class="creative-type">Запрос: «психолог-экзистенциалист»</span>
+      </div>
+      <div class="ad-title">Психолог-экзистенциалист в Москве — Матвей Богатырёв</div>
+      <div class="ad-body">Авторская практика. Глубинный разбор до 3 часов · 12 000 ₽. Не «5 правил счастья» — серьёзная работа со смыслом, свободой и выбором. Бесплатный фильтр готовности — пройди и узнай свой формат.</div>
+      <span class="ad-cta">→ Пройти фильтр готовности</span>
+      <div class="why"><b>Почему работает:</b> прямая речь, конкретика по цене, отстройка от попсы, посадочная страница даёт реальную ценность ещё до клика на «записаться».</div>
+    </div>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">Yandex Direct · поиск</span>
+        <span class="creative-type">Запрос: «потеря смысла», «экзистенциальный кризис»</span>
+      </div>
+      <div class="ad-title">«Когда всё есть, а вставать не хочется» — отдельная работа</div>
+      <div class="ad-body">Если внешне всё, что нужно — есть, но внутри пусто, это не «лень». Это запрос, с которым работают по-другому. Одна встреча 90–180 минут, до результата. Авторская практика.</div>
+      <span class="ad-cta">→ Узнать подробнее</span>
+      <div class="why"><b>Почему работает:</b> цитата прямо в заголовке резонирует с состоянием. Анти-обесценивание («не лень»). Конкретика формата.</div>
+    </div>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">Telegram Ads · нативный пост</span>
+        <span class="creative-type">Размещение в TG-канале по психологии</span>
+      </div>
+      <div class="ad-title">Парадокс хорошего психолога</div>
+      <div class="ad-body">Хороший специалист — тот, чья задача сделать так, чтобы человеку больше не понадобились его услуги. Я не строю долгую зависимость. Моя работа — дать инструмент, систему и научить им пользоваться. <br/><br/>Если откликается — у меня есть канал об этом.</div>
+      <span class="ad-cta">→ @matveybogatyrev</span>
+      <div class="why"><b>Почему работает:</b> провокационный, но честный тезис в заголовке. Не «купи разбор», а «у меня есть канал». Низкое давление, высокий сигнал.</div>
+    </div>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">Закупка в TG-канале · нативный</span>
+        <span class="creative-type">«От автора канала, без переписывания»</span>
+      </div>
+      <div class="ad-title">Подписался на интересный канал</div>
+      <div class="ad-body">Подписался недавно на канал психолога Матвея Богатырёва. Преподаёт в вузе практикум для будущих коллег, ведёт частную практику. Пишет про экзистенциализм, Юнга, разделение страдания на вынужденное и невынужденное. Один из немногих, кто говорит про глубину без эзотерического тумана. <br/><br/>Канал @matveybogatyrev — почитайте.</div>
+      <div class="why"><b>Почему работает:</b> рекомендация от автора, а не «реклама». Конкретные смысловые маркеры, которые отсеют попсовую аудиторию и привлекут думающую.</div>
+    </div>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">VK Ads · таргет</span>
+        <span class="creative-type">Сообщество «Юнг», «Достоевский»</span>
+      </div>
+      <div class="ad-title">Шизофреник тонет в тех же водах, в которых мистик плавает с удовольствием</div>
+      <div class="ad-body">Юнг был прав. Психологу можно работать на этой границе — между пугающим и сакральным — без эзотерического тумана. <br/><br/>Канал и практика об этом. Авторский подход, экзистенциализм + юнгианство + КПТ.</div>
+      <span class="ad-cta">→ Канал @matveybogatyrev</span>
+      <div class="why"><b>Почему работает:</b> цитата самого Юнга в заголовке = пароль для своих. Аудитория сообщества «Юнг» в ВК это узнает мгновенно.</div>
+    </div>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">Yandex РСЯ · ремаркетинг</span>
+        <span class="creative-type">Только на тех, кто прошёл фильтр готовности, но не записался</span>
+      </div>
+      <div class="ad-title">Если решился — у тебя один разбор · 12 000 ₽</div>
+      <div class="ad-body">Ты прошёл фильтр готовности. Если решил, что готов — глубинный разбор 90–180 минут. Не подписочная воронка, не серия писем. Один разбор и решение, что дальше.</div>
+      <span class="ad-cta">→ Забронировать</span>
+      <div class="why"><b>Почему работает:</b> ремаркетинг только на «горячую» аудиторию (прошли фильтр). Прямое предложение без давления, конкретная цена, прямой переход.</div>
+    </div>
+
+    <div class="creative">
+      <div class="creative-head">
+        <span class="creative-platform">Yandex Direct · поиск</span>
+        <span class="creative-type">Запрос: «как найти своё призвание»</span>
+      </div>
+      <div class="ad-title">Призвание не находят — на призвание откликаются (Франкл)</div>
+      <div class="ad-body">Если ищешь «свой путь» уже долго — возможно, ты ищешь его не там. Авторская практика по экзистенциальной психологии. Глубинный разбор · 90–180 мин · 12 000 ₽.</div>
+      <span class="ad-cta">→ Пройти фильтр готовности</span>
+      <div class="why"><b>Почему работает:</b> цитата Франкла переворачивает запрос пользователя. Это не отрицание его проблемы, это <i>переформулировка</i> в более глубокой плоскости.</div>
+    </div>
+  </section>
+
+  <!-- V. BUDGET -->
+  <section id="budget">
+    <div class="sec-head">
+      <div><div class="num">V</div><h2>Бюджет по фазам</h2></div>
+      <div class="sec-tagline">От теста к масштабированию</div>
+    </div>
+
+    <p>Принцип: <b>не вкачивать сразу</b>. Реклама запускается только после того, как сайт работает, фильтр готовности отлажен, и есть хотя бы 4–6 видео на YouTube + 30+ постов в TG. Иначе платный трафик придёт на полупустую витрину.</p>
+
+    <div class="phases">
+      <div class="phase-card test">
+        <div class="ph-num">I</div>
+        <h4>Тестовая фаза</h4>
+        <div class="budget">30–50<small>тыс ₽/мес</small></div>
+        <p>Проверка платформ и креативов. Минимум 2 платформы (Yandex поиск + 1 размещение в TG-канале). 4–6 креативов параллельно.</p>
+        <ul class="clean">
+          <li>Длительность: 2–3 месяца</li>
+          <li>Цель: найти связку «креатив × платформа» с CPL ≤ 800 ₽</li>
+          <li>Ожидаемый трафик: 50–150 переходов в неделю</li>
+          <li>Подписки в TG: 10–30/мес платных + органика</li>
+        </ul>
+        <div class="meta">Итого: 90–150к ₽ за 3 мес</div>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">II</div>
+        <h4>Фаза роста</h4>
+        <div class="budget">80–150<small>тыс ₽/мес</small></div>
+        <p>Расширение работающих связок. Подключение VK Ads и регулярная закупка постов в TG-каналах.</p>
+        <ul class="clean">
+          <li>Длительность: 3–6 месяцев</li>
+          <li>Цель: CPL 400–700 ₽, прирост подписчиков 100–200/мес платных</li>
+          <li>Запуск ремаркетинга по ремаркетинг-аудиториям</li>
+          <li>А/Б тестирование посадочных (фильтр vs манифест vs видео)</li>
+        </ul>
+        <div class="meta">Итого: 480–900к ₽ за 6 мес</div>
+      </div>
+      <div class="phase-card scale">
+        <div class="ph-num">III</div>
+        <h4>Масштаб</h4>
+        <div class="budget">200–300<small>тыс ₽/мес</small></div>
+        <p>Только если бренд устойчив и нужен дополнительный приток. Без масштабирования при «утечке» бренда: лучше меньше, но качественнее.</p>
+        <ul class="clean">
+          <li>Длительность: 6–12 мес и далее</li>
+          <li>Цель: 300–500 подписок/мес из платных каналов</li>
+          <li>Стабильный поток заявок 5+/нед из платного трафика</li>
+          <li>ROI на разбор + программа: 2–3x</li>
+        </ul>
+        <div class="meta">Включается при загрузке практики &lt; 70% и наличии других ограничений</div>
+      </div>
+    </div>
+
+    <h3>Распределение бюджета внутри фазы (на тестовой)</h3>
+    <ul class="clean">
+      <li><b>Yandex Direct поиск:</b> ~ 50% бюджета (15–25к ₽/мес) — это основной канал, лучшее качество</li>
+      <li><b>Закупка постов в TG-каналах:</b> ~ 30% (10–15к ₽/мес) — 1–2 размещения</li>
+      <li><b>VK Ads таргет:</b> ~ 15% (5–8к ₽/мес) — тест отдельных аудиторий</li>
+      <li><b>Креативная разработка:</b> ~ 5% — копирайт от профильного автора (если не делаешь сам)</li>
+    </ul>
+  </section>
+
+  <!-- VI. METRICS -->
+  <section id="metrics">
+    <div class="sec-head">
+      <div><div class="num">VI</div><h2>Метрики и оптимизация</h2></div>
+      <div class="sec-tagline">Что мерить · когда выключать</div>
+    </div>
+
+    <h3>Ключевые метрики</h3>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-lab">CPC</div>
+        <h5>Стоимость клика</h5>
+        <div class="val">40–120<small>₽ Yandex поиск</small></div>
+        <p>Если выше 150 ₽ на поиск — проверить релевантность объявлений. Если ниже 30 ₽ — возможно, трафик слишком широкий.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">CPL</div>
+        <h5>Стоимость подписки в TG / прохождения фильтра</h5>
+        <div class="val">300–800<small>₽ целевой коридор</small></div>
+        <p>Главная метрика тестовой фазы. Если CPL стабильно &gt; 1 000 ₽ на платформе — выключаем и тестируем другую.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">CPA</div>
+        <h5>Стоимость заявки на разбор</h5>
+        <div class="val">3–8<small>тыс ₽ целевой</small></div>
+        <p>При цене разбора 12к ₽ — допустимая стоимость заявки до 5–6к ₽ при условии, что 30%+ заявок становятся клиентами.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">ROI</div>
+        <h5>Окупаемость рекламы</h5>
+        <div class="val">2–3 ×<small>горизонт 3 мес</small></div>
+        <p>Учитывая, что часть клиентов после разбора берут программы — ROI считаем на горизонте 3+ мес. Целевой 2x минимум, иначе нет смысла.</p>
+      </div>
+    </div>
+
+    <h3>Когда что-то выключать</h3>
+    <ul class="clean">
+      <li>Платформа даёт CPL &gt; 1 200 ₽ две недели подряд → <b>выключаем</b>, перезапускаем с новыми креативами через месяц</li>
+      <li>Креатив даёт CTR &lt; 0,5% на 1 000 показов → <b>заменяем</b></li>
+      <li>Заявки идут, но конверсия в клиента &lt; 15% → проблема не в трафике, а в посадочной/продукте — пересматриваем точку приземления</li>
+      <li>Рост негативных реакций / отписок при показах рекламы → <b>остановить</b>, креатив воспринимается как «инфоцыганщина»</li>
+    </ul>
+  </section>
+
+  <!-- RED LINES -->
+  <div class="red-block">
+    <div class="lab">Красные линии · никогда</div>
+    <h4>Чего не делаем — даже если «все так делают»</h4>
+    <ul class="clean">
+      <li><b>Не покупаем размещения у инфоцыган-блогеров.</b> Даже если они дают «дешёвый» лид — он испортит бренд. Лояльность их аудитории не передаётся.</li>
+      <li><b>Не используем фейковые отзывы и кейсы.</b> Никаких «после работы с Матвеем я открыл бизнес и стал счастлив». Только реальные кейсы с разрешения.</li>
+      <li><b>Не делаем «бесплатный вебинар» как приманку.</b> Вебинар может быть, но как самостоятельная ценность, а не как воронка в курс.</li>
+      <li><b>Не ставим обратные таймеры и «ограниченные предложения».</b> Это противоречит позиции «я выбираю клиентов».</li>
+      <li><b>Не запускаем рекламу до того, как сайт + фильтр + 4 видео + 30 постов готовы.</b> Платный трафик на полупустую витрину = слив бюджета.</li>
+      <li><b>Не пытаемся быть в Reels / Shorts / TikTok формате.</b> Бренд ломается о попытку «адаптироваться под алгоритм».</li>
+    </ul>
+  </div>
+
+  <!-- THESIS -->
+  <div class="thesis">
+    <div class="lab">Главный тезис</div>
+    <blockquote>«Платная реклама в этом бренде — не двигатель роста, а ускоритель. Без органического содержания за ней — она пустая. С содержанием — она работает как тонкая настройка точности: попадает в тех, кто и так искал, и кто увидит ценность с первого касания».</blockquote>
+    <cite>— Стратегический тезис · этап X</cite>
+  </div>
+
+  <footer>
+    Стратегия таргетной рекламы · этап X бренда «Матвей Богатырёв» · апрель 2026.<br/>
+    Реализация: после стабилизации сайта (этап IX) и наличия 4+ видео на YouTube + 30+ постов в Telegram. Не раньше.
+  </footer>
+</div>
+
+</body>
+</html>

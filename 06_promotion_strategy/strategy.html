@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>План продвижения и контент-стратегия — Этап VII. Матвей Богатырёв</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --gold-soft:rgba(168,138,74,.14);
+    --pearl:#FAF3DD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* RIBBON */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:64px 40px 96px}
+
+  /* HERO */
+  .hero{padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:48px}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.2vw,64px);line-height:1.0;letter-spacing:-.005em;margin:0 0 22px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:780px;font-size:17px;color:var(--text-2);line-height:1.7;margin:0 0 14px}
+  .lede:last-child{margin:0}
+  .lede b{color:var(--ink);font-weight:500}
+
+  /* TOC */
+  nav.toc{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:32px 0 64px}
+  nav.toc a{background:var(--panel);padding:18px 16px;text-decoration:none;color:var(--text-3);font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:color .25s,background .25s;text-align:center}
+  nav.toc a:hover{color:var(--ink);background:var(--panel-2)}
+  nav.toc a span.num{display:block;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:6px;letter-spacing:0;text-transform:none}
+
+  /* SECTIONS */
+  section{padding:48px 0;border-top:1px solid var(--line-soft)}
+  section:first-of-type{border-top:none;padding-top:0}
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px;gap:24px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.04em}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;color:var(--ink)}
+  .sec-tagline{color:var(--text-3);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+  h3{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);margin:32px 0 14px;line-height:1.2}
+  h3 em{color:var(--gold);font-style:italic}
+  p{margin:0 0 14px;line-height:1.7}
+  p b{color:var(--ink);font-weight:500}
+  ul.clean{padding-left:0;list-style:none;margin:14px 0}
+  ul.clean li{padding-left:24px;position:relative;margin-bottom:10px;line-height:1.65}
+  ul.clean li::before{content:"·";position:absolute;left:6px;top:-3px;color:var(--gold);font-size:28px;font-weight:600;font-family:var(--serif);line-height:1}
+  ul.clean li b{color:var(--ink);font-weight:500}
+
+  /* CARD GRID */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:24px 0}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:24px 0}
+  .card{background:var(--panel);padding:24px 24px;display:flex;flex-direction:column;gap:8px}
+  .card .lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .card h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:2px 0 8px;line-height:1.2;font-weight:400}
+  .card h4 em{color:var(--gold);font-style:italic}
+  .card .body{font-size:14px;line-height:1.65;color:var(--text-2);margin:0}
+  .card .meta{font-size:11.5px;color:var(--text-3);font-style:italic;margin-top:auto;padding-top:8px;border-top:1px solid var(--line-soft)}
+  .card.flagship{background:var(--ink-bg);color:var(--ink-fg)}
+  .card.flagship h4{color:var(--pearl)}
+  .card.flagship .body{color:var(--ink-fg)}
+  .card.flagship .meta{color:var(--ink-fg-2);border-top-color:rgba(168,138,74,.4)}
+
+  /* GOALS / FUNNEL */
+  .goals{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:28px}
+  .goal{background:var(--panel);padding:32px 28px;display:flex;flex-direction:column;gap:12px}
+  .goal:nth-child(2){background:var(--panel-2)}
+  .goal:nth-child(3){background:var(--ink-bg);color:var(--ink-fg)}
+  .goal:nth-child(3) h4{color:var(--pearl)}
+  .goal:nth-child(3) .meta{color:var(--ink-fg-2)}
+  .goal:nth-child(3) ul.clean li{color:var(--ink-fg)}
+  .goal:nth-child(3) ul.clean li b{color:var(--gold)}
+  .goal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .goal-head .stage{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .goal-head .when{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);font-style:italic}
+  .goal:nth-child(3) .goal-head .when{color:var(--ink-fg-2)}
+  .goal h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0;line-height:1.15;font-weight:400}
+  .goal h4 em{color:var(--gold);font-style:italic}
+  .goal-num{font-family:var(--serif);font-size:42px;color:var(--ink);line-height:1;margin:8px 0}
+  .goal:nth-child(3) .goal-num{color:var(--pearl)}
+  .goal-num small{font-size:14px;color:var(--gold);font-style:italic;margin-left:6px}
+  .goal ul.clean li{font-size:13.5px;color:var(--text-2)}
+
+  /* CHART */
+  .chart-card{background:var(--panel);border:1px solid var(--line);padding:32px;margin-top:24px}
+  .chart-card .lab{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .chart-card h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:0 0 6px;font-weight:400;line-height:1.2}
+  .chart-card .sub{font-size:12px;color:var(--text-3);font-style:italic;margin-bottom:24px}
+  .chart-wrap{height:280px;position:relative}
+  .chart-foot{margin-top:16px;font-size:12px;color:var(--text-3);line-height:1.6;font-style:italic}
+
+  /* CHANNEL ROLES */
+  .channel{padding:28px 32px;border:1px solid var(--line);background:var(--panel);margin-bottom:16px;display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start}
+  .channel.no{background:var(--bg-2);border-style:dashed;opacity:.85}
+  .channel-name{font-family:var(--serif);font-size:30px;color:var(--ink);font-weight:400;line-height:1;white-space:nowrap}
+  .channel-name em{color:var(--gold);font-style:italic;font-size:14px;letter-spacing:.2em;text-transform:uppercase;display:block;margin-top:6px;font-family:var(--sans);font-style:normal;font-weight:600}
+  .channel-name small{display:block;font-size:11px;color:var(--text-3);font-style:italic;margin-top:6px;font-family:var(--sans);letter-spacing:.06em}
+  .channel.no .channel-name{color:var(--text-3);text-decoration:line-through;text-decoration-color:var(--gold);text-decoration-thickness:1px}
+  .channel.no .channel-name em{color:var(--text-3);font-weight:500}
+  .channel-info p{margin:0 0 10px;font-size:14.5px;line-height:1.65}
+  .channel-info p:last-child{margin:0}
+  .channel-info .stat{display:inline-block;font-size:11.5px;letter-spacing:.06em;color:var(--text-3);margin-right:14px}
+  .channel-info .stat b{color:var(--ink);font-weight:500}
+
+  /* CONTENT PLAN TABLE */
+  .plan-wrap{margin-top:24px;border:1px solid var(--line);overflow:hidden}
+  .plan-row{display:grid;grid-template-columns:60px 200px 1fr;gap:0;border-bottom:1px solid var(--line-soft);background:var(--panel)}
+  .plan-row:last-child{border-bottom:none}
+  .plan-row.head{background:var(--ink-bg);color:var(--ink-fg)}
+  .plan-row.head > div{font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--ink-fg-2);padding:14px 18px}
+  .plan-row > div{padding:18px 18px;font-size:13.5px;line-height:1.6}
+  .plan-row .week{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold);text-align:center;border-right:1px solid var(--line-soft);padding-top:18px}
+  .plan-row .theme{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:400;line-height:1.25;border-right:1px solid var(--line-soft)}
+  .plan-row .yt{margin-bottom:8px}
+  .plan-row .yt b, .plan-row .tg b{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-right:8px;display:inline-block;min-width:34px}
+  .plan-row .tg{color:var(--text-2);font-size:13px}
+
+  /* MAGNETS */
+  .magnet{background:var(--panel);border:1px solid var(--line);padding:24px 28px;margin-bottom:14px;border-left:3px solid var(--gold)}
+  .magnet:last-child{margin-bottom:0}
+  .magnet-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .magnet-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:14px;letter-spacing:.18em;text-transform:uppercase}
+  .magnet-status{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-3);padding:3px 10px;border:1px solid var(--line)}
+  .magnet-status.ready{color:var(--gold);border-color:var(--gold)}
+  .magnet-status.todo{color:var(--text-3)}
+  .magnet h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:0 0 8px;font-weight:400;line-height:1.2}
+  .magnet p{font-size:14px;line-height:1.65;color:var(--text-2);margin:0 0 6px}
+  .magnet p:last-child{margin-bottom:0}
+  .magnet .why{font-size:12.5px;color:var(--text-3);font-style:italic;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+  .magnet .why b{color:var(--gold);font-style:normal}
+
+  /* METRICS GRID */
+  .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+  .metric{background:var(--panel);padding:22px 24px}
+  .metric-lab{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+  .metric h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:0 0 6px;font-weight:400;line-height:1.25}
+  .metric p{font-size:13.5px;line-height:1.6;color:var(--text-2);margin:0}
+
+  /* LAUNCH PHASES */
+  .launch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .phase{background:var(--panel);padding:24px 22px;display:flex;flex-direction:column;gap:8px}
+  .phase .ph-num{font-family:var(--serif);font-style:italic;font-size:30px;color:var(--gold);line-height:1}
+  .phase .ph-when{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--text-3);margin-top:2px}
+  .phase h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:6px 0 4px;font-weight:400;line-height:1.2}
+  .phase ul.clean{margin:8px 0 0}
+  .phase ul.clean li{font-size:12.5px;line-height:1.5;margin-bottom:6px}
+
+  /* SAMPLE BLOCKS */
+  .samples{margin-top:24px}
+  .sample{background:var(--bg-2);border:1px solid var(--line);padding:22px 26px;margin-bottom:14px}
+  .sample:last-child{margin-bottom:0}
+  .sample .lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600}
+  .sample .post-title{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink);margin-bottom:8px;line-height:1.3}
+  .sample .post-body{font-size:13.5px;color:var(--text);line-height:1.7;font-family:var(--serif)}
+  .sample .post-body i{color:var(--text-3)}
+
+  /* THESIS / CALLOUT */
+  .thesis{margin-top:64px;padding:44px 48px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .thesis .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .thesis blockquote{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.4;color:var(--pearl);margin:0;font-style:italic;max-width:840px}
+  .thesis cite{display:block;margin-top:16px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.16em;text-transform:uppercase}
+
+  /* FOOTER */
+  footer{margin-top:48px;padding-top:28px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);line-height:1.7;letter-spacing:.04em;text-align:center}
+
+  /* RESPONSIVE */
+  @media (max-width:980px){
+    .ribbon-inner,.wrap{padding-left:24px;padding-right:24px}
+    nav.toc{grid-template-columns:repeat(2,1fr)}
+    .grid-3,.goals,.launch-grid{grid-template-columns:1fr}
+    .grid-2,.metrics{grid-template-columns:1fr}
+    .channel{grid-template-columns:1fr;gap:14px}
+    .plan-row{grid-template-columns:50px 1fr;gap:0}
+    .plan-row .theme{grid-column:2;border-right:none}
+    .plan-row > .week{grid-row:1/3;border-right:1px solid var(--line-soft)}
+    .plan-row > div:last-child{grid-column:2;border-top:1px solid var(--line-soft)}
+    .plan-row.head .theme{display:none}
+  }
+
+  @media print{
+    body{background:#fff;color:#111}
+    section{page-break-inside:avoid}
+    .ribbon{background:#fff;color:#111;border-bottom:1px solid #ccc}
+    .thesis,.card.flagship,.goal:nth-child(3),.plan-row.head{background:#fff;color:#111;border-bottom:1px solid #ccc}
+    nav.toc{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Этап <strong>VII / IX</strong> · Стратегия продвижения · Апрель 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">План продвижения · контент-стратегия · 12 недель</div>
+    <h1>Дойти до своих,<br/><em>не перекрикивая чужих.</em></h1>
+    <p class="lede">Это план, как за 6–12 месяцев перейти от точечной практики к стабильному потоку 10–15 заявок в неделю — <b>без агрессивных воронок, без TikTok-визгов и без "5 правил счастья"</b>. Через серьёзный контент, авторскую речь и лид-магниты, которые сами по себе уже работают на клиента.</p>
+    <p class="lede">YouTube — площадка для имиджа и доверия. Telegram — аккумулятор и точка прогрева. Сайт — точка приземления. Бот — техническое продолжение работы.</p>
+  </div>
+
+  <nav class="toc">
+    <a href="#goals"><span class="num">I</span>Цели · этапы</a>
+    <a href="#channels"><span class="num">II</span>Каналы</a>
+    <a href="#youtube"><span class="num">III</span>YouTube</a>
+    <a href="#telegram"><span class="num">IV</span>Telegram</a>
+    <a href="#plan"><span class="num">V</span>12 недель</a>
+    <a href="#magnets"><span class="num">VI</span>Магниты</a>
+    <a href="#metrics"><span class="num">VII</span>Метрики</a>
+    <a href="#launch"><span class="num">VIII</span>Запуск</a>
+  </nav>
+
+  <!-- I. GOALS -->
+  <section id="goals">
+    <div class="sec-head">
+      <div><div class="num">I</div><h2>Цели по этапам</h2></div>
+      <div class="sec-tagline">От запуска к выбору клиентов</div>
+    </div>
+
+    <p class="lede" style="font-size:15px">Три горизонта. На каждом — свои метрики, свой ритм, свои решения. <b>Не нужно прыгать в третий, минуя второй.</b> Каждый этап готовит почву для следующего: имидж, доверие, имя приходят через работу со своей аудиторией, а не через закупку рекламы.</p>
+
+    <div class="goals">
+      <div class="goal">
+        <div class="goal-head"><span class="stage">Старт</span><span class="when">Месяцы 1–3</span></div>
+        <h4>Поток заявок появляется.</h4>
+        <div class="goal-num">1–3<small>заявок / нед.</small></div>
+        <ul class="clean">
+          <li>Канал YouTube запущен, 6–10 видео.</li>
+          <li>Telegram: 100–400 подписчиков.</li>
+          <li>Сайт + фильтр готовности работают.</li>
+          <li>Первые клиенты — из существующих контактов и сарафана.</li>
+        </ul>
+      </div>
+      <div class="goal">
+        <div class="goal-head"><span class="stage">Стабильность</span><span class="when">Месяцы 4–9</span></div>
+        <h4>Заявок хватает на загрузку.</h4>
+        <div class="goal-num">3–7<small>заявок / нед.</small></div>
+        <ul class="clean">
+          <li>YouTube: 15–25 видео в архиве, 500–2 000 просмотров на видео.</li>
+          <li>Telegram: 800–2 000 активных подписчиков.</li>
+          <li>Стабильная конверсия фильтр→заявка.</li>
+          <li>Появляются повторные заходы и waitlist.</li>
+        </ul>
+      </div>
+      <div class="goal">
+        <div class="goal-head"><span class="stage">Отбор</span><span class="when">Месяцы 10–18+</span></div>
+        <h4>Ты выбираешь клиентов.</h4>
+        <div class="goal-num">7–15<small>заявок / нед.</small></div>
+        <ul class="clean">
+          <li>YouTube: 40+ видео, 2–10 тыс. просмотров на видео.</li>
+          <li>Telegram: 3–7 тыс. подписчиков.</li>
+          <li>Чек разбора <b>можно поднимать</b> (12к → 15–18к).</li>
+          <li>Возможна отдельная линия «для коллег».</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="lab">Воронка</div>
+      <h4>Конверсии — консервативные ориентиры</h4>
+      <div class="sub">Как 5 000 подписчиков превращаются в ~3 платящих клиентов в неделю</div>
+      <div class="chart-wrap"><canvas id="funnelChart"></canvas></div>
+      <div class="chart-foot">Реалистичные ориентиры для холодной аудитории: 3–5 % подписчиков проходят фильтр в месяц · 20–30 % из них отправляют заявку · 25–35 % заявок конвертируются в первого клиента (разбор) · 25–35 % разборов перерастают в программы. Это нижние, не верхние ожидания.</div>
+    </div>
+  </section>
+
+  <!-- II. CHANNELS -->
+  <section id="channels">
+    <div class="sec-head">
+      <div><div class="num">II</div><h2>Каналы и их роли</h2></div>
+      <div class="sec-tagline">Не везде — а там, где живёт ICP</div>
+    </div>
+
+    <p class="lede" style="font-size:15px">Принципиально <b>отказываемся</b> от Instagram, TikTok и Reels. Это не «у меня не получится» — это позиция. ICP «не нормис» 18–35 не идёт в визуальный поток за глубиной. За глубиной идут в текст и в длинное видео. Логика разделения каналов простая:</p>
+
+    <div class="channel">
+      <div class="channel-name">YouTube<em>Главный · имидж</em><small>1 канал · 1–2 видео в неделю</small></div>
+      <div class="channel-info">
+        <p><b>Роль.</b> «Первое касание» с аудиторией. На YouTube приходят не «полистать ленту», а посмотреть конкретного человека на 20–40 минут — это уже фильтр зрелой аудитории. Длинное видео-эссе строит доверие быстрее, чем 50 коротких постов.</p>
+        <p><b>Что показываем.</b> Прямого Матвея в кадре — без прыжков, без агрессивного монтажа, без музыкального давления. Сидячий формат, прямой разговор с камерой. Никакого «ставь лайк подпишись».</p>
+        <p><span class="stat">Длительность: <b>20–45 мин</b> стандарт, <b>40–60 мин</b> для концептуальных</span></p>
+      </div>
+    </div>
+
+    <div class="channel">
+      <div class="channel-name">Telegram<em>Аккумулятор · прогрев</em><small>1 канал · 3–5 постов в неделю</small></div>
+      <div class="channel-info">
+        <p><b>Роль.</b> Удержание тех, кто пришёл с YouTube или сарафана. Ежедневное присутствие, развёртывание тем, превращение зрителей в лидов. Telegram — это место, где аудитория даёт своё <b>внимание</b>, а не только взгляд.</p>
+        <p><b>Что показываем.</b> Длинные тексты-эссе (1500–3000 знаков), короткие реплики на актуальное, цитаты с комментарием, серии постов «разбор недели», стримы вопросов-ответов раз в месяц.</p>
+        <p><span class="stat">Никаких голосовых, никаких сторис</span></p>
+      </div>
+    </div>
+
+    <div class="channel no">
+      <div class="channel-name">Instagram · TikTok · Reels<em>Не идём</em><small>Принципиально · до пересмотра</small></div>
+      <div class="channel-info">
+        <p><b>Почему нет.</b> Поверхностный визуальный поток с короткими хуками — это <i>анти-канал</i> для серьёзного экзистенциального контента. Чтобы там расти, нужно адаптироваться под формат, а адаптация под формат = подмена сути.</p>
+        <p><b>Когда пересмотрим.</b> Если в зрелости (12+ мес.) появится аудитория, которая хочет «коротко» — можно завести Telegram-канал-выжимку. Не Instagram.</p>
+      </div>
+    </div>
+
+    <div class="channel">
+      <div class="channel-name">Сайт + бот<em>Точка приземления</em><small>Этапы VIII–IX · после стратегии</small></div>
+      <div class="channel-info">
+        <p><b>Роль.</b> Сайт — единственное место, где клиент бронирует разбор и читает манифест. На сайте находится фильтр готовности, каталог форматов, форма-собеседование. Бот в Telegram — техническое продолжение: анкета первой встречи, разбор «одного вопроса», утренние/вечерние практики (по желанию).</p>
+        <p><b>Запуск:</b> сайт перед началом продвижения; бот — параллельно или с задержкой 2–4 недели.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- III. YOUTUBE -->
+  <section id="youtube">
+    <div class="sec-head">
+      <div><div class="num">III</div><h2>Контент-стратегия YouTube</h2></div>
+      <div class="sec-tagline">Длинные видео-эссе — главный ресурс</div>
+    </div>
+
+    <p>YouTube — это не «лекции» и не «лайфхаки». Это <b>видео-эссе</b>: связное размышление вслух, которое можно слушать как подкаст, но смотреть как кинофрагмент. Один монтажный риф, минимум текстовых вставок, нулевой музыкальный нажим.</p>
+
+    <h3>Семь тематических направлений</h3>
+    <div class="grid-3">
+      <div class="card">
+        <div class="lab">Направление 01</div>
+        <h4>Экзистенциальные темы</h4>
+        <div class="body">Смысл, свобода, выбор, конечность, призвание. Базовый каркас. Половина видео.</div>
+      </div>
+      <div class="card">
+        <div class="lab">Направление 02</div>
+        <h4>Юнгианство <em>без эзотерики</em></h4>
+        <div class="body">Тень, индивидуация, архетипы — на современных примерах, без бабушек и без «вселенной».</div>
+      </div>
+      <div class="card">
+        <div class="lab">Направление 03</div>
+        <h4>Анти-попса психологии</h4>
+        <div class="body">Что НЕ работает в массовом подходе. Разборы того, почему «5 правил счастья» — это плохо.</div>
+      </div>
+      <div class="card">
+        <div class="lab">Направление 04</div>
+        <h4>Достоевский <em>как психолог</em></h4>
+        <div class="body">Литература как точная диагностика человека. Большая ниша, почти пустая на YouTube.</div>
+      </div>
+      <div class="card">
+        <div class="lab">Направление 05</div>
+        <h4>Концептуальные ролики</h4>
+        <div class="body">Большие темы (тревога, депрессия, идентичность, кризис) с твоим методологическим углом.</div>
+      </div>
+      <div class="card">
+        <div class="lab">Направление 06</div>
+        <h4>Кейсы <em>(анонимизированно)</em></h4>
+        <div class="body">Разборы реальных запросов с разрешения. «Что было, что мы сделали, что изменилось».</div>
+      </div>
+      <div class="card">
+        <div class="lab">Направление 07</div>
+        <h4>Реакции на актуальное</h4>
+        <div class="body">Разбор книг, событий, трендов с твоей позиции. Раз в 2–3 недели — не часто.</div>
+      </div>
+    </div>
+
+    <h3>Регулярность и масштаб</h3>
+    <ul class="clean">
+      <li><b>Месяцы 1–3:</b> 1 видео в неделю. Это даёт 12 видео в архиве — критическая масса для алгоритма и доверия.</li>
+      <li><b>Месяцы 4+:</b> 1–2 видео в неделю. Не больше — иначе теряется глубина каждого.</li>
+      <li><b>Длительность:</b> 20–30 мин стандарт; 40–60 мин — концептуальные ролики раз в 4–6 недель.</li>
+    </ul>
+
+    <h3>Стилистические правила</h3>
+    <ul class="clean">
+      <li><b>Один кадр.</b> Сидячая поза, прямо в камеру. Декорация — книжная полка или нейтральный фон.</li>
+      <li><b>Без джамп-катов на каждой паузе.</b> Если думаешь — пусть будет видно, что думаешь.</li>
+      <li><b>Без музыки фоном.</b> Голос несёт смысл; музыка отвлекает.</li>
+      <li><b>Без графики «по поводу».</b> Минимальные текстовые вставки только для сложных терминов.</li>
+      <li><b>Без CTA «ставь лайк подпишись».</b> В конце — короткое: «Если откликается — у меня есть Telegram, ссылка под видео». Всё.</li>
+    </ul>
+  </section>
+
+  <!-- IV. TELEGRAM -->
+  <section id="telegram">
+    <div class="sec-head">
+      <div><div class="num">IV</div><h2>Контент-стратегия Telegram</h2></div>
+      <div class="sec-tagline">Аккумулятор внимания</div>
+    </div>
+
+    <p>Telegram — это не «дайджест YouTube» и не «новости автора». Это <b>отдельный продукт</b>: место, где ты думаешь публично, и за этим думанием можно следить. Подписчик заходит в канал не за «информацией», а чтобы <b>побыть рядом с твоим способом мыслить</b>.</p>
+
+    <h3>Шесть форматов постов</h3>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="lab">Формат 01 · Базовый</div>
+        <h4>Длинный пост-эссе</h4>
+        <div class="body">1 500–3 000 знаков. Развёртывание одной мысли. Отдельный жанр, читается 4–6 минут.</div>
+        <div class="meta">2 раза в неделю</div>
+      </div>
+      <div class="card">
+        <div class="lab">Формат 02</div>
+        <h4>Короткая реплика</h4>
+        <div class="body">300–500 знаков. Одна точная мысль на актуальное, на чьё-то высказывание, на собственное наблюдение дня.</div>
+        <div class="meta">1–2 раза в неделю</div>
+      </div>
+      <div class="card">
+        <div class="lab">Формат 03</div>
+        <h4>Цитата + комментарий</h4>
+        <div class="body">Юнг, Франкл, Сартр, Достоевский, Ницше, Ялом. Цитата + 2–3 абзаца разбора, как это работает в практике.</div>
+        <div class="meta">1 раз в неделю</div>
+      </div>
+      <div class="card">
+        <div class="lab">Формат 04</div>
+        <h4>Анонс видео</h4>
+        <div class="body">Не «выпустил новое видео», а тизер мысли — с одним абзацем сути и ссылкой на YouTube.</div>
+        <div class="meta">1–2 раза в неделю</div>
+      </div>
+      <div class="card">
+        <div class="lab">Формат 05</div>
+        <h4>Серия <em>«Разбор недели»</em></h4>
+        <div class="body">3–5 постов на одну сложную тему (страх, обида, идентичность, выбор). Превращается в мини-документ. Раз в месяц.</div>
+        <div class="meta">1 раз в месяц</div>
+      </div>
+      <div class="card">
+        <div class="lab">Формат 06</div>
+        <h4>Стрим QA</h4>
+        <div class="body">«Один час — один запрос анонимно». Слушатели присылают вопросы в бот заранее, на стриме разбирается один. Демонстрация подхода.</div>
+        <div class="meta">1–2 раза в месяц</div>
+      </div>
+    </div>
+
+    <h3>Правила тона</h3>
+    <ul class="clean">
+      <li><b>Нет кликбейтных заголовков.</b> «Шок-разоблачение» — это не из твоего рта.</li>
+      <li><b>Нет восклицаний.</b> Точка убедительнее в этом регистре, чем восклицательный знак.</li>
+      <li><b>Нет «мы»</b> вместо «я». Ты — конкретный человек, а не редакция.</li>
+      <li><b>Нет лишнего эмоционального обращения.</b> «Друзья», «Дорогие подписчики», «Ребята» — всё это сразу убивает регистр.</li>
+      <li><b>Иронию можно.</b> Даже остроту. Главное — без снобизма.</li>
+    </ul>
+
+    <h3>Образцы тона</h3>
+
+    <div class="samples">
+      <div class="sample">
+        <div class="lab">Длинный пост · образец</div>
+        <div class="post-title">«Когда ты говоришь "я в депрессии" и когда "у меня депрессия" — это разные вещи»</div>
+        <div class="post-body">
+          <i>(Первый абзац.)</i> «Я в депрессии» — это про то, что ты сейчас в плотном отрезке жизни. «У меня депрессия» — это уже про идентичность: про то, что ты сделал из своего состояния часть себя. <br/><br/>
+          Между этими двумя позициями — <i>огромная</i> разница, и она часто решает, удастся ли из этого выйти.<br/><br/>
+          Из «я в депрессии» можно выйти, потому что это не «ты». Это сезон. Из «у меня депрессия» выйти труднее — потому что это уже про «кто я». Расстаться с собой страшнее, чем поправиться. <i>(И дальше — разворот темы.)</i>
+        </div>
+      </div>
+      <div class="sample">
+        <div class="lab">Короткая реплика · образец</div>
+        <div class="post-body">
+          Хочешь проверить, насколько глубоко в тебе сидит запрос на одобрение?<br/><br/>
+          Запиши на бумаге одно своё мнение, в котором ты неуверен. Не отправляй никуда. Просто посмотри, сколько раз за следующие сутки тебе захочется его уточнить, смягчить, обозначить как «лично моё». Это и есть твой счётчик.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- V. CONTENT PLAN -->
+  <section id="plan">
+    <div class="sec-head">
+      <div><div class="num">V</div><h2>Контент-план · 12 недель</h2></div>
+      <div class="sec-tagline">Запуск + первая стабилизация</div>
+    </div>
+
+    <p>Сетка тем для первых трёх месяцев — критический период. Темы выстроены так, чтобы аудитория, которая пришла на видео №1, к видео №12 уже понимала твой метод, твой тон и твою позицию. Это не «случайные темы» — это <b>образовательная дуга</b>, которая параллельно работает на конверсию.</p>
+
+    <div class="plan-wrap">
+      <div class="plan-row head">
+        <div>Нед.</div><div>Тема</div><div>Контент</div>
+      </div>
+      <div class="plan-row">
+        <div class="week">01</div><div class="theme">Запуск канала</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Манифест канала: кто я и почему делаю это иначе» · 20–30 мин</div>
+          <div class="tg"><b>Telegram</b> Приветственный пост · цитата Юнга «Шизофреник и мистик» · тизер видео</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">02</div><div class="theme">Поиск смысла после успеха</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Когда всё есть, а вставать не хочется» · 25–35 мин</div>
+          <div class="tg"><b>Telegram</b> Длинный пост о Франкле и логотерапии · реплика о «бесцельной успешности» · цитата</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">03</div><div class="theme">Процесс vs результат</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Бесконечная терапия — это отказ от результата» · 20–25 мин</div>
+          <div class="tg"><b>Telegram</b> Пост «парадокс хорошего психолога» (выжимка из манифеста) · реплика · анонс</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">04</div><div class="theme">Юнг для скептиков</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Тень, Анима, индивидуация — без бабушек и эзотерики» · 35–45 мин <i>(концептуальное)</i></div>
+          <div class="tg"><b>Telegram</b> Серия «Разбор недели: твоя Тень» · 4 поста · стрим QA #1</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">05</div><div class="theme">Свобода и тяжесть выбора</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Свобода как тяжесть, а не как подарок» · 25–30 мин</div>
+          <div class="tg"><b>Telegram</b> Пост о «обречён на свободу» · реплика про выбор · цитата Сартра</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">06</div><div class="theme">Два типа страдания</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «С чем работать, а с чем — быть. Вынужденное и невынужденное страдание» · 30–40 мин</div>
+          <div class="tg"><b>Telegram</b> Длинный пост-разворот · реплика «горе и обида — разные вещи» · анонс</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">07</div><div class="theme">Терапевтический союз</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Что действительно лечит — не метод, а контакт» · 25–30 мин</div>
+          <div class="tg"><b>Telegram</b> Пост о терапевтическом союзе как невидимом «продукте» · 2 реплики · цитата</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">08</div><div class="theme">Идентичность не-нормиса</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Когда твоя глубина — не диагноз, а навигатор» · 25–35 мин</div>
+          <div class="tg"><b>Telegram</b> Прямое обращение к «не нормис»-аудитории · реплика о «всех не понимают» · цитата Достоевского</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">09</div><div class="theme">Достоевский как психолог</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Что Достоевский знал про депрессию, чего не знают учебники» · 40–60 мин <i>(концептуальное)</i></div>
+          <div class="tg"><b>Telegram</b> Длинный пост о «Записках из подполья» как клинике · стрим QA #2 · цитата</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">10</div><div class="theme">Сопротивление</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Почему мы не хотим того, что хотим» · 25–30 мин</div>
+          <div class="tg"><b>Telegram</b> Пост о сопротивлении · реплика о саморасшифровке · цитата Юнга</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">11</div><div class="theme">Самостоятельность как цель</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Парадокс: задача психолога — не быть нужным» · 25–35 мин</div>
+          <div class="tg"><b>Telegram</b> Манифестный пост о цели работы · реплика про «подсаживание» на терапию</div>
+        </div>
+      </div>
+      <div class="plan-row">
+        <div class="week">12</div><div class="theme">Что меняется за 3 месяца</div>
+        <div>
+          <div class="yt"><b>YouTube</b> «Что меняется за 3 месяца настоящей работы — на примерах» · 30–40 мин <i>(кейсы)</i></div>
+          <div class="tg"><b>Telegram</b> Пост-итог трёх месяцев · цитата Юнга об индивидуации · анонс следующего цикла</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;font-size:14px;color:var(--text-3);font-style:italic">Дальше — циклы по 12 недель с переходом на 2 видео в неделю и более узкими специализациями (например, цикл «12 кейсов из практикума»).</p>
+  </section>
+
+  <!-- VI. MAGNETS -->
+  <section id="magnets">
+    <div class="sec-head">
+      <div><div class="num">VI</div><h2>Лид-магниты</h2></div>
+      <div class="sec-tagline">Крючки, которые сами по себе — работа</div>
+    </div>
+
+    <p>Принципиально <b>не делаем</b> «PDF-чек-лист 10 правил счастья», «бесплатный 30-минутный созвон» и подобную попсу. Каждый магнит должен делать <b>одно из трёх</b>: дать клиенту реальную пользу прямо сейчас · показать качество твоего мышления · обозначить твою позицию (anti-popsa, anti-эзотерика).</p>
+
+    <div class="magnet">
+      <div class="magnet-head">
+        <span class="magnet-num">Магнит 01 · Центральный</span>
+        <span class="magnet-status ready">Готов · этап IV</span>
+      </div>
+      <h4>Фильтр готовности с психометрикой и PDF</h4>
+      <p>Интерактивный тест из трёх частей: узнавание себя в 10 запросах · скрининг по 5 шкалам (тревога, депрессивность, стресс, бессмысленность, изоляция) · честность про готовность. На выходе — радар-диаграмма, заключение, рекомендация формата и <b>персональный PDF</b> с микро-практиками, вопросами «на подумать» и цитатой-якорем.</p>
+      <p class="why"><b>Почему работает:</b> человек получает реальную диагностику бесплатно — это превышает ожидания и сразу демонстрирует качество подхода. PDF — это уже работа.</p>
+    </div>
+
+    <div class="magnet">
+      <div class="magnet-head">
+        <span class="magnet-num">Магнит 02</span>
+        <span class="magnet-status todo">К разработке</span>
+      </div>
+      <h4>Карта вынужденного / невынужденного страдания</h4>
+      <p>Авторская диагностическая схема в виде PDF на 1–2 страницы. Колонки: «как это выглядит» — «к какой категории относится» — «что с этим можно делать». Помогает разобраться, что в твоей боли — судьба, а что — выбор.</p>
+      <p class="why"><b>Почему работает:</b> это не «контент» — это инструмент, который реально применяется. Привязан к ключевой методологии. Можно распечатать, повесить, возвращаться.</p>
+    </div>
+
+    <div class="magnet">
+      <div class="magnet-head">
+        <span class="magnet-num">Магнит 03</span>
+        <span class="magnet-status todo">К разработке</span>
+      </div>
+      <h4>Анти-чек-лист: «Признаки хорошего психолога — и шарлатана»</h4>
+      <p>10–15 признаков, по которым ICP может оценить любого специалиста, не обязательно тебя. Не «я лучший — выбирайте меня», а «вот навигатор, делайте свой выбор честно».</p>
+      <p class="why"><b>Почему работает:</b> демонстрация уверенности в себе. Готовность дать инструмент, который применяется и к тебе самому. Усиливает доверие именно к тебе.</p>
+    </div>
+
+    <div class="magnet">
+      <div class="magnet-head">
+        <span class="magnet-num">Магнит 04</span>
+        <span class="magnet-status todo">К разработке</span>
+      </div>
+      <h4>Стрим раз в месяц <em>«Один час — один запрос»</em></h4>
+      <p>Подписчики Telegram присылают свои запросы через бота. На стриме ты разбираешь один — глубоко, на 60 минут, с разрешения автора (анонимно, если нужно). Демонстрация метода в реальном времени.</p>
+      <p class="why"><b>Почему работает:</b> ничто не продаёт качество как сама работа. Один такой стрим конвертирует лучше десяти постов «приходите ко мне».</p>
+    </div>
+
+    <div class="magnet">
+      <div class="magnet-head">
+        <span class="magnet-num">Магнит 05</span>
+        <span class="magnet-status todo">К разработке</span>
+      </div>
+      <h4>Цитатник дюжины · 12 цитат-инструментов</h4>
+      <p>Раз в месяц — одна цитата мастера (Юнг, Франкл, Сартр, Достоевский, Ялом, Кьеркегор) с разворотом: что эта мысль значит на практике, как её применить в текущей жизни. К концу года — мини-методичка из 12 разворотов в формате PDF.</p>
+      <p class="why"><b>Почему работает:</b> это <i>дисциплинирует тебя</i> — заставляет каждый месяц возвращаться к классикам. И даёт аудитории материал, который растёт со временем.</p>
+    </div>
+
+    <div class="magnet">
+      <div class="magnet-head">
+        <span class="magnet-num">Магнит 06</span>
+        <span class="magnet-status todo">Этап VIII · бот</span>
+      </div>
+      <h4>«Один вопрос психологу» через бот</h4>
+      <p>После прохождения фильтра готовности (или просто за подписку — конкретная механика будет проработана отдельно) у пользователя есть право задать один вопрос. Ответ приходит в четверг, лично, развёрнуто, не шаблоном.</p>
+      <p class="why"><b>Почему работает:</b> низкобарьерное «знакомство с голосом» — без денег, без обязательств, без созвона. Низкая нагрузка для тебя (1 день в неделю на ответы), высокая конверсия в платный разбор.</p>
+    </div>
+  </section>
+
+  <!-- VII. METRICS -->
+  <section id="metrics">
+    <div class="sec-head">
+      <div><div class="num">VII</div><h2>Метрики и контроль</h2></div>
+      <div class="sec-tagline">Что мерить · что не мерить</div>
+    </div>
+
+    <h3>Что мерим раз в месяц</h3>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-lab">YouTube</div>
+        <h5>Просмотры × удержание</h5>
+        <p>Не «сколько подписчиков», а сколько досматривают до конца. Целевой retention — выше 40 % на стандартных видео, выше 30 % на концептуальных. Если падает — пересмотреть структуру.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Telegram</div>
+        <h5>Прирост × удержание</h5>
+        <p>Чистый прирост (новые – отписки) по неделям. Просмотры на пост (целевые: ≥ 60 % от подписчиков). Реакции/комменты второстепенны — отписка важнее.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Фильтр готовности</div>
+        <h5>Прохождения × распределение</h5>
+        <p>Сколько прошли тест, какие форматы рекомендованы (баланс разбор / сопровождение / великое делание). Если 90% получают «разбор» — возможно, тест нужно настроить тоньше.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Заявки</div>
+        <h5>Источник × конверсия</h5>
+        <p>Сколько заявок в неделю, откуда (YouTube / TG / сарафан). Конверсия заявка → разбор должна быть ≥ 50 %. Если меньше — анкета или манифест работают плохо.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Клиенты</div>
+        <h5>Повторный заход</h5>
+        <p>Какая доля разборов превращается в сопровождение или великое делание. Это <b>главный индикатор качества работы</b>. Целевой ориентир — 30–40 %.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Доход</div>
+        <h5>Выручка × прогноз</h5>
+        <p>Месячная выручка по форматам. На старте — 60–150к ₽/мес. На стабильности — 150–300к ₽/мес. На отборе — 350–600к ₽/мес. Это база для решения о повышении чека.</p>
+      </div>
+    </div>
+
+    <h3>Что НЕ мерим</h3>
+    <ul class="clean">
+      <li><b>«Виральность» каждого поста.</b> На длинной дистанции виральные хвостики не имеют значения, они шумят.</li>
+      <li><b>CTR на превьюшках.</b> Превьюшки в этом регистре не должны быть кликбейтными.</li>
+      <li><b>Engagement rate как самоцель.</b> Глубокая аудитория молчалива; это не недостаток.</li>
+      <li><b>Сравнение с «коллегами».</b> Бессмысленно — у каждого своя ниша.</li>
+    </ul>
+
+    <h3>Когда что-то менять</h3>
+    <ul class="clean">
+      <li>Заявок &lt; 3/нед. на стабильности → проверить путь от YouTube до сайта (ссылки, тизеры, cta).</li>
+      <li>Фильтр проходят много, заявок мало → ОК, отбор работает; не паниковать.</li>
+      <li>Конверсия заявка→клиент &lt; 30 % → усилить манифест, прозрачность цен, кейсы.</li>
+      <li>Стабильно 15+ заявок/нед. → поднимать чек разбора (12к → 15к → 18к) или открывать линию для коллег.</li>
+    </ul>
+  </section>
+
+  <!-- VIII. LAUNCH -->
+  <section id="launch">
+    <div class="sec-head">
+      <div><div class="num">VIII</div><h2>Поэтапный план запуска</h2></div>
+      <div class="sec-tagline">Что и когда делать</div>
+    </div>
+
+    <div class="launch-grid">
+      <div class="phase">
+        <div class="ph-num">0</div>
+        <div class="ph-when">Pre-launch · 2 нед.</div>
+        <h5>Подготовка</h5>
+        <ul class="clean">
+          <li>Сайт запущен (этап VIII)</li>
+          <li>YouTube + TG-канал зарегистрированы и оформлены</li>
+          <li>Записаны первые 3–4 видео в запас</li>
+          <li>Подготовлены 8–10 TG-постов в запас</li>
+          <li>MVP бота работает (этап IX)</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-num">1</div>
+        <div class="ph-when">Месяц 1 · запуск</div>
+        <h5>Мягкий старт</h5>
+        <ul class="clean">
+          <li>1 видео в неделю</li>
+          <li>3–5 TG-постов в неделю</li>
+          <li>Без рекламы — органика и личные контакты</li>
+          <li>Цель: 50–200 подписчиков, 30–150 просм./видео</li>
+          <li>Первые 1–3 заявок (через тех, кто уже знает)</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-num">2</div>
+        <div class="ph-when">Месяцы 2–6 · рост</div>
+        <h5>Накопление</h5>
+        <ul class="clean">
+          <li>1–2 видео в неделю</li>
+          <li>4–5 TG-постов в неделю</li>
+          <li>Первые стримы QA</li>
+          <li>Цель: 500–2 000 подписчиков, 300–1 500 просм./видео</li>
+          <li>Заявки: 2–5/нед.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="ph-num">3</div>
+        <div class="ph-when">Месяцы 7–18+ · зрелость</div>
+        <h5>Стабильный поток</h5>
+        <ul class="clean">
+          <li>2 видео в неделю</li>
+          <li>2 стрима в месяц</li>
+          <li>Появление waitlist</li>
+          <li>Цель: 3 000–7 000 подписчиков, 2–10 тыс. просм./видео</li>
+          <li>Заявки: 7–15/нед., начало отбора</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- THESIS -->
+  <div class="thesis">
+    <div class="lab">Главный принцип этапа</div>
+    <blockquote>«Серьёзный контент не нужно "продвигать". Его нужно делать так, чтобы он сам выбирал себе аудиторию. Мой риск — не в том, что меня не найдут. Мой риск — в том, что я начну делать "под алгоритм" и перестану быть собой».</blockquote>
+    <cite>— Стратегический тезис · этап VII</cite>
+  </div>
+
+  <footer>
+    Контент-стратегия · этап VII бренда «Матвей Богатырёв» · апрель 2026.<br/>
+    Реализация: сайт (этап VIII) · бот (этап IX) · финальная сборка (этап X — финальная проверка).
+  </footer>
+</div>
+
+<script>
+  /* === FUNNEL CHART === */
+  const INK = '#3F4A36';
+  const INK_DEEP = '#2E3828';
+  const GOLD = '#A88A4A';
+  const TEXT_2 = '#525E45';
+  const GRID = 'rgba(63,74,54,.12)';
+
+  Chart.defaults.color = TEXT_2;
+  Chart.defaults.font.family = '"Inter","Helvetica Neue",system-ui,sans-serif';
+  Chart.defaults.font.size = 12;
+
+  const ctx = document.getElementById('funnelChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Подписчики TG', 'Прохождения фильтра / мес.', 'Заявки на разбор / мес.', 'Платящие клиенты / мес.', 'Переход в программу'],
+      datasets: [{
+        label: 'Воронка',
+        data: [5000, 200, 50, 14, 4],
+        backgroundColor: ['rgba(82,94,69,.30)', 'rgba(82,94,69,.45)', 'rgba(168,138,74,.65)', INK_DEEP, GOLD],
+        borderColor: INK_DEEP,
+        borderWidth: 1,
+        borderSkipped: false,
+        barPercentage: 0.8,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: INK_DEEP, titleColor: GOLD, bodyColor: '#E8DEC4',
+          borderColor: GOLD, borderWidth: 1, padding: 12, displayColors: false,
+          callbacks: { label: ctx => ctx.parsed.x.toLocaleString('ru-RU') + ' человек' }
+        }
+      },
+      scales: {
+        x: {
+          type: 'logarithmic',
+          grid: { color: GRID },
+          ticks: { color: TEXT_2, callback: v => v.toLocaleString('ru-RU') }
+        },
+        y: { grid: { display: false }, ticks: { color: TEXT_2 } }
+      }
+    }
+  });
+</script>
+</body>
+</html>

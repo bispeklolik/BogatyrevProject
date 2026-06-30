@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Фильтр готовности — Этап 4. Матвей Богатырёв</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --gold-soft:rgba(168,138,74,.14);
+    --pearl:#FAF3DD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* RIBBON */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1080px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:64px 40px 96px}
+
+  /* HERO */
+  .hero{padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:64px}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.2vw,64px);line-height:1.0;letter-spacing:-.005em;margin:0 0 22px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:760px;font-size:17px;color:var(--text-2);line-height:1.65;margin:0 0 14px}
+  .lede:last-child{margin:0}
+  .lede b{color:var(--ink);font-weight:500}
+
+  /* SECTIONS */
+  section.q-section{margin-bottom:48px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:8px}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:18px}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,34px);line-height:1.15;margin:0;color:var(--ink)}
+  .sec-sub{color:var(--text-3);font-size:13.5px;line-height:1.6;margin:6px 0 28px;max-width:680px}
+
+  /* CHECKBOXES (Section 1) */
+  .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .check{background:var(--panel);padding:0;cursor:pointer;transition:background .2s}
+  .check:hover{background:var(--panel-2)}
+  .check input{display:none}
+  .check label{display:flex;align-items:flex-start;gap:14px;padding:18px 22px;cursor:pointer;line-height:1.5;font-size:14.5px;color:var(--text)}
+  .check .box{width:20px;height:20px;border:1px solid var(--text-3);background:transparent;flex-shrink:0;margin-top:1px;position:relative;transition:all .2s}
+  .check input:checked + label .box{background:var(--ink-bg);border-color:var(--ink-bg)}
+  .check input:checked + label .box::after{content:"";position:absolute;left:5px;top:1px;width:6px;height:11px;border:solid var(--gold);border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .check input:checked + label{color:var(--ink);font-weight:500}
+  .check input:checked ~ label, .check input:checked + label{background:transparent}
+  .check:has(input:checked){background:var(--panel-2)}
+  .check:has(input:checked) label{color:var(--ink)}
+
+  /* LIKERT (Section 2) */
+  .likert{background:var(--panel);border:1px solid var(--line)}
+  .likert-head{display:grid;grid-template-columns:1fr repeat(5,minmax(70px,1fr));border-bottom:1px solid var(--line);background:var(--ink-bg);color:var(--ink-fg-2)}
+  .likert-head .lh-item{padding:14px 16px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase}
+  .likert-head .lh-scale{padding:14px 8px;text-align:center;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border-left:1px solid rgba(168,138,74,.3)}
+  .likert-stem{padding:18px 22px;background:var(--bg-2);font-size:13px;color:var(--text-3);font-style:italic;border-bottom:1px solid var(--line);line-height:1.55}
+  .likert-row{display:grid;grid-template-columns:1fr repeat(5,minmax(70px,1fr));border-bottom:1px solid var(--line-soft);align-items:center}
+  .likert-row:last-child{border-bottom:none}
+  .likert-row:hover{background:var(--panel-2)}
+  .likert-q{padding:16px 22px;font-size:14px;color:var(--text);line-height:1.5}
+  .likert-cell{padding:14px 8px;text-align:center;border-left:1px solid var(--line-soft);position:relative}
+  .likert-cell input{display:none}
+  .likert-cell label{display:flex;align-items:center;justify-content:center;cursor:pointer;width:100%;height:100%;padding:6px 0;border-radius:0;transition:background .15s}
+  .likert-cell label:hover{background:var(--panel-2)}
+  .likert-cell .dot{width:18px;height:18px;border-radius:50%;border:1px solid var(--text-3);background:transparent;transition:all .15s}
+  .likert-cell input:checked + label .dot{background:var(--ink-bg);border-color:var(--ink-bg);box-shadow:inset 0 0 0 3px var(--gold)}
+  .likert-cell input:checked + label{background:var(--panel-2)}
+
+  .likert-mobile-scale{display:none}
+
+  /* RADIO GROUPS (Section 3) */
+  .radio-group{margin-bottom:32px}
+  .radio-group:last-child{margin-bottom:0}
+  .radio-q{font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:14px;line-height:1.3}
+  .radios{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .radio{background:var(--panel);transition:background .2s}
+  .radio:hover{background:var(--panel-2)}
+  .radio input{display:none}
+  .radio label{display:flex;align-items:flex-start;gap:14px;padding:14px 22px;cursor:pointer;font-size:14px;line-height:1.5;color:var(--text)}
+  .radio .ring{width:18px;height:18px;border-radius:50%;border:1px solid var(--text-3);background:transparent;flex-shrink:0;margin-top:2px;transition:all .2s;position:relative}
+  .radio input:checked + label .ring{background:var(--ink-bg);border-color:var(--ink-bg)}
+  .radio input:checked + label .ring::after{content:"";position:absolute;left:4px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+  .radio:has(input:checked){background:var(--panel-2)}
+  .radio:has(input:checked) label{color:var(--ink);font-weight:500}
+
+  /* SUBMIT */
+  .submit-block{margin-top:64px;padding:36px 40px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap}
+  .submit-block .info{flex:1;min-width:280px}
+  .submit-block .info h3{font-family:var(--serif);font-size:22px;color:var(--pearl);margin:0 0 6px;font-weight:400}
+  .submit-block .info p{color:var(--ink-fg-2);font-size:13.5px;margin:0;line-height:1.55}
+  .btn-submit{background:var(--gold);color:var(--ink-bg);border:none;padding:18px 32px;font-family:inherit;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:background .2s}
+  .btn-submit:hover{background:var(--ink-fg)}
+  .btn-submit:disabled{background:rgba(168,138,74,.4);cursor:not-allowed;color:var(--ink-bg)}
+
+  /* RESULT */
+  #result{display:none;margin-top:64px;animation:slideIn .6s ease}
+  #result.shown{display:block}
+  @keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  .result-head{margin-bottom:48px}
+  .result-eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .result-title{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4vw,48px);color:var(--ink);margin:0 0 18px;line-height:1.1}
+  .result-title em{font-style:italic;color:var(--gold)}
+  .result-lede{font-size:16px;color:var(--text-2);line-height:1.65;max-width:700px}
+
+  .result-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:32px;align-items:start}
+  .result-chart{background:var(--panel);border:1px solid var(--line);padding:28px}
+  .result-chart-title{font-family:var(--serif);font-size:20px;color:var(--ink);margin:0 0 4px;font-weight:400}
+  .result-chart-sub{color:var(--text-3);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:20px}
+  .chart-wrap{height:340px;position:relative}
+
+  .scale-list{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line)}
+  .scale-row{background:var(--panel);padding:18px 22px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}
+  .scale-row:hover{background:var(--panel-2)}
+  .scale-name{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:500;line-height:1.2}
+  .scale-state{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;padding:4px 10px;border:1px solid;align-self:start;font-weight:600;white-space:nowrap}
+  .scale-state.calm{color:#5E7B4D;border-color:#5E7B4D}
+  .scale-state.mid{color:#B8893A;border-color:#B8893A}
+  .scale-state.high{color:#A84C3A;border-color:#A84C3A}
+  .scale-text{grid-column:1/-1;color:var(--text-2);font-size:13.5px;line-height:1.6;margin-top:4px}
+
+  /* OVERALL SUMMARY */
+  .summary{margin-top:36px;padding:32px 36px;background:var(--panel);border:1px solid var(--gold);border-left-width:4px}
+  .summary-tag{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .summary p{color:var(--text);font-size:15.5px;line-height:1.7;margin:0 0 12px}
+  .summary p:last-child{margin:0}
+  .summary b{color:var(--ink)}
+
+  /* FORMAT RECOMMENDATION */
+  .reco{margin-top:48px}
+  .reco-card{background:var(--ink-bg);color:var(--ink-fg);padding:48px 56px;border:1px solid var(--gold);position:relative}
+  .reco-tag{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .reco-card h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,40px);color:var(--pearl);margin:0 0 12px;line-height:1.1}
+  .reco-card h3 em{font-style:italic;color:var(--gold)}
+  .reco-sub{font-family:var(--serif);font-style:italic;color:var(--ink-fg-2);font-size:17px;margin-bottom:24px}
+  .reco-body{color:var(--ink-fg);font-size:15px;line-height:1.7;max-width:680px}
+  .reco-body p{margin:0 0 14px}
+  .reco-body p:last-child{margin:0}
+  .reco-body b{color:var(--gold)}
+  .reco-meta{display:flex;gap:32px;margin-top:32px;padding-top:24px;border-top:1px solid rgba(168,138,74,.4);flex-wrap:wrap}
+  .reco-meta-item{flex:1;min-width:140px}
+  .reco-meta-item .l{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .reco-meta-item .v{font-family:var(--serif);font-size:22px;color:var(--pearl)}
+
+  .reco-card.hold{background:var(--panel);color:var(--text);border-color:var(--text-3)}
+  .reco-card.hold .reco-tag{color:var(--text-3)}
+  .reco-card.hold h3{color:var(--ink)}
+  .reco-card.hold h3 em{color:var(--text-3)}
+  .reco-card.hold .reco-sub{color:var(--text-3)}
+  .reco-card.hold .reco-body{color:var(--text)}
+  .reco-card.hold .reco-body b{color:var(--ink)}
+  .reco-card.hold .reco-meta{border-top-color:var(--line)}
+  .reco-card.hold .reco-meta-item .l{color:var(--text-3)}
+  .reco-card.hold .reco-meta-item .v{color:var(--ink)}
+
+  /* CAVEATS */
+  .caveats{margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .caveat{background:var(--panel);padding:20px 24px}
+  .caveat .l{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .caveat .t{font-family:var(--serif);font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:6px}
+  .caveat .b{color:var(--text-2);font-size:13px;line-height:1.55}
+
+  /* PDF CTA */
+  .pdf-cta-row{margin-top:48px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:space-between;padding:28px 36px;background:var(--ink-bg);color:var(--ink-fg);border:1px solid var(--gold)}
+  .pdf-cta-row .info{flex:1;min-width:240px}
+  .pdf-cta-row .info-tag{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .pdf-cta-row .info-text{font-family:var(--serif);font-size:20px;color:var(--pearl);font-weight:400;line-height:1.3;margin-bottom:6px}
+  .pdf-cta-row .info-sub{font-size:13px;color:var(--ink-fg-2);line-height:1.55}
+  .btn-pdf{background:var(--gold);color:var(--ink-bg);border:none;padding:14px 28px;font-family:inherit;font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap}
+  .btn-pdf:hover{background:var(--ink-fg)}
+
+  /* PDF PANEL — recommendations sheet */
+  .pdf-panel{margin-top:24px;background:var(--panel);border:1px solid var(--line);padding:48px 56px}
+  .pdf-panel-head{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:32px}
+  .pdf-brand{display:flex;align-items:center;gap:14px}
+  .pdf-mark{width:40px;height:40px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:22px}
+  .pdf-name{font-family:var(--serif);font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+  .pdf-subtitle{font-size:11px;color:var(--text-3);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .pdf-date{font-size:11px;color:var(--text-3);letter-spacing:.18em;text-transform:uppercase;text-align:right}
+  .pdf-panel h3{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--ink);margin:32px 0 12px;line-height:1.2}
+  .pdf-panel h3:first-of-type{margin-top:0}
+  .pdf-panel p{color:var(--text);font-size:14.5px;line-height:1.7;margin:0 0 12px}
+  .pdf-panel ul,.pdf-panel ol{padding-left:22px;margin:8px 0;color:var(--text)}
+  .pdf-panel li{margin-bottom:10px;line-height:1.65;font-size:14.5px}
+  .pdf-panel li:last-child{margin-bottom:0}
+  .pdf-panel blockquote{font-family:var(--serif);font-style:italic;font-size:18px;line-height:1.5;color:var(--ink);margin:8px 0;padding-left:18px;border-left:2px solid var(--gold)}
+  .pdf-panel blockquote cite{display:block;font-size:11px;color:var(--text-3);font-style:normal;letter-spacing:.18em;text-transform:uppercase;margin-top:10px}
+  .pdf-format-line{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--text-3);line-height:1.6;font-style:italic}
+  .pdf-format-line b{color:var(--ink);font-style:normal;font-weight:500}
+
+  /* DISCLAIMER */
+  .disclaimer{margin-top:48px;padding:32px 36px;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+  .disclaimer blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,22px);line-height:1.45;color:var(--ink);margin:0 auto;max-width:760px}
+
+  /* RESET BTN */
+  .reset-row{margin-top:32px;text-align:center}
+  .btn-reset{background:transparent;border:1px solid var(--text-3);color:var(--text-2);padding:10px 22px;font-family:inherit;font-size:11px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+  .btn-reset:hover{border-color:var(--ink);color:var(--ink)}
+
+  /* RESPONSIVE */
+  @media (max-width:880px){
+    .ribbon-inner,.wrap{padding-left:24px;padding-right:24px}
+    .checks{grid-template-columns:1fr}
+    .result-grid{grid-template-columns:1fr}
+    .submit-block{padding:28px 24px;flex-direction:column;align-items:stretch}
+    .btn-submit{width:100%}
+    .reco-card{padding:36px 28px}
+
+    /* Likert mobile */
+    .likert-head{display:none}
+    .likert-row{grid-template-columns:1fr;border-bottom:2px solid var(--line)}
+    .likert-q{padding:18px 22px 8px}
+    .likert-cell{display:flex;justify-content:space-between;align-items:center;padding:8px 22px;border-left:none}
+    .likert-cell label{justify-content:flex-end;gap:10px}
+    .likert-cell .dot{order:2}
+    .likert-cell .scale-label{font-size:13px;color:var(--text-2)}
+    .likert-mobile-scale{display:flex}
+  }
+
+  /* Print — show ONLY pdf-panel */
+  @media print{
+    body{background:#fff;color:#111}
+    .ribbon,.hero,#filter,.submit-block,.btn-submit,.btn-reset,.reset-row,
+    .result-head,.result-grid,.summary,.reco,.caveats,.disclaimer,.pdf-cta-row{display:none !important}
+    .wrap{padding:0;max-width:none}
+    #result{margin:0;animation:none}
+    #pdf-panel{display:block !important;border:none;padding:0;margin:0;background:#fff;box-shadow:none}
+    .pdf-panel-head{border-bottom-color:#bbb;padding-bottom:18px;margin-bottom:24px}
+    .pdf-panel h3,.pdf-name,.pdf-panel blockquote{color:#1a1a1a}
+    .pdf-panel p,.pdf-panel li{color:#222}
+    .pdf-mark{border-color:#A88A4A;color:#A88A4A}
+    .pdf-subtitle,.pdf-date,.pdf-format-line{color:#777}
+    .pdf-format-line{border-top-color:#bbb}
+    .pdf-panel blockquote{border-left-color:#A88A4A}
+    .pdf-panel blockquote cite{color:#777}
+    h2,h3{page-break-after:avoid}
+    blockquote,li{page-break-inside:avoid}
+  }
+</style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<script src="metrika.js"></script>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <a class="brand" href="index.html" style="text-decoration:none">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </a>
+    <a class="meta" href="index.html" style="text-decoration:none">← На сайт</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">Самоосмотр перед заходом</div>
+    <h1>Фильтр готовности.<br/><em>Где ты сейчас.</em></h1>
+    <p class="lede">Этот тест — не подбор услуги и не калькулятор цены. Это способ <b>посмотреть на себя</b> до того, как идти на встречу. Узнавание себя в формулировках уже работа.</p>
+    <p class="lede">Три части: запрос своими словами · короткий скрининг состояния · честность про готовность. На выходе — снимок, заключение по шкалам и формат, который под это подходит. Если подходит «пока не сейчас» — я так и скажу.</p>
+  </div>
+
+  <form id="filter" onsubmit="return false">
+
+  <!-- SECTION 1 — REQUEST -->
+  <section class="q-section">
+    <div class="sec-head">
+      <div class="num">I</div>
+      <h2>Что ты сейчас переживаешь</h2>
+    </div>
+    <p class="sec-sub">Отметь то, что узнаёшь в себе. Можно несколько. Не все — только то, что про тебя сейчас.</p>
+
+    <div class="checks">
+      <div class="check"><input type="checkbox" id="c1" data-group="state"><label for="c1"><span class="box"></span><span>Чувствую, что застрял на одном месте — не могу сдвинуться</span></label></div>
+      <div class="check"><input type="checkbox" id="c2" data-group="state"><label for="c2"><span class="box"></span><span>Внешне всё есть — но внутри пусто или непонятно зачем вставать</span></label></div>
+      <div class="check"><input type="checkbox" id="c3" data-group="state"><label for="c3"><span class="box"></span><span>Чувствую себя «не своим» в обществе и среди людей</span></label></div>
+      <div class="check"><input type="checkbox" id="c4" data-group="state"><label for="c4"><span class="box"></span><span>Хроническое одиночество — никто не понимает по-настоящему</span></label></div>
+      <div class="check"><input type="checkbox" id="c5" data-group="state"><label for="c5"><span class="box"></span><span>Иду через жизненный кризис (развод, потеря работы, переезд, утрата)</span></label></div>
+      <div class="check"><input type="checkbox" id="c6" data-group="state"><label for="c6"><span class="box"></span><span>Не могу принять важное решение — кручусь по кругу</span></label></div>
+      <div class="check"><input type="checkbox" id="c7" data-group="state"><label for="c7"><span class="box"></span><span>Чувствую, что моя глубина — это проблема, а не сила</span></label></div>
+      <div class="check"><input type="checkbox" id="c8" data-group="state"><label for="c8"><span class="box"></span><span>Ищу свой путь, призвание, смысл — и пока не нахожу</span></label></div>
+      <div class="check"><input type="checkbox" id="c9" data-group="state"><label for="c9"><span class="box"></span><span>Уже пробовал у других психологов — было поверхностно или не помогло</span></label></div>
+      <div class="check"><input type="checkbox" id="c10" data-group="state"><label for="c10"><span class="box"></span><span>Чувствую внутреннее сопротивление чему-то — и не понимаю чему</span></label></div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 — PSYCHOMETRIC -->
+  <section class="q-section">
+    <div class="sec-head">
+      <div class="num">II</div>
+      <h2>Скрининг состояния</h2>
+    </div>
+    <p class="sec-sub">Двенадцать пунктов на пять шкал — тревога, депрессивность, стресс, ощущение смысла, изоляция. Опирается на валидированные методики (GAD-7, PHQ-9, PSS, MLQ).</p>
+
+    <div class="likert" id="likert">
+      <div class="likert-head">
+        <div class="lh-item">Утверждение</div>
+        <div class="lh-scale">Никогда</div>
+        <div class="lh-scale">Редко</div>
+        <div class="lh-scale">Иногда</div>
+        <div class="lh-scale">Часто</div>
+        <div class="lh-scale">Всегда</div>
+      </div>
+      <div class="likert-stem">За последние 2 недели — как часто ты ощущал(а) следующее?</div>
+      <!-- ITEMS rendered below by JS -->
+      <div id="likert-items"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — READINESS -->
+  <section class="q-section">
+    <div class="sec-head">
+      <div class="num">III</div>
+      <h2>Честность про готовность</h2>
+    </div>
+    <p class="sec-sub">Четыре вопроса с одним ответом на каждый. Здесь нет «правильного» — только реальное.</p>
+
+    <div class="radio-group">
+      <div class="radio-q">Что ты ждёшь от психолога?</div>
+      <div class="radios">
+        <div class="radio"><input type="radio" name="expect" value="support" id="e1"><label for="e1"><span class="ring"></span>Хочу, чтобы меня выслушали и поддержали</label></div>
+        <div class="radio"><input type="radio" name="expect" value="understand" id="e2"><label for="e2"><span class="ring"></span>Хочу понять, что со мной происходит</label></div>
+        <div class="radio"><input type="radio" name="expect" value="point" id="e3"><label for="e3"><span class="ring"></span>Хочу пройти конкретную точку или перелом</label></div>
+        <div class="radio"><input type="radio" name="expect" value="rebuild" id="e4"><label for="e4"><span class="ring"></span>Хочу пересмотреть основы своей жизни</label></div>
+        <div class="radio"><input type="radio" name="expect" value="open" id="e5"><label for="e5"><span class="ring"></span>Хочу долгого разговора без определённых обязательств</label></div>
+      </div>
+    </div>
+
+    <div class="radio-group">
+      <div class="radio-q">К какой длительности работы ты сейчас готов?</div>
+      <div class="radios">
+        <div class="radio"><input type="radio" name="time" value="one" id="t1"><label for="t1"><span class="ring"></span>К одной встрече, чтобы посмотреть и определиться</label></div>
+        <div class="radio"><input type="radio" name="time" value="weeks" id="t2"><label for="t2"><span class="ring"></span>К нескольким неделям сфокусированной работы</label></div>
+        <div class="radio"><input type="radio" name="time" value="months" id="t3"><label for="t3"><span class="ring"></span>К нескольким месяцам глубокой работы</label></div>
+        <div class="radio"><input type="radio" name="time" value="ongoing" id="t4"><label for="t4"><span class="ring"></span>Хочу постоянного общения без срока</label></div>
+        <div class="radio"><input type="radio" name="time" value="dont_know" id="t5"><label for="t5"><span class="ring"></span>Не готов(а) ничего обещать, хочу попробовать</label></div>
+      </div>
+    </div>
+
+    <div class="radio-group">
+      <div class="radio-q">Кто несёт ответственность за результат?</div>
+      <div class="radios">
+        <div class="radio"><input type="radio" name="resp" value="me" id="r1"><label for="r1"><span class="ring"></span>Я делаю работу — психолог создаёт условия, в которых она возможна</label></div>
+        <div class="radio"><input type="radio" name="resp" value="both" id="r2"><label for="r2"><span class="ring"></span>50/50 — это совместная работа</label></div>
+        <div class="radio"><input type="radio" name="resp" value="psy" id="r3"><label for="r3"><span class="ring"></span>Психолог — это специалист, его дело — решить мою проблему</label></div>
+      </div>
+    </div>
+
+    <div class="radio-group">
+      <div class="radio-q">Готов(а) услышать про себя то, что не хочется слышать?</div>
+      <div class="radios">
+        <div class="radio"><input type="radio" name="truth" value="yes" id="th1"><label for="th1"><span class="ring"></span>Да — для этого и пришёл(пришла)</label></div>
+        <div class="radio"><input type="radio" name="truth" value="maybe" id="th2"><label for="th2"><span class="ring"></span>Не уверен(а) — посмотрю по ситуации</label></div>
+        <div class="radio"><input type="radio" name="truth" value="no" id="th3"><label for="th3"><span class="ring"></span>Нет — мне сейчас нужна поддержка, а не правда</label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBMIT -->
+  <div class="submit-block">
+    <div class="info">
+      <h3>Готов посмотреть результат?</h3>
+      <p>Снимок состояния по пяти шкалам, заключение и рекомендация формата работы. Без обязательств и без рассылок — просто ты, твой результат и решение.</p>
+    </div>
+    <button type="button" class="btn-submit" id="submit-btn">Получить снимок состояния</button>
+  </div>
+
+  </form>
+
+  <!-- RESULT -->
+  <div id="result">
+    <div class="result-head">
+      <div class="result-eyebrow">Снимок состояния</div>
+      <h2 class="result-title" id="r-title">Твоё <em>сегодня</em>.</h2>
+      <p class="result-lede" id="r-lede"></p>
+    </div>
+
+    <div class="result-grid">
+      <div class="result-chart">
+        <div class="result-chart-title">Радар по пяти шкалам</div>
+        <div class="result-chart-sub">Меньше — спокойнее · Больше — активнее</div>
+        <div class="chart-wrap"><canvas id="radar"></canvas></div>
+      </div>
+
+      <div class="scale-list" id="scale-list"></div>
+    </div>
+
+    <div class="summary" id="r-summary"></div>
+
+    <div class="reco" id="r-reco"></div>
+
+    <div class="caveats" id="r-caveats"></div>
+
+    <!-- PDF CTA -->
+    <div class="pdf-cta-row">
+      <div class="info">
+        <div class="info-tag">Бесплатное продолжение</div>
+        <div class="info-text">Персональные рекомендации в PDF — на основе твоих ответов.</div>
+        <div class="info-sub">Несколько практик, пять вопросов «на подумать» и одна цитата в дорогу. Это уже работа, без обязательств.</div>
+      </div>
+      <button type="button" class="btn-pdf" onclick="window.print()">Сохранить в PDF</button>
+    </div>
+
+    <!-- PDF SHEET — recommendations -->
+    <div id="pdf-panel" class="pdf-panel"></div>
+
+    <div class="disclaimer">
+      <blockquote>«Я не верю, что вся глубина человека, его психики и души способна уместиться в тестик, который проходится за пару минут».</blockquote>
+    </div>
+
+    <div class="reset-row">
+      <button type="button" class="btn-reset" onclick="resetFilter()">Пройти заново</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  /* === LIKERT ITEMS === */
+  const LIKERT = [
+    {id:'a1', text:'Я чувствовал(а) нервозность, тревогу или напряжённость', scale:'anxiety'},
+    {id:'a2', text:'Не мог(ла) остановить или контролировать беспокойство', scale:'anxiety'},
+    {id:'a3', text:'Я был(а) раздражительным(ой) или на взводе', scale:'anxiety'},
+    {id:'d1', text:'Я чувствовал(а) подавленность, безнадёжность или тоску', scale:'depression'},
+    {id:'d2', text:'У меня пропадал интерес к делам, которые обычно радовали', scale:'depression'},
+    {id:'d3', text:'Я чувствовал(а) усталость и упадок сил', scale:'depression'},
+    {id:'s1', text:'Я чувствовал(а), что всё выходит из-под контроля', scale:'stress'},
+    {id:'s2', text:'Я не мог(ла) полноценно отдохнуть или восстановиться', scale:'stress'},
+    {id:'m1', text:'Я понимал(а), ради чего я живу', scale:'meaning', reverse:true},
+    {id:'m2', text:'Моя жизнь имеет ясную цель и направление', scale:'meaning', reverse:true},
+    {id:'i1', text:'Я чувствовал(а), что не нахожу своего места среди людей', scale:'isolation'},
+    {id:'i2', text:'Я чувствовал(а), что меня по-настоящему никто не понимает', scale:'isolation'},
+  ];
+  const SCALE_LABELS = {anxiety:'Никогда', /* dummy */};
+  const LIKERT_LABELS = ['Никогда','Редко','Иногда','Часто','Всегда'];
+
+  /* Render Likert rows */
+  function renderLikert(){
+    const wrap = document.getElementById('likert-items');
+    wrap.innerHTML = LIKERT.map(item => {
+      const cells = LIKERT_LABELS.map((lbl, idx) => `
+        <div class="likert-cell">
+          <input type="radio" name="${item.id}" value="${idx}" id="${item.id}-${idx}">
+          <label for="${item.id}-${idx}">
+            <span class="dot"></span>
+            <span class="scale-label likert-mobile-scale">${lbl}</span>
+          </label>
+        </div>
+      `).join('');
+      return `
+        <div class="likert-row">
+          <div class="likert-q">${item.text}</div>
+          ${cells}
+        </div>
+      `;
+    }).join('');
+  }
+  renderLikert();
+
+  /* === SUBMIT HANDLER === */
+  document.getElementById('submit-btn').addEventListener('click', () => {
+    const data = collect();
+    if(!validate(data)){ return; }
+    const result = analyse(data);
+    render(result);
+    document.getElementById('result').classList.add('shown');
+    setTimeout(()=>{
+      document.getElementById('result').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 100);
+  });
+
+  function collect(){
+    const stateChecks = Array.from(document.querySelectorAll('[data-group="state"]:checked')).length;
+    const likertVals = {};
+    let likertComplete = true;
+    for(const item of LIKERT){
+      const sel = document.querySelector(`input[name="${item.id}"]:checked`);
+      if(!sel){ likertComplete = false; break; }
+      let v = parseInt(sel.value, 10);
+      if(item.reverse) v = 4 - v;
+      likertVals[item.id] = v;
+    }
+    return {
+      stateChecks,
+      likertVals,
+      likertComplete,
+      expect:   document.querySelector('input[name="expect"]:checked')?.value || null,
+      time:     document.querySelector('input[name="time"]:checked')?.value || null,
+      resp:     document.querySelector('input[name="resp"]:checked')?.value || null,
+      truth:    document.querySelector('input[name="truth"]:checked')?.value || null,
+    };
+  }
+
+  function validate(d){
+    if(!d.likertComplete){ alert('Заполни, пожалуйста, все 12 пунктов скрининга (часть II).'); return false; }
+    if(!d.expect || !d.time || !d.resp || !d.truth){ alert('Ответь на все четыре вопроса в части III.'); return false; }
+    return true;
+  }
+
+  /* === ANALYSIS === */
+  function analyse(d){
+    // Sum per scale
+    const sum = (scale) => LIKERT.filter(i=>i.scale===scale).reduce((s,i)=>s + (d.likertVals[i.id]||0), 0);
+    const anxiety = sum('anxiety');     // 0..12
+    const depression = sum('depression'); // 0..12
+    const stress = sum('stress');         // 0..8
+    const meaning_lack = sum('meaning');  // 0..8 (reversed: high = low meaning)
+    const isolation = sum('isolation');   // 0..8
+
+    // Normalize to 0..100 for radar
+    const norm = (v, max) => Math.round((v/max)*100);
+    const radarValues = {
+      anxiety:    norm(anxiety, 12),
+      depression: norm(depression, 12),
+      stress:     norm(stress, 8),
+      meaning:    norm(meaning_lack, 8),
+      isolation:  norm(isolation, 8),
+    };
+
+    // Levels
+    const level3 = (v, mid, high) => v <= mid ? 'calm' : v <= high ? 'mid' : 'high';
+    const levels = {
+      anxiety:    level3(anxiety, 3, 7),
+      depression: level3(depression, 3, 7),
+      stress:     level3(stress, 2, 5),
+      meaning:    level3(meaning_lack, 2, 5),
+      isolation:  level3(isolation, 2, 5),
+    };
+
+    // Composite state intensity (0..1)
+    const stateScore = (anxiety/12 + depression/12 + stress/8 + meaning_lack/8 + isolation/8) / 5;
+
+    // Format selection
+    let format = chooseFormat(d, stateScore);
+
+    return {data:d, anxiety, depression, stress, meaning_lack, isolation, radarValues, levels, stateScore, format};
+  }
+
+  function chooseFormat(d, stateScore){
+    // Никаких "hold"-вердиктов: первичный запрос «хочу поговорить» / «хочу поддержки»
+    // — это нормальный начальный запрос. Раскручивается до настоящего в ходе разбора.
+    // Любой неоднозначный профиль направляется на Глубинный разбор как точку входа,
+    // а красные флаги обрабатываются заметками-caveats отдельно.
+
+    const wantsLong  = d.expect === 'rebuild' || d.time === 'months' || d.time === 'ongoing';
+    const wantsShort = d.expect === 'point'   || d.time === 'weeks';
+
+    if(wantsLong){
+      return {type:'velikoe', title:'Великое делание',
+        sub:'12 встреч за 3 месяца. Длинная трансформация.',
+        price:'90 000 ₽', duration:'3 месяца',
+        body: stateScore > 0.55
+          ? 'То, что ты отметил, говорит о серьёзной нагрузке. Это и есть запрос на длинную работу — не «починить», а пересобрать. За 3 месяца можно действительно перепрошить отношения с собой, со смыслом, со свободой. Это не про симптомы — это про то, как ты живёшь.'
+          : 'Ты сам обозначил масштаб — пересмотр основ. Это не делается за пару встреч. Великое делание (юнгианское opus magnum) — формат для тех, кто готов идти длинно и плотно одновременно.'
+      };
+    }
+    if(wantsShort){
+      return {type:'soprovozdenie', title:'Сопровождение до результата',
+        sub:'5–7 встреч за 6–10 недель. Прохождение перелома.',
+        price:'от 30 000 ₽', duration:'6–10 недель',
+        body: stateScore > 0.55
+          ? 'У тебя есть конкретный перелом, через который надо пройти, и состояние сейчас не самое лёгкое. Сопровождение — это структурированная работа с фиксированной точкой выхода. Не «ходить-ходить», а пройти.'
+          : 'У тебя ясная задача — пройти конкретный перелом. Это формат под именно такой запрос: разбор для расстановки + 4–6 рабочих встреч + между-сессионная связь. Точка выхода фиксируется заранее.'
+      };
+    }
+
+    // Все остальное (хочу понять что со мной / хочу поддержки / хочу долгого разговора /
+    // одна встреча / не уверен в длительности) — точка входа Глубинный разбор.
+    // Формат настраивается под конкретный первичный запрос внутри встречи.
+    let body;
+    if(d.expect === 'support' || d.expect === 'open'){
+      body = stateScore > 0.55
+        ? 'Ты пришёл за поддержкой и долгим разговором — это понятный, нормальный запрос, особенно когда внутри плотно. На разборе мы вместе посмотрим, что под этим запросом лежит на самом деле. Часто за «хочу поговорить» обнаруживается что-то очень конкретное, с чем дальше можно работать. На это и есть формат до 180 минут — чтобы было время дойти.'
+        : 'Ты ищешь, чтобы выслушали и поддержали. У меня поддержка есть — но другая, чем «утешение». Один разбор — это и есть знакомство: ты увидишь, как устроена моя работа, я увижу, что у тебя на самом деле в запросе. Дальше — решаешь, нужна ли длинная работа или хватило одной встречи.';
+    } else {
+      body = stateScore > 0.55
+        ? 'То, что отмечено, говорит, что внутри плотно. Один глубинный разбор не закроет всё — но даст ясность по точке, в которой ты сейчас, и понимание следующего шага. Часто после разбора решается, что делать дальше.'
+        : 'Ты пришёл понять, что с тобой. Один разбор — точно тот формат: 90–180 минут плотной работы без таймера, конкретный практический выход в финале. Без обязательств после.';
+    }
+    return {type:'razbor', title:'Глубинный разбор',
+      sub:'Одна встреча. 90–180 минут. До результата.',
+      price:'12 000 ₽', duration:'1 встреча', body
+    };
+  }
+
+  /* === RENDER === */
+  function render(r){
+    // Lede
+    document.getElementById('r-lede').innerHTML = buildLede(r);
+
+    // Radar chart
+    if(window._radar){ window._radar.destroy(); }
+    const ctx = document.getElementById('radar').getContext('2d');
+    window._radar = new Chart(ctx, {
+      type:'radar',
+      data:{
+        labels:['Тревога','Депрессивность','Стресс','Бессмыслие','Изоляция'],
+        datasets:[{
+          label:'Сегодня',
+          data:[r.radarValues.anxiety, r.radarValues.depression, r.radarValues.stress, r.radarValues.meaning, r.radarValues.isolation],
+          backgroundColor:'rgba(168,138,74,.25)',
+          borderColor:'#A88A4A',
+          borderWidth:2,
+          pointBackgroundColor:'#3F4A36',
+          pointRadius:4,
+          pointHoverRadius:6
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        scales:{r:{
+          min:0, max:100, ticks:{display:false, stepSize:25}, beginAtZero:true,
+          angleLines:{color:'rgba(63,74,54,.18)'},
+          grid:{color:'rgba(63,74,54,.18)'},
+          pointLabels:{font:{family:'"Cormorant Garamond", Georgia, serif', size:14, style:'italic'}, color:'#3F4A36'}
+        }},
+        plugins:{
+          legend:{display:false},
+          tooltip:{
+            backgroundColor:'#3F4A36', titleColor:'#A88A4A', bodyColor:'#E8DEC4',
+            borderColor:'#A88A4A', borderWidth:1, padding:12, displayColors:false,
+            callbacks:{label:(ctx)=>ctx.parsed.r + ' / 100'}
+          }
+        }
+      }
+    });
+
+    // Scale rows
+    document.getElementById('scale-list').innerHTML = renderScales(r);
+
+    // Summary
+    document.getElementById('r-summary').innerHTML = buildSummary(r);
+
+    // Reco
+    document.getElementById('r-reco').innerHTML = renderReco(r.format);
+
+    // Caveats — based on red-flag state combos
+    document.getElementById('r-caveats').innerHTML = buildCaveats(r);
+
+    // Personal PDF recommendations
+    document.getElementById('pdf-panel').innerHTML = buildPdfPanel(r);
+  }
+
+  /* === PDF · персональные рекомендации === */
+  function buildPdfPanel(r){
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('ru-RU', {day:'numeric', month:'long', year:'numeric'});
+    const recs = buildStateRecommendations(r);
+    const questions = buildPersonalQuestions(r);
+    const quote = pickQuote(r);
+    return `
+      <div class="pdf-panel-head">
+        <div class="pdf-brand">
+          <div class="pdf-mark">M</div>
+          <div>
+            <div class="pdf-name">Матвей Богатырёв</div>
+            <div class="pdf-subtitle">Персональные рекомендации</div>
+          </div>
+        </div>
+        <div class="pdf-date">${dateStr}</div>
+      </div>
+
+      <h3>Снимок состояния</h3>
+      <p>${buildPdfSummary(r)}</p>
+
+      <h3>Что попробовать в ближайшие 7 дней</h3>
+      <ul>${recs.map(x=>`<li>${x}</li>`).join('')}</ul>
+
+      <h3>Пять вопросов «на подумать»</h3>
+      <ol>${questions.map(x=>`<li>${x}</li>`).join('')}</ol>
+
+      <h3>В дорогу</h3>
+      <blockquote>${quote.text}<cite>— ${quote.author}</cite></blockquote>
+
+      <h3>Если решишь зайти на разбор</h3>
+      <p>К первой встрече запомни одну-две точки за неделю, где выбор был — но ты не сделал. Это не для отчёта, это для разговора. Любая мысль по поводу этого теста, которая приходит позже — записывай: уже работа. Анкета первой встречи приходит после бронирования. Заполнять её честно — половина продукта.</p>
+
+      <div class="pdf-format-line">Рекомендованный формат для тебя: <b>${r.format.title}</b> · ${r.format.duration} · ${r.format.price}.</div>
+    `;
+  }
+
+  function buildPdfSummary(r){
+    const lvls = r.levels;
+    const high = [];
+    if(lvls.anxiety === 'high') high.push('тревога активна');
+    if(lvls.depression === 'high') high.push('депрессивные ноты заметны');
+    if(lvls.stress === 'high') high.push('стресс на пределе');
+    if(lvls.meaning === 'high') high.push('ощущение смысла размыто');
+    if(lvls.isolation === 'high') high.push('чувство изоляции хроническое');
+
+    if(high.length === 0){
+      return 'По всем пяти шкалам — относительно спокойно. Это редкий ресурс. Серьёзная работа с собой делается из ресурса, а не из отчаяния — у тебя сейчас именно такое окно.';
+    }
+    if(high.length === 1){
+      return `Из заметного: ${high[0]}. Остальное в умеренном или спокойном диапазоне. Часто такая «верхушка» — это видимая часть чего-то более фундаментального. Ниже — точки, с которых можно начать.`;
+    }
+    return `Из заметного сейчас: ${high.join('; ')}. Это плотное состояние. Ниже — не «лечение», а первые точки приложения усилия.`;
+  }
+
+  function buildStateRecommendations(r){
+    const lvls = r.levels;
+    const recs = [];
+    if(lvls.anxiety === 'high'){
+      recs.push('Заметь сегодня момент, когда тревога накрывает не от события, а «на ровном месте». Зафиксируй: где она сидит в теле — и что было непосредственно перед.');
+      recs.push('Тренируй паузу между импульсом и реакцией: вдох на 4 счёта, выдох на 6. Это не магия, это нервная система.');
+    }
+    if(lvls.depression === 'high'){
+      recs.push('Заведи правило одного маленького дела в день — не «до результата», просто «сделать». Это не борьба с депрессией, это её обход.');
+      recs.push('Не пытайся «захотеть» — действуй вопреки. Желание иногда возвращается ПОСЛЕ действия, а не до.');
+    }
+    if(lvls.stress === 'high'){
+      recs.push('Список из десяти дел? Реально нужны три. Что в твоих десяти — действительно твоё, а что — чужое или «надо так»?');
+      recs.push('Восстановление — это не «отдых», это отсутствие ввода. Двадцать минут без экрана и без музыки. Скучно — не страшно.');
+    }
+    if(lvls.meaning === 'high'){
+      recs.push('Запиши три момента за прошлую неделю, когда ты чувствовал, что делаешь «правильное». Не «счастливое» — правильное. Это разное.');
+      recs.push('Виктор Франкл писал: смысл не находят — на смысл откликаются. Что в твоей жизни сейчас тебя зовёт, даже если не хочется слышать?');
+    }
+    if(lvls.isolation === 'high'){
+      recs.push('Один разговор за неделю, в котором ты не играешь роль. Не «на равных», просто без маски. Даже 15 минут считается.');
+      recs.push('Различай «я не нашёл своих» и «я не дал себя найти». Это разные ситуации, требуют разной работы.');
+    }
+    if(recs.length === 0){
+      recs.push('Окно ясности — редкий ресурс. Используй его не для «решения проблем», а для одной серьёзной мысли о своём дне раз в неделю. Тогда, когда «горячее» придёт, у тебя будет навык не реагировать с автомата.');
+      recs.push('Заметь, что в твоей жизни сейчас работает — и что ты делаешь, что это работает. Большинство теряет ресурсное состояние, потому что не видит его архитектуру.');
+      recs.push('Если есть мысль «я бы хотел разобраться, пока не штормит» — это самая зрелая мотивация для серьёзной работы. Не теряй её до момента, когда она будет нужна.');
+    }
+    return recs.slice(0, 4);
+  }
+
+  function buildPersonalQuestions(){
+    const checked = {};
+    for(let i=1; i<=10; i++){
+      checked[`c${i}`] = document.getElementById(`c${i}`)?.checked || false;
+    }
+    const pool = [
+      {key:'c1',  q:'Что в этом «застревании» даёт тебе что-то, чего иначе у тебя бы не было?'},
+      {key:'c2',  q:'Когда последний раз тебе чего-то по-настоящему хотелось — не «надо», а хотелось?'},
+      {key:'c3',  q:'Что для тебя «своё место» — место среди людей или место в самом себе?'},
+      {key:'c4',  q:'Кто из твоего окружения мог бы тебя понять, но ты его в это не пускаешь?'},
+      {key:'c5',  q:'В чём ты выиграл от этого кризиса? Какой ты после него уже не такой, как до?'},
+      {key:'c6',  q:'Если бы решение уже было принято — какое оно? И почему ты его не принимаешь, зная это?'},
+      {key:'c7',  q:'Если глубина — это сила, что мешает тебе на неё опираться?'},
+      {key:'c8',  q:'Что бы ты сделал прямо сейчас, если бы знал, что не ошибёшься?'},
+      {key:'c9',  q:'Что было поверхностным у других — и почему именно ты на это согласился?'},
+      {key:'c10', q:'Что именно сопротивляется — ты сам, или часть тебя, которая боится?'},
+    ];
+    const general = [
+      'Что в твоей жизни ты продолжаешь делать только потому, что начал?',
+      'Кому в твоей голове ты постоянно что-то доказываешь? Когда стартовал этот разговор?',
+      'Если бы ты прожил эту неделю последний раз в жизни — что бы изменил?',
+      'Какая твоя сильная сторона маскируется под слабость? Какая слабость — под силу?',
+      'Что бы ты сказал себе пять лет назад одной фразой?',
+    ];
+    const matched = pool.filter(p => checked[p.key]).map(p => p.q);
+    const result = [...matched];
+    let i = 0;
+    while(result.length < 5 && i < general.length){
+      result.push(general[i++]);
+    }
+    return result.slice(0, 5);
+  }
+
+  function pickQuote(r){
+    const lvls = r.levels;
+    if(lvls.meaning === 'high' || lvls.isolation === 'high'){
+      return {text:'«Шизофреник тонет в тех же самых водах, в которых мистик плавает с удовольствием».', author:'Карл Густав Юнг'};
+    }
+    if(lvls.anxiety === 'high' || lvls.stress === 'high'){
+      return {text:'«Между стимулом и реакцией есть пространство. В этом пространстве — наша свобода и наш рост».', author:'Виктор Франкл'};
+    }
+    if(lvls.depression === 'high'){
+      return {text:'«Человек обречён на свободу. Раз он не сам себя сотворил — раз заброшен в мир, он отвечает за всё, что делает».', author:'Жан-Поль Сартр'};
+    }
+    return {text:'«Человек есть тайна. Её надо разгадать, и ежели будешь её разгадывать всю жизнь, то не говори, что потерял время».', author:'Фёдор Достоевский'};
+  }
+
+  function buildLede(r){
+    const checks = r.data.stateChecks;
+    if(checks === 0){
+      return 'Ничего из «запросов» в части I ты не отметил. Возможно, фильтр тебе сейчас и не нужен — приходи, когда появится конкретный вопрос.';
+    }
+    let depthWord;
+    if(r.stateScore < 0.25) depthWord = 'спокойное';
+    else if(r.stateScore < 0.45) depthWord = 'умеренно загруженное';
+    else if(r.stateScore < 0.65) depthWord = 'плотное';
+    else depthWord = 'тяжёлое';
+    return `Ты отметил <b>${checks}</b> ${ruPlural(checks,'запрос','запроса','запросов')} из десяти в первой части. Скрининг показывает <b>${depthWord}</b> внутреннее состояние сейчас. Это не диагноз и не приговор — это снимок сегодняшнего дня, по нему мы и читаем, что под это подходит.`;
+  }
+
+  function ruPlural(n, one, few, many){
+    n = Math.abs(n) % 100;
+    const n1 = n % 10;
+    if (n > 10 && n < 20) return many;
+    if (n1 > 1 && n1 < 5) return few;
+    if (n1 === 1) return one;
+    return many;
+  }
+
+  function renderScales(r){
+    const scales = [
+      {key:'anxiety', name:'Тревога', val:r.anxiety, max:12, level:r.levels.anxiety,
+        text:{
+          calm:'Тревога сейчас не доминирует. Это даёт тебе ресурс думать, выбирать, действовать.',
+          mid:'Фоновая тревога присутствует. Не клиническая, но забирает энергию и сужает обзор. С этим работают, и довольно эффективно.',
+          high:'Тревога сейчас активна. Это не повод для паники — это повод не игнорировать. Тревога такого уровня поддаётся работе через прояснение того, что под ней лежит.'
+        }
+      },
+      {key:'depression', name:'Депрессивность', val:r.depression, max:12, level:r.levels.depression,
+        text:{
+          calm:'Депрессивных нот сейчас немного. Энергия и интерес к жизни на месте.',
+          mid:'Часть энергии и интереса к жизни сейчас просела. Это не «лень» и не «выгорание»-этикетка — это что-то более глубокое и адресное. С этим работают.',
+          high:'Состояние сейчас плотно подавленное. Это не значит «ты сломан» — значит, что внутри идёт работа, которой нужно дать форму. Раньше или позже к этому придётся обратиться напрямую.'
+        }
+      },
+      {key:'stress', name:'Стресс и нагрузка', val:r.stress, max:8, level:r.levels.stress,
+        text:{
+          calm:'Стресс сейчас в управляемом коридоре. Восстанавливаться получается.',
+          mid:'Нагрузка ощутимая, восстанавливаться сложнее. Это связано не только с количеством дел — часто это про то, как ты с собой обращаешься в этих делах.',
+          high:'Состояние сейчас близкое к перенапряжению. «Просто отдохнуть» здесь не сработает — нужно разбираться, что именно вытягивает энергию.'
+        }
+      },
+      {key:'meaning', name:'Ощущение смысла', val:r.meaning_lack, max:8, level:r.levels.meaning,
+        text:{
+          calm:'У тебя есть ясное ощущение, ради чего ты живёшь. Это редкий и серьёзный ресурс — береги.',
+          mid:'Смысл местами размыт — ты делаешь то, что делаешь, но «зачем» иногда выпадает. Это знакомый запрос, и он движется в работе.',
+          high:'Сейчас «зачем» — главный непрояснённый вопрос твоей жизни. Это не дефект, это настоящая экзистенциальная задача, и она именно в моей зоне работы.'
+        }
+      },
+      {key:'isolation', name:'«Не на своём месте»', val:r.isolation, max:8, level:r.levels.isolation,
+        text:{
+          calm:'Чувство принадлежности и понимания сейчас на месте.',
+          mid:'Иногда чувствуешь, что не находишь своих. Это типично для тех, кто думает иначе большинства — и это не про ущерб, а про твою специфику.',
+          high:'Хроническое чувство, что тебя не понимают и тебе нет места среди людей. У этого есть и «вынужденная» часть (иначе ты не был бы собой), и «невынужденная» — часть, которую можно изменить. Различить эти части — отдельная работа.'
+        }
+      },
+    ];
+    const stateLabels = {calm:'Спокойно', mid:'Среднее', high:'Повышенное'};
+    return scales.map(s => `
+      <div class="scale-row">
+        <div class="scale-name">${s.name}<div style="font-size:11px;color:var(--text-3);font-weight:400;letter-spacing:.04em;margin-top:2px;font-family:var(--sans);font-style:normal">${s.val} / ${s.max} баллов</div></div>
+        <div class="scale-state ${s.level}">${stateLabels[s.level]}</div>
+        <div class="scale-text">${s.text[s.level]}</div>
+      </div>
+    `).join('');
+  }
+
+  function buildSummary(r){
+    const high = ['anxiety','depression','stress','meaning','isolation'].filter(k=>r.levels[k]==='high').length;
+    let opener;
+    if(r.stateScore < 0.25){
+      opener = 'Состояние сейчас спокойное по всем шкалам. Это не значит «всё идеально» — это значит, что у тебя есть ресурс смотреть на свои вопросы трезво и не из реактивности. Это лучшее время для серьёзной работы.';
+    } else if(r.stateScore < 0.45){
+      opener = 'Состояние умеренно загруженное. Что-то ясно ощутимо изнутри, но это не аварийная ситуация. У тебя есть силы и для работы, и для собственной жизни — просто часть энергии сейчас уходит на удержание.';
+    } else if(r.stateScore < 0.65){
+      opener = 'Состояние плотное. Тебе сейчас непросто, и это видно по нескольким шкалам сразу. Это не катастрофа, но и не «само рассосётся». Это точка, где осмысленная работа над собой реально что-то меняет.';
+    } else {
+      opener = 'Состояние тяжёлое. По нескольким шкалам сразу видно: ты сейчас несёшь значительный груз. Это не «навсегда» и не «ты сломан» — это плотная фаза жизни, через которую нельзя пройти на автопилоте.';
+    }
+    let middle = '';
+    if(high >= 2){
+      middle = `Несколько шкал — на повышенном уровне. Это часто говорит о том, что разные слои нагрузки <b>связаны между собой</b>: тревога питает изоляцию, изоляция питает бессмыслие, бессмыслие питает депрессивность. В работе мы развязываем этот узел, не ломая по отдельности.`;
+    } else if(high === 1){
+      middle = `Одна из шкал — на повышенном уровне. Это часто бывает «верхушкой» — тем, что заметно — за которой стоит что-то более фундаментальное. Хороший повод посмотреть глубже.`;
+    } else {
+      middle = `Острых пиков сейчас нет. Это значит, что работа может идти не «тушить пожар», а собирать фундамент.`;
+    }
+    return `
+      <div class="summary-tag">Резюме</div>
+      <p>${opener}</p>
+      <p>${middle}</p>
+      <p>То, что узнаётся в формулировках выше — <b>уже работа</b>. Многие проходят жизнь, не имея точных слов про своё состояние. У тебя они теперь есть.</p>
+    `;
+  }
+
+  function renderReco(f){
+    return `
+      <div class="reco-card">
+        <div class="reco-tag">Рекомендация формата</div>
+        <h3>${f.title}.</h3>
+        <div class="reco-sub">${f.sub}</div>
+        <div class="reco-body"><p>${f.body}</p></div>
+        <div class="reco-meta">
+          <div class="reco-meta-item"><div class="l">Длительность</div><div class="v">${f.duration}</div></div>
+          <div class="reco-meta-item"><div class="l">Инвестиция</div><div class="v">${f.price}</div></div>
+          <div class="reco-meta-item"><div class="l">Точка выхода</div><div class="v">Фиксируется</div></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function buildCaveats(r){
+    const c = [];
+    if(r.data.resp === 'psy'){
+      c.push({l:'Заметка', t:'Ответственность.', b:'Ты выбрал, что психолог должен решить твою проблему. У меня так не работает: я создаю условия, ты делаешь работу. Это не отказ — это формат. Если согласен — приходи, если нет — это честный знак, что мы не сходимся в подходе.'});
+    }
+    if(r.data.expect === 'support' && r.data.truth !== 'no'){
+      c.push({l:'Заметка', t:'Ожидание поддержки.', b:'Ты ждёшь от психолога слушания и поддержки. У меня поддержка есть — но это не «утешение», это уважительная конфронтация со стороны того, кто на твоей стороне. Это разные вещи. Будь готов.'});
+    }
+    if(r.data.truth === 'maybe'){
+      c.push({l:'Заметка', t:'Готовность к правде.', b:'Ты не уверен, готов ли услышать неудобное о себе. Это нормально. На разборе мы проверим эту готовность мягко — без пробивания, но и без щадящих умолчаний. Если ты «дёрнулся» от чего-то — это уже работа.'});
+    }
+    if(r.levels.anxiety === 'high' && r.levels.depression === 'high'){
+      c.push({l:'Заметка', t:'Двойная нагрузка.', b:'И тревога, и депрессивность сейчас активны. Это сочетание требует не «бодрости», а структуры. Один глубинный разбор не закроет всё — рассмотри, возможно, формат сопровождения или великого делания, чтобы дать процессу форму.'});
+    }
+    if(r.data.stateChecks >= 6){
+      c.push({l:'Заметка', t:'Многослойный запрос.', b:'Ты узнал себя в шести и более позициях. Это не значит «у тебя всё плохо» — это значит, что внутри плотно. Хорошая новость: это работает в твою пользу. У тебя ясность про симптомы, теперь нужна точность по корням.'});
+    }
+    return c.map(x => `<div class="caveat"><div class="l">${x.l}</div><div class="t">${x.t}</div><div class="b">${x.b}</div></div>`).join('');
+  }
+
+  /* === RESET === */
+  function resetFilter(){
+    document.getElementById('filter').reset();
+    document.getElementById('result').classList.remove('shown');
+    if(window._radar){ window._radar.destroy(); window._radar = null; }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</body>
+</html>

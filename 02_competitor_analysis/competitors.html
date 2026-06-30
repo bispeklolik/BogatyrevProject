@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Соседи по полю — Этап 2. Матвей Богатырёв</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/theme/mermaid.min.css" integrity="sha384-jZvDSsmGB9oGGT/4l9bHXGoAv1OxvG/cFmSo0dZaSqmBgvQTKDBFAMftlXTmMbNW" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/gridjs.umd.js" integrity="sha384-/XXDzxe4FsGiAe50i/u9pY/Vy/uX654MHB1xoc1BJNnH1WXHhqHga9g3q5tF4gj7" crossorigin="anonymous"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --gold-soft:rgba(168,138,74,.14);
+    --pearl:#FAF3DD;
+    --red:#A84C3A; --amber:#B8893A; --green:#5E7B4D;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* RIBBON */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1320px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1320px;margin:0 auto;padding:64px 40px 96px}
+
+  /* TITLE */
+  .title-block{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5vw,60px);line-height:1.05;letter-spacing:-.005em;margin:0 0 18px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:820px;font-size:17px;color:var(--text-2);line-height:1.65}
+
+  /* LEGEND */
+  .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:32px 0 0}
+  .legend-item{background:var(--panel);padding:18px 22px;display:flex;flex-direction:column;gap:4px}
+  .legend-item .lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .legend-item .ttl{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.25}
+  .legend-item .desc{font-size:12px;color:var(--text-3);line-height:1.55;margin-top:2px}
+  .legend-item .dot-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2);margin-top:2px}
+  .dot-mini{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+  .dot-mini.r{background:var(--red)}
+  .dot-mini.a{background:var(--amber)}
+  .dot-mini.g{background:var(--green)}
+
+  /* SECTION HEADERS */
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;margin:64px 0 24px;gap:24px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.04em}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,36px);line-height:1.1;margin:0;color:var(--ink)}
+  .sec-tagline{color:var(--text-3);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+
+  /* FILTER CHIPS */
+  .filters{display:flex;flex-direction:column;gap:14px;margin-bottom:24px;padding:20px;background:var(--panel);border:1px solid var(--line)}
+  .filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .filter-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--text-3);margin-right:10px;min-width:84px}
+  .chip{background:transparent;border:1px solid var(--line);color:var(--text-2);padding:7px 14px;font-size:12px;letter-spacing:.06em;font-family:inherit;cursor:pointer;transition:all .2s;border-radius:999px}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip.active{background:var(--ink-bg);border-color:var(--ink-bg);color:var(--pearl)}
+  .chip .count{margin-left:6px;color:var(--gold);font-size:11px}
+  .chip.active .count{color:var(--ink-fg-2)}
+
+  /* GRID.JS overrides */
+  .gridjs-wrapper{box-shadow:none;border:1px solid var(--line);border-radius:0}
+  .gridjs-table{font-family:var(--sans);font-size:13.5px;background:var(--panel)}
+  .gridjs-th{background:var(--ink-bg)!important;color:var(--ink-fg)!important;border:1px solid var(--ink-bg-2)!important;padding:14px 12px!important;font-weight:500;letter-spacing:.04em;font-size:11px;text-transform:uppercase}
+  .gridjs-th .gridjs-th-content{font-weight:500}
+  .gridjs-th-sort:hover{background:var(--ink-bg-2)!important}
+  .gridjs-td{background:var(--panel)!important;color:var(--text)!important;border:1px solid var(--line-soft)!important;padding:14px 12px!important;vertical-align:top}
+  .gridjs-tr:hover .gridjs-td{background:var(--panel-2)!important}
+  .gridjs-search-input{background:var(--bg)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:0;padding:10px 14px;font-family:var(--sans);font-size:13px;width:280px}
+  .gridjs-search-input::placeholder{color:var(--text-3)}
+  .gridjs-pagination{color:var(--text-2);background:var(--panel);border:1px solid var(--line);border-top:none;padding:10px 14px}
+  .gridjs-pagination .gridjs-pages button{background:transparent;border:1px solid var(--line);color:var(--text-2);border-radius:0;padding:6px 10px;font-size:12px}
+  .gridjs-pagination .gridjs-pages button:hover{background:var(--panel-2);color:var(--ink)}
+  .gridjs-pagination .gridjs-pages button.gridjs-currentPage{background:var(--ink-bg);color:var(--pearl);border-color:var(--ink-bg)}
+  .gridjs-summary{font-size:12px;color:var(--text-3)}
+
+  /* Cell helpers */
+  .seg{font-size:11px;letter-spacing:.06em;color:var(--text-2)}
+  .seg.platform{color:var(--text-3)}
+  .seg.author{color:var(--ink);font-weight:500}
+  .seg.premium{color:var(--gold-2);font-weight:500}
+  .seg.capsule{color:var(--ink);font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:10px}
+  .seg.acad{color:var(--text-3);font-style:italic}
+  .name{font-weight:500;color:var(--ink);font-size:14px}
+  .name small{display:block;font-weight:400;color:var(--text-3);font-size:11px;font-style:italic;margin-top:2px}
+  .price{font-family:var(--serif);font-size:14px;color:var(--ink);white-space:nowrap}
+  .weak{font-size:12px;color:var(--text-2);line-height:1.5}
+  .compete{display:flex;align-items:center;gap:8px;font-size:12px;white-space:nowrap}
+  .compete-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .compete-dot.r{background:var(--red)}
+  .compete-dot.a{background:var(--amber)}
+  .compete-dot.g{background:var(--green)}
+
+  /* NICHE MAP */
+  .niche-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .niche{background:var(--panel);padding:28px 28px;display:flex;flex-direction:column;gap:10px;position:relative}
+  .niche::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+  .niche.taken{opacity:.55}
+  .niche.taken::before{background:var(--text-3)}
+  .niche-tag{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .niche.taken .niche-tag{color:var(--text-3)}
+  .niche-ttl{font-family:var(--serif);font-size:22px;color:var(--ink);line-height:1.25}
+  .niche-body{color:var(--text-2);font-size:14px;line-height:1.65}
+  .niche-take{margin-top:6px;padding-top:10px;border-top:1px dashed var(--line);font-size:12px;color:var(--text-3);font-style:italic;line-height:1.55}
+  .niche-take b{color:var(--ink);font-style:normal;font-weight:500}
+
+  /* FEATURED ADVANTAGE */
+  .featured{margin-top:24px;padding:0;background:var(--ink-bg);color:var(--ink-fg);border:1px solid var(--gold);position:relative;overflow:hidden}
+  .featured-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:0}
+  .featured-left{padding:44px 40px}
+  .featured-right{padding:44px 40px;background:var(--ink-bg-2);border-left:1px solid rgba(168,138,74,.4)}
+  .featured-tag{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  .featured-ttl{font-family:var(--serif);font-size:clamp(28px,2.8vw,38px);line-height:1.15;color:var(--pearl);margin:0 0 18px}
+  .featured-ttl em{font-style:italic;color:var(--gold)}
+  .featured-body{color:var(--ink-fg);font-size:15px;line-height:1.65}
+  .featured-body p{margin:0 0 12px}
+  .featured-body p:last-child{margin:0}
+  .featured-comparison{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .compare-col{display:flex;flex-direction:column;gap:6px}
+  .compare-col .l{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-fg-2)}
+  .compare-col .v{font-family:var(--serif);font-size:30px;color:var(--pearl);line-height:1}
+  .compare-col .v small{font-size:14px;color:var(--gold);font-style:italic;margin-left:4px}
+  .compare-col .d{font-size:12px;color:var(--ink-fg-2);line-height:1.5;margin-top:4px}
+  .compare-col.brand .v{color:var(--gold)}
+  .featured-formula{margin-top:24px;padding-top:18px;border-top:1px solid rgba(168,138,74,.3);font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);line-height:1.5}
+  @media (max-width:980px){
+    .featured-grid{grid-template-columns:1fr}
+    .featured-right{border-left:none;border-top:1px solid rgba(168,138,74,.4)}
+    .featured-left,.featured-right{padding:32px 24px}
+  }
+  @media print{
+    .featured{background:#fff;color:#111;border:1px solid #3F4A36}
+    .featured-right{background:#f9f5e6;border-left-color:#A88A4A}
+    .featured-ttl,.compare-col .v{color:#3F4A36}
+    .featured-tag,.featured-ttl em,.compare-col.brand .v,.featured-formula{color:#A88A4A}
+    .featured-body,.compare-col .d,.compare-col .l{color:#444}
+  }
+
+  /* INSIGHTS */
+  .insight-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+  .insight{background:var(--panel);padding:26px 24px;display:flex;flex-direction:column;gap:10px}
+  .insight .tag{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .insight .ttl{font-family:var(--serif);font-size:20px;color:var(--ink);line-height:1.25}
+  .insight .body{color:var(--text-2);font-size:13.5px;line-height:1.65}
+
+  /* THESIS */
+  .thesis{margin-top:64px;padding:48px 40px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .thesis .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .thesis blockquote{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.35;color:var(--pearl);margin:0;font-style:italic}
+  .thesis cite{display:block;margin-top:18px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.16em;text-transform:uppercase}
+
+  /* FOOTER */
+  footer{margin-top:80px;padding-top:28px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);line-height:1.7;letter-spacing:.04em}
+  footer h4{margin:0 0 12px;font-family:var(--serif);font-size:14px;color:var(--text-2);font-weight:400;letter-spacing:.18em;text-transform:uppercase}
+  footer ul{margin:0;padding-left:18px;columns:2;column-gap:32px}
+  footer li{break-inside:avoid;margin-bottom:6px}
+  footer a{color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--line)}
+  footer a:hover{color:var(--gold)}
+
+  @media (max-width:980px){
+    .ribbon-inner,.wrap{padding-left:24px;padding-right:24px}
+    .legend,.niche-grid{grid-template-columns:1fr}
+    .insight-list{grid-template-columns:1fr}
+    .gridjs-search-input{width:100%}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .filters,.gridjs-pagination,.gridjs-search{display:none}
+    .gridjs-th{background:#3F4A36!important;color:#E8DEC4!important}
+    .gridjs-td{background:#fff!important;color:#111!important}
+    .niche.taken{opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Этап <strong>II / VI</strong> · Соседи по полю · Апрель 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- TITLE -->
+  <div class="title-block">
+    <div class="eyebrow">Анализ конкурентного поля · РФ / СНГ</div>
+    <h1>Соседи по полю.<br/><em>Где границы и где зазор.</em></h1>
+    <p class="lede">Конкуренция в психологии в 2026 году идёт не на чеке, а на смысле и тоне. На одном полюсе — масс-маркет-платформы и звёздная попса; на другом — академический холод. Матвей заходит в «слепую» зону между ними. Эта таблица — карта живых соседей: имена, методы, тон и слабости. Внизу — слоты, в которых сегодня почти никого нет.</p>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="lab">Ось 1 · Сегмент</div>
+      <div class="ttl">Этаж в ценовой иерархии</div>
+      <div class="desc">Где сидит игрок: масс-сервис, авторская практика, премиум, капсульный или академия.</div>
+    </div>
+    <div class="legend-item">
+      <div class="lab">Ось 2 · Тон</div>
+      <div class="ttl">Как звучит голос</div>
+      <div class="desc">От академического и сухого через «своего/непосредственного» к попсово-директивному и эзотерическому.</div>
+    </div>
+    <div class="legend-item">
+      <div class="lab">Ось 3 · Конкуренция</div>
+      <div class="ttl">Пересечение с ICP бренда</div>
+      <div class="dot-row"><span class="dot-mini r"></span> прямая · одна аудитория, тот же чек</div>
+      <div class="dot-row"><span class="dot-mini a"></span> косвенная · общий запрос, другой угол</div>
+      <div class="dot-row"><span class="dot-mini g"></span> нет · разная аудитория</div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="sec-head"><div><div class="num">I</div><h2>Карта соседей</h2></div><div class="sec-tagline">16 игроков · сортировка по любой колонке</div></div>
+
+  <div class="filters">
+    <div class="filter-row">
+      <span class="filter-label">Сегмент</span>
+      <button class="chip active" data-filter="seg" data-val="all">Все <span class="count" id="cnt-all"></span></button>
+      <button class="chip" data-filter="seg" data-val="Платформа">Платформы</button>
+      <button class="chip" data-filter="seg" data-val="Авторский middle">Авторский middle</button>
+      <button class="chip" data-filter="seg" data-val="Премиум">Премиум</button>
+      <button class="chip" data-filter="seg" data-val="Капсульный">Капсульный</button>
+      <button class="chip" data-filter="seg" data-val="Академический">Академический</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Конкуренция</span>
+      <button class="chip active" data-filter="comp" data-val="all">Все</button>
+      <button class="chip" data-filter="comp" data-val="r">● Прямая</button>
+      <button class="chip" data-filter="comp" data-val="a">● Косвенная</button>
+      <button class="chip" data-filter="comp" data-val="g">● Нет</button>
+    </div>
+  </div>
+
+  <div id="grid"></div>
+
+  <!-- NICHE MAP -->
+  <div class="sec-head"><div><div class="num">II</div><h2>Карта свободных ниш</h2></div><div class="sec-tagline">Где почти никого — и куда заходит бренд</div></div>
+
+  <div class="niche-grid">
+    <div class="niche">
+      <div class="niche-tag">Слот 01 · Ключевой</div>
+      <div class="niche-ttl">Молодой экзистенциалист в TG/IG для «не нормис».</div>
+      <div class="niche-body">Серьёзная экзистенциальная база (Юнг, Франкл, Ялом) + язык 18–35. Без эзотерического тумана и без академической суши. На рынке либо университетские профессора, либо эзотерики-блогеры — между ними пусто.</div>
+      <div class="niche-take"><b>Заход:</b> авторская практика 5–10к, контент в Telegram, философско-психологическая речь без «инфоцыганства».</div>
+    </div>
+    <div class="niche">
+      <div class="niche-tag">Слот 02 · Метод</div>
+      <div class="niche-ttl">Скоротечная глубина — против бесконечной терапии.</div>
+      <div class="niche-body">Большинство психологов либо «ходят 5 лет», либо обещают «5 правил счастья». Фундаментальный сдвиг за 4–8 встреч с честным методологическим обоснованием — почти никем не занятая позиция.</div>
+      <div class="niche-take"><b>Заход:</b> программа «глубинного разбора» с фиксированным числом встреч и понятным результатом.</div>
+    </div>
+    <div class="niche">
+      <div class="niche-tag">Слот 03 · Парадигма</div>
+      <div class="niche-ttl">Юнг без эзотерики · мистика без бабушек.</div>
+      <div class="niche-body">Принять трансцендентное измерение опыта (душа, смерть, призвание), но удержать интеллектуальную дисциплину и не скатываться в «энергии» и «карму». Большинство либо отрицает мистическое, либо тонет в нём.</div>
+      <div class="niche-take"><b>Заход:</b> философско-психологический контент, отсылки к классикам, разделение «вынужденного» и «невынужденного» страдания.</div>
+    </div>
+    <div class="niche">
+      <div class="niche-tag">Слот 04 · Тон</div>
+      <div class="niche-ttl">«Свой» эксперт — не наставник и не блогер.</div>
+      <div class="niche-body">Не «я ваш гуру», не «я твоя подружка-психолог», не «я профессор». А «я такой же как ты, только прошёл дальше». Этот тон сложно подделать — и потому он редок.</div>
+      <div class="niche-take"><b>Заход:</b> личная история без позы, прямые открытые тексты, отказ от шаблонов «как настоящий психолог должен».</div>
+    </div>
+    <div class="niche taken">
+      <div class="niche-tag">Слот 05 · Занят</div>
+      <div class="niche-ttl">КПТ-блогеры с научпоп-уклоном.</div>
+      <div class="niche-body">Этот слот плотно занят: Г. Петракова и круг подобных авторских TG-каналов с КПТ + клинической грамотностью. Они закрывают запрос «понятно объясни про мозг и психику».</div>
+      <div class="niche-take"><b>Не туда:</b> идти в этот слот — значит конкурировать с уже сильными игроками на их поле.</div>
+    </div>
+    <div class="niche taken">
+      <div class="niche-tag">Слот 06 · Занят</div>
+      <div class="niche-ttl">Поп-психологи с книгой и шоу.</div>
+      <div class="niche-body">Капсульный сегмент с медиа-присутствием и тиражами. Стоимость входа — 10+ лет публичной работы и инвестиции в продюсирование. Этот слот занят Лабковским, Курпатовым и подобными.</div>
+      <div class="niche-take"><b>Не туда:</b> на эту высоту имеет смысл целиться через 5–7 лет, не сейчас.</div>
+    </div>
+  </div>
+
+  <!-- FEATURED ADVANTAGE -->
+  <div class="sec-head"><div><div class="num">III</div><h2>Главное конкурентное преимущество</h2></div><div class="sec-tagline">То, чего нет ни у кого</div></div>
+
+  <div class="featured">
+    <div class="featured-grid">
+      <div class="featured-left">
+        <div class="featured-tag">Бескомпромиссный формат</div>
+        <h3 class="featured-ttl">Разбор идёт <em>до результата</em>, а не до таймера.</h3>
+        <div class="featured-body">
+          <p>Стандарт рынка — 50–60 минут. Но настоящая работа часто начинается только после первого часа: первый час уходит на то, чтобы клиент пробил собственное сопротивление и встретился с тем, что внутри. На 55-й минуте психолог говорит «время вышло, продолжим в следующий раз» — и человек закрывает то, что только начало раскрываться.</p>
+          <p>У Матвея «глубинный разбор» — это <b>отдельный продукт</b> длительностью <b>90–180 минут</b>, с фиксированной ценой <b>12 000 ₽</b>. Сколько нужно, чтобы пройти точку — столько и идёт. Не «дольше = лучше», а «сколько действительно требует процесс».</p>
+          <p>Перед каждым разбором — анкета и подготовительные вопросы (через бота). Подготовка — часть продукта, не «приходи и поговорим».</p>
+        </div>
+        <div class="featured-formula">«Не таймер на стене решает, когда работа закончена».</div>
+      </div>
+      <div class="featured-right">
+        <div class="featured-tag">Сравнение с рынком</div>
+        <h3 class="featured-ttl" style="font-size:22px;margin-bottom:24px">Что покупает клиент за один разбор.</h3>
+        <div class="featured-comparison">
+          <div class="compare-col">
+            <span class="l">Стандарт рынка</span>
+            <span class="v">50–60<small>мин</small></span>
+            <span class="d">5–7 тыс ₽ за встречу. Сессия упирается в таймер. Сопротивление часто остаётся непройденным.</span>
+          </div>
+          <div class="compare-col brand">
+            <span class="l">Глубинный разбор</span>
+            <span class="v">90–180<small>мин</small></span>
+            <span class="d">12 000 ₽ flat. Один разбор закрывает то, на что в стандарте уходит 4–6 встреч.</span>
+          </div>
+        </div>
+        <div class="featured-formula">Один глубокий разбор ≈ месяц «обычной» терапии. Не дороже — плотнее и честнее.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="sec-head"><div><div class="num">IV</div><h2>Тезисы отстройки</h2></div><div class="sec-tagline">Что из этого следует</div></div>
+
+  <div class="insight-list">
+    <div class="insight">
+      <div class="tag">Не быть</div>
+      <div class="ttl">Чёткий «анти-портрет».</div>
+      <div class="body">Не Лабковский (директивная попса), не Курпатов (свернутая практика → курсы), не блогер-эзотерик (туман), не университетский профессор (сухо). От обратного позиция читается резче, чем декларация «я уникальный».</div>
+    </div>
+    <div class="insight">
+      <div class="tag">Метод</div>
+      <div class="ttl">Интегративная экзистенция.</div>
+      <div class="body">Не один подход, а интегрированная связка: экзистенциализм как ось, психоанализ для глубины, КПТ для механики, юнгианский слой для трансцендентного. Не эклектика — методологическая дисциплина с приоритетом смысла.</div>
+    </div>
+    <div class="insight">
+      <div class="tag">Тон</div>
+      <div class="ttl">«Свой» как редкий ресурс.</div>
+      <div class="body">Большинство либо снисходит, либо учит. Тон «я такой же, только прошёл дальше» крайне редок. Его невозможно сыграть — он работает только при настоящем сходстве с ICP. У Матвея это есть — это главный актив.</div>
+    </div>
+    <div class="insight">
+      <div class="tag">Канал</div>
+      <div class="ttl">Telegram + длинный текст.</div>
+      <div class="body">Для умной аудитории 18–35 главный канал — Telegram (глубина + текст), не Instagram (визуал + поверхность) и не TikTok (3-секундное внимание). Длинный продуманный пост работает лучше карусели.</div>
+    </div>
+    <div class="insight">
+      <div class="tag">Чек</div>
+      <div class="ttl">5–10к — точка входа.</div>
+      <div class="body">Выше — отрежем «своих» 18–35. Ниже — обесценим метод и отстройку от платформ. В этой полосе немного авторских психологов с настоящей экзистенциальной базой — это окно.</div>
+    </div>
+    <div class="insight">
+      <div class="tag">Контент</div>
+      <div class="ttl">Философ-психолог-практик.</div>
+      <div class="body">Соседи по полю либо «учат жизни», либо «объясняют про мозг». Ниша «думаем вместе» — почти пуста: обсуждение Достоевского, Юнга, экзистенциальных вопросов как практика, а не как академия.</div>
+    </div>
+  </div>
+</div>
+
+<!-- THESIS -->
+<div class="thesis">
+  <div class="lab">Главный вывод этапа</div>
+  <blockquote>«Конкуренция за чек умных 18–35 идёт по двум осям: глубина мысли и подлинность голоса. Имитировать ни то, ни другое невозможно. Бренд, у которого они есть, выигрывает у бренда с маркетинговой воронкой».</blockquote>
+  <cite>— стратегический тезис · этап II</cite>
+</div>
+
+<div class="wrap">
+  <footer>
+    <h4>Источники · этап II</h4>
+    <ul>
+      <li><a href="https://www.forbes.ru/karera-i-svoy-biznes/380461-fenomen-labkovskogo-kak-samyy-uznavaemyy-psiholog-rossii-zarabatyvaet" target="_blank" rel="noopener">Forbes — Феномен Лабковского</a></li>
+      <li><a href="https://academy.kurpatov.ru/" target="_blank" rel="noopener">Академия Курпатова</a></li>
+      <li><a href="https://stressa.net/counseling" target="_blank" rel="noopener">Ольга Юрковская — индивидуальная консультация</a></li>
+      <li><a href="https://tenchat.ru/media/714407-top7-samykh-dorogikh-psikhologov-rossii" target="_blank" rel="noopener">TenChat — ТОП-7 самых дорогих психологов России</a></li>
+      <li><a href="https://psy.su/persons/100_psihologov_rossii/psy/112532/" target="_blank" rel="noopener">Психологическая газета — 100 психологов России</a></li>
+      <li><a href="https://www.hse.ru/edu/dpo/1088749521" target="_blank" rel="noopener">ВШЭ — Экзистенциальный коучинг</a></li>
+      <li><a href="https://stress.su/" target="_blank" rel="noopener">Хасай Алиев — метод Ключ</a></li>
+      <li><a href="https://alter.ru/" target="_blank" rel="noopener">Алтер</a></li>
+      <li><a href="https://yasno.live/" target="_blank" rel="noopener">Ясно</a></li>
+      <li><a href="https://zigmund.online/" target="_blank" rel="noopener">Zigmund.online</a></li>
+      <li><a href="https://profi.ru/repetitor/psihoterapevty/price/" target="_blank" rel="noopener">Профи.ру — стоимость психотерапевтов</a></li>
+      <li><a href="https://media.mts.ru/technologies/198848-telegram-kanaly-o-psihologii" target="_blank" rel="noopener">МТС Медиа — популярные TG-каналы о психологии</a></li>
+      <li><a href="https://trendhero.io/ru/blog/psihologi-v-instagram/" target="_blank" rel="noopener">Trendhero — Топ-10 психологов в Instagram</a></li>
+      <li><a href="https://t-j.ru/short/psy-blogs/" target="_blank" rel="noopener">Тинькофф Журнал — 10 блогов психологов</a></li>
+      <li><a href="https://vc.ru/marketing/2029780-telegram-dlya-psikhologov-2025-strategii-i-fishki" target="_blank" rel="noopener">VC.ru — Telegram для психолога 2025</a></li>
+      <li><a href="https://chastnayapraktika.com/" target="_blank" rel="noopener">Школа Частной Практики</a></li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+  /* === COMPETITORS DATA === */
+  const competitors = [
+    /* Capsule / stars */
+    {name:'Михаил Лабковский',sub:'Книги · ТВ · YouTube',seg:'Капсульный',price:'95–140 тыс ₽',method:'Поп-психология · «6 правил»',tone:'Поп · директивный · ТВ',audience:'35–55, женщины',ch:'ТВ, YouTube, TG, книги',weak:'Фастфуд психологии. Директивные «правила» вместо работы со смыслом. Моральные суждения. Антагонист «свободной воли» — даёт готовые ответы.',compete:'a'},
+    {name:'Андрей Курпатов',sub:'Академия · IT-проекты',seg:'Капсульный',price:'личная практика свёрнута',method:'«Системно-поведенческая» (авторская)',tone:'Лектор · инфотейнмент',audience:'25–45, IT, предприниматели',ch:'YouTube, академия, книги',weak:'Ушёл из практики в курсы и нейросети. Лектор уровня TED, не терапевт. Аудитория покупает «осведомлённость», не работу.',compete:'a'},
+    {name:'Ольга Юрковская',sub:'Бизнес-психология · MBA',seg:'Премиум',price:'~ 50 тыс ₽',method:'КПТ + бизнес-стратегия',tone:'Достижительный · «жми газ»',audience:'женщины-предприниматели 35+',ch:'YouTube, FB, книги',weak:'Достижительный фрейм («успех» как цель). Бизнес-фокус ≠ глубина смысла. Работа против «не нормис»-аудитории.',compete:'g'},
+    {name:'Татьяна Мужицкая',sub:'НЛП · психосоматика',seg:'Премиум',price:'~ 30–60 тыс ₽',method:'НЛП · психосоматика',tone:'Тёплый · полу-эзотерический',audience:'30–55, женщины',ch:'YouTube, выступления, книги',weak:'НЛП — методологически устаревший и спорный подход. Сильный эзотерический привкус. Не для рефлексирующего «не нормис».',compete:'g'},
+    {name:'Марина Мелия',sub:'Бизнес-коучинг top-менеджеров',seg:'Премиум',price:'~ 30–80 тыс ₽',method:'Коучинг · executive',tone:'Серьёзно-академический · B2B',audience:'C-level, топ-менеджеры',ch:'YouTube, книги, лекции',weak:'B2B-фокус, корпоративный язык. Не работает с экзистенциальными темами молодых.',compete:'g'},
+
+    /* Academic / existential */
+    {name:'Дмитрий Леонтьев',sub:'ВШЭ · «Жизнетворчество»',seg:'Академический',price:'5–12 тыс ₽',method:'Экзистенциальная психология',tone:'Академический · ВШЭ',audience:'30–55, образованные',ch:'ВШЭ, лекции, книги, конференции',weak:'Серьёзный академический тон. Нет молодёжного формата. Не в Telegram, не в Instagram. ICP — старше и «правильнее» Матвея.',compete:'a'},
+    {name:'Виктор Каган',sub:'СПб · клинический психолог + поэт',seg:'Авторский middle',price:'5–15 тыс ₽',method:'Клиническая + экзистенциальная',tone:'Поэт-философ · академически',audience:'35–65, образованные',ch:'Книги, эпизодические лекции',weak:'Офлайн-практика, СПб. Минимальное присутствие в соцсетях. Аудитория — поколение 50+.',compete:'a'},
+    {name:'Альфрид Лэнгле',sub:'Австрия · ВШЭ-курсы',seg:'Академический',price:'~ 80–150 €',method:'Экзистенциальный анализ',tone:'Академический · классика',audience:'Образованные специалисты',ch:'Семинары, книги, ВШЭ',weak:'Языковой барьер, академически, не для широкой аудитории. Целевые — практикующие психологи, не клиенты.',compete:'a'},
+    {name:'Хасай Алиев',sub:'Метод «Ключ» · саморегуляция',seg:'Авторский middle',price:'через курсы и центр',method:'Психофизиология · саморегуляция',tone:'«Советская» школа · методичный',audience:'30–60, антистресс',ch:'Книги, YouTube, центр',weak:'Устаревший формат и эстетика. Эзотерический привкус (хотя метод научный). Не для зумеров и миллениалов.',compete:'g'},
+
+    /* Authorial middle */
+    {name:'Галина Петракова',sub:'TG-канал · клинический психолог',seg:'Авторский middle',price:'~ 5–10 тыс ₽',method:'КПТ + клиническая',tone:'Научпоп · доступный',audience:'25–45, образованные',ch:'Telegram (большой), книги',weak:'Научпоп-уровень глубины. КПТ-фокус без экзистенциализма. Закрывает «понятно про мозг», не «зачем жить».',compete:'r'},
+
+    /* Archetypes */
+    {name:'Архетип: молодой блогер-психолог',sub:'Instagram · «своя девочка»',seg:'Авторский middle',price:'4–8 тыс ₽',method:'Эклектика + КПТ',tone:'Тёплый · «подружка»',audience:'22–35, женщины',ch:'Instagram, Reels',weak:'Попсовый язык. Маркетинговая воронка («стори → бесплатник → курс»). Поверхностность под видом «доступности».',compete:'r'},
+    {name:'Архетип: эзотерик-наставник',sub:'YouTube · «открываю истину»',seg:'Премиум',price:'8–25 тыс ₽',method:'«Энергии» + нейробиология поверх',tone:'Гуру · трансценденция-в-маркетинге',audience:'30–50, ищущие смысл',ch:'YouTube, Instagram, ретриты',weak:'Эзотерический туман без методологической дисциплины. Поза «учителя». Маркетинг через сакральные обещания.',compete:'r'},
+    {name:'Архетип: бизнес-коуч-мастермайнд',sub:'VC.ru · клубы',seg:'Премиум',price:'30–60 тыс ₽',method:'ICF-коучинг + бизнес-консалт',tone:'Достижительный · лидерский',audience:'предприниматели 30–50',ch:'VC, выступления, клубы',weak:'«Успех» как KPI. Не идёт в смысловые кризисы. Работает с топ-1% по доходу.',compete:'g'},
+    {name:'Архетип: психоаналитик-блогер',sub:'Telegram · классическая школа',seg:'Авторский middle',price:'6–12 тыс ₽',method:'Психоанализ',tone:'Сдержанный · академически',audience:'30–45, рефлексирующие',ch:'Telegram, лекции',weak:'Академически, медленно, дорого по времени (длинная терапия). Не работает с запросом «нужен сдвиг сейчас».',compete:'r'},
+
+    /* Platforms */
+    {name:'Алтер',sub:'Маркетплейс психологов',seg:'Платформа',price:'2–4 тыс ₽',method:'Любой (фильтры)',tone:'Маркетплейс · обезличенный',audience:'25–45, all',ch:'Web/app, реклама',weak:'Безличность. «Фастфуд»-подбор. Эффект «случайного партнёра». Высокая текучка терапевтов.',compete:'g'},
+    {name:'Ясно · Zigmund',sub:'Видеоконсультации',seg:'Платформа',price:'3–4 тыс ₽',method:'Любой',tone:'Маркетплейс · маркетинговый',audience:'25–45, all',ch:'Web/app, реклама',weak:'Та же безличность. Удобство как главный продукт, глубина — побочный.',compete:'g'},
+  ];
+
+  /* === FILTER STATE === */
+  let activeSeg = 'all';
+  let activeComp = 'all';
+
+  function dotHtml(c){
+    return c==='r' ? '<span class="compete"><span class="compete-dot r"></span>прямая</span>'
+      : c==='a' ? '<span class="compete"><span class="compete-dot a"></span>косвенная</span>'
+      : '<span class="compete"><span class="compete-dot g"></span>нет</span>';
+  }
+  function segClass(s){
+    if(s==='Платформа') return 'platform';
+    if(s==='Авторский middle') return 'author';
+    if(s==='Премиум') return 'premium';
+    if(s==='Капсульный') return 'capsule';
+    if(s==='Академический') return 'acad';
+    return '';
+  }
+
+  function filteredData(){
+    return competitors.filter(c=>{
+      if(activeSeg!=='all' && c.seg!==activeSeg) return false;
+      if(activeComp!=='all' && c.compete!==activeComp) return false;
+      return true;
+    }).map(c=>[
+      `<div class="name">${c.name}<small>${c.sub}</small></div>`,
+      `<span class="seg ${segClass(c.seg)}">${c.seg}</span>`,
+      `<span class="price">${c.price}</span>`,
+      c.method,
+      c.tone,
+      `<div class="weak">${c.weak}</div>`,
+      dotHtml(c.compete)
+    ]);
+  }
+
+  /* === GRID === */
+  const grid = new gridjs.Grid({
+    columns:[
+      {name:'Имя · канал', formatter:(c)=>gridjs.html(c), width:'18%'},
+      {name:'Сегмент', formatter:(c)=>gridjs.html(c), width:'10%'},
+      {name:'Чек / сессия', formatter:(c)=>gridjs.html(c), width:'10%'},
+      {name:'Метод', width:'12%'},
+      {name:'Тон', width:'12%'},
+      {name:'Слабости / разрыв с ICP', formatter:(c)=>gridjs.html(c), width:'28%'},
+      {name:'Конкуренция', formatter:(c)=>gridjs.html(c), width:'10%', sort:{compare:(a,b)=>{
+        const ord={r:0,a:1,g:2}; return ord[extract(a)]-ord[extract(b)];
+        function extract(x){ return (x.match(/dot (r|a|g)/)||[null,'g'])[1]; }
+      }}}
+    ],
+    data: filteredData(),
+    sort: true,
+    search: { enabled:true, placeholder:'Поиск по таблице…' },
+    pagination:{ enabled:true, limit:8 },
+    language:{
+      search:{ placeholder:'Поиск по таблице…' },
+      pagination:{ previous:'Назад', next:'Вперёд', showing:'Показано', of:'из', to:'—', results:()=>'игроков' },
+      noRecordsFound:'Никого нет в этом срезе',
+      loading:'Загрузка…'
+    }
+  }).render(document.getElementById('grid'));
+
+  /* === CHIP HANDLERS === */
+  document.querySelectorAll('.chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const grp = btn.dataset.filter;
+      const val = btn.dataset.val;
+      document.querySelectorAll(`.chip[data-filter="${grp}"]`).forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      if(grp==='seg') activeSeg = val;
+      if(grp==='comp') activeComp = val;
+      grid.updateConfig({data:filteredData()}).forceRender();
+    });
+  });
+
+  /* counts */
+  document.getElementById('cnt-all').textContent = competitors.length;
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Карта смыслового поля — Этап 1. Матвей Богатырёв</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root{
+    color-scheme: light;
+    /* Cream paper — page surface */
+    --bg:#EFE6CD;
+    --bg-2:#E8DEC4;
+    --panel:#F6EED7;
+    --panel-2:#F1E8CE;
+    --line:#C8BEA0;
+    --line-soft:#D9CFB1;
+    /* Ink — deep sage green */
+    --ink:#2E3828;
+    --text:#3F4A36;
+    --text-2:#525E45;
+    --text-3:#6F7C61;
+    /* Reverse — dark green band with cream text */
+    --ink-bg:#3F4A36;
+    --ink-bg-2:#465339;
+    --ink-fg:#E8DEC4;
+    --ink-fg-2:#C2B89C;
+    /* Gold accent */
+    --gold:#A88A4A;
+    --gold-2:#8E7236;
+    --gold-soft:rgba(168,138,74,.14);
+    /* Pearl */
+    --pearl:#FAF3DD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* RIBBON — dark band like flyer top */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1240px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:64px 40px 96px}
+
+  /* TITLE */
+  .title-block{margin-bottom:56px;padding-bottom:48px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5vw,64px);line-height:1.05;letter-spacing:-.005em;margin:0 0 18px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:780px;font-size:17px;color:var(--text-2);line-height:1.65}
+
+  /* NAV */
+  nav.toc{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 56px}
+  nav.toc a{flex:1 1 0;min-width:140px;padding:16px 14px;text-decoration:none;color:var(--text-3);font-size:11px;letter-spacing:.28em;text-transform:uppercase;border-right:1px solid var(--line-soft);transition:color .25s,background .25s;text-align:center}
+  nav.toc a:last-child{border-right:none}
+  nav.toc a:hover{color:var(--ink);background:var(--panel)}
+  nav.toc a span.num{display:block;font-family:var(--serif);font-size:18px;font-style:italic;color:var(--gold);margin-bottom:6px;letter-spacing:0;text-transform:none}
+
+  /* SECTION */
+  section{padding:48px 0;border-top:1px solid var(--line-soft)}
+  section:first-of-type{border-top:none;padding-top:0}
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px;gap:24px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.04em}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;color:var(--ink)}
+  .sec-tagline{color:var(--text-3);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+
+  /* KPI GRID */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .kpi{background:var(--panel);padding:28px 24px;display:flex;flex-direction:column;gap:8px;min-height:170px;position:relative;transition:background .3s}
+  .kpi:hover{background:var(--panel-2)}
+  .kpi .label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--text-3)}
+  .kpi .value{font-family:var(--serif);font-size:44px;line-height:1;color:var(--ink);margin-top:6px}
+  .kpi .value .unit{font-size:18px;color:var(--gold);font-style:italic;margin-left:4px}
+  .kpi .delta{font-size:12px;color:var(--gold);letter-spacing:.06em;margin-top:auto}
+  .kpi .note{font-size:12px;color:var(--text-3);line-height:1.5}
+
+  /* PANELS */
+  .panel{background:var(--panel);border:1px solid var(--line);padding:32px}
+  .panel + .panel{margin-top:24px}
+  .panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:16px;flex-wrap:wrap}
+  .panel-title{font-family:var(--serif);font-size:24px;color:var(--ink)}
+  .panel-sub{color:var(--text-3);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:24px}
+  .toggle{display:inline-flex;border:1px solid var(--line);background:var(--panel-2)}
+  .toggle button{background:transparent;color:var(--text-3);border:none;padding:8px 14px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:color .2s,background .2s}
+  .toggle button + button{border-left:1px solid var(--line)}
+  .toggle button.active{color:var(--pearl);background:var(--ink-bg)}
+  .toggle button:hover:not(.active){color:var(--ink)}
+  .chart-wrap{height:340px;position:relative}
+  .chart-foot{margin-top:16px;font-size:12px;color:var(--text-3);line-height:1.6}
+
+  /* PRICING TIERS */
+  .tier-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .tier{background:var(--panel);padding:22px 18px;display:flex;flex-direction:column;gap:8px;min-height:170px;position:relative}
+  .tier .roman{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:14px;letter-spacing:.04em}
+  .tier .name{font-size:13px;color:var(--text-2);letter-spacing:.16em;text-transform:uppercase;margin-top:4px;line-height:1.4}
+  .tier .price{font-family:var(--serif);font-size:24px;color:var(--ink);margin-top:8px;line-height:1.15}
+  .tier .price small{display:block;font-size:11px;color:var(--text-3);font-style:italic;margin-top:2px;letter-spacing:.04em}
+  .tier .ex{font-size:11.5px;color:var(--text-3);line-height:1.5;margin-top:auto}
+  .tier.zone{outline:1px solid var(--ink-bg);outline-offset:-1px;background:var(--ink-bg);color:var(--ink-fg)}
+  .tier.zone .name,.tier.zone .price{color:var(--pearl)}
+  .tier.zone .ex{color:var(--ink-fg-2)}
+  .tier.zone .roman{color:var(--gold)}
+  .tier.zone::before{content:"ЗОНА БРЕНДА";position:absolute;top:-1px;right:-1px;background:var(--gold);color:var(--ink-bg);font-size:9px;letter-spacing:.18em;padding:4px 8px;font-weight:600}
+
+  /* SHIFTS */
+  .shifts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .shift{background:var(--panel);padding:30px 28px;display:flex;flex-direction:column;gap:14px;cursor:default;transition:background .3s}
+  .shift:hover{background:var(--panel-2)}
+  .shift-head{display:flex;align-items:baseline;gap:14px}
+  .shift-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:30px;line-height:1}
+  .shift-from-to{font-size:11px;color:var(--text-3);letter-spacing:.22em;text-transform:uppercase;line-height:1.4}
+  .shift-from-to .arrow{color:var(--gold);margin:0 6px}
+  .shift-title{font-family:var(--serif);font-size:22px;color:var(--ink);line-height:1.25}
+  .shift-body{color:var(--text-2);font-size:14px;line-height:1.65}
+  .shift-quote{margin-top:8px;padding-left:14px;border-left:1px solid var(--gold);color:var(--text-3);font-style:italic;font-size:13px;line-height:1.55}
+
+  /* MAP — DARK SECTION (like flyer top) */
+  .map-section{margin:0 -40px;padding:0;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .map-section .sec-head{padding:48px 40px 0;color:var(--ink-fg)}
+  .map-section .sec-head h2{color:var(--pearl)}
+  .map-section .sec-head .num,.map-section .sec-head .sec-tagline{color:var(--gold)}
+  .map-panel{padding:0;overflow:hidden;background:transparent;border:none}
+  .map-inner{padding:32px 40px 56px}
+  .map-panel .panel-title{color:var(--pearl)}
+  .map-panel .panel-sub{color:var(--ink-fg-2)}
+  .map-grid{position:relative;height:520px;background:var(--ink-bg-2);border:1px solid #586349;overflow:hidden}
+  .axis-x,.axis-y{position:absolute;background:rgba(232,222,196,.18)}
+  .axis-x{left:0;right:0;top:50%;height:1px}
+  .axis-y{top:0;bottom:0;left:50%;width:1px}
+  .axis-label{position:absolute;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-fg-2)}
+  .ax-l{left:14px;top:50%;transform:translateY(-50%)}
+  .ax-r{right:14px;top:50%;transform:translateY(-50%)}
+  .ax-t{top:14px;left:50%;transform:translateX(-50%)}
+  .ax-b{bottom:14px;left:50%;transform:translateX(-50%)}
+  .dot{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+  .dot .bubble{width:14px;height:14px;border-radius:50%;background:var(--ink-fg-2);border:1px solid var(--ink-bg)}
+  .dot .lbl{font-size:11px;color:var(--ink-fg);letter-spacing:.04em;max-width:140px;line-height:1.35;background:rgba(46,56,40,.85);padding:2px 6px}
+  .dot.brand .bubble{background:var(--gold);width:18px;height:18px;box-shadow:0 0 0 6px rgba(168,138,74,.22)}
+  .dot.brand .lbl{color:var(--gold);font-family:var(--serif);font-style:italic;font-size:14px;letter-spacing:.06em;background:rgba(46,56,40,.92)}
+
+  /* INSIGHTS */
+  .insight-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .insight{background:var(--panel);padding:28px 28px;display:flex;flex-direction:column;gap:10px}
+  .insight .tag{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  .insight .ttl{font-family:var(--serif);font-size:22px;color:var(--ink);line-height:1.25}
+  .insight .body{color:var(--text-2);font-size:14px;line-height:1.65}
+
+  /* THESIS — dark band like Dostoevsky quote on flyer */
+  .thesis{margin-top:48px;padding:48px 40px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);position:relative}
+  .thesis::before{content:"";position:absolute;left:40px;right:40px;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .thesis .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .thesis blockquote{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);line-height:1.35;color:var(--pearl);margin:0;font-style:italic}
+  .thesis cite{display:block;margin-top:18px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.16em;text-transform:uppercase}
+
+  /* FOOTER */
+  footer{margin-top:80px;padding-top:28px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);line-height:1.7;letter-spacing:.04em}
+  footer h4{margin:0 0 12px;font-family:var(--serif);font-size:14px;color:var(--text-2);font-weight:400;letter-spacing:.18em;text-transform:uppercase}
+  footer ul{margin:0;padding-left:18px;columns:2;column-gap:32px}
+  footer li{break-inside:avoid;margin-bottom:6px}
+  footer a{color:var(--text-3);text-decoration:none;border-bottom:1px dotted var(--line)}
+  footer a:hover{color:var(--gold)}
+
+  @media (max-width:980px){
+    .ribbon-inner{padding:0 24px}
+    .wrap{padding:48px 24px 64px}
+    .map-section{margin:0 -24px}
+    .map-section .sec-head,.thesis,.map-inner{padding-left:24px;padding-right:24px}
+    .kpi-grid{grid-template-columns:repeat(2,1fr)}
+    .tier-grid{grid-template-columns:repeat(2,1fr)}
+    .shifts,.insight-list{grid-template-columns:1fr}
+    nav.toc a{flex:1 1 50%}
+    footer ul{columns:1}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .wrap,.ribbon-inner{max-width:none;padding:24px}
+    .ribbon,.thesis,.map-section,.tier.zone{background:#fff;color:#111}
+    .panel,.kpi,.shift,.insight,.tier{background:#fff;border:1px solid #ddd;color:#111}
+    h1,h2,.panel-title,.shift-title,.insight .ttl,.kpi .value,.tier .price,.thesis blockquote,.brand-name{color:#3F4A36}
+    .gold,.kpi .delta,.shift-num,.shift-from-to .arrow,.tier .roman,.insight .tag,.eyebrow,.thesis .lab{color:#A88A4A}
+    nav.toc,.toggle{display:none}
+  }
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- DARK GREEN RIBBON (flyer-style) -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Этап <strong>I / VI</strong> · Карта смыслового поля · Апрель 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- TITLE -->
+  <div class="title-block">
+    <div class="eyebrow">Исследование рынка · РФ / СНГ</div>
+    <h1>Поле, в которое заходит<br/><em>осмысленная практика.</em></h1>
+    <p class="lede">Российский рынок психологических услуг утроился за пять лет и впервые в истории стал массовым. Но именно эта массовость рождает встречную волну: запрос на глубину, на смысл, на «своего» человека без позы спасателя и без эзотерического тумана. Это карта поля, в которое заходит бренд.</p>
+  </div>
+
+  <nav class="toc" aria-label="Содержание">
+    <a href="#scope"><span class="num">I</span>Масштаб</a>
+    <a href="#dynamics"><span class="num">II</span>Динамика</a>
+    <a href="#pricing"><span class="num">III</span>Этажи</a>
+    <a href="#shifts"><span class="num">IV</span>Сдвиги</a>
+    <a href="#map"><span class="num">V</span>Карта</a>
+    <a href="#insights"><span class="num">VI</span>Тезисы</a>
+  </nav>
+
+  <section id="scope" class="reveal">
+    <div class="sec-head"><div><div class="num">I</div><h2>Масштаб поля</h2></div><div class="sec-tagline">Что произошло с рынком за 4 года</div></div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="label">Объём рынка РФ, 2024</div><div class="value">49,7<span class="unit">млрд ₽</span></div><div class="note">Психологические услуги, частная практика и онлайн</div><div class="delta">× 2,3 к 2020 году</div></div>
+      <div class="kpi"><div class="label">Клиенты психологов</div><div class="value">19,6<span class="unit">млн чел.</span></div><div class="note">+ 4,0 млн человек за 4 года</div><div class="delta">+ 26 % к 2020</div></div>
+      <div class="kpi"><div class="label">Индекс потребности · ВЦИОМ</div><div class="value">30<span class="unit">/ 100</span></div><div class="note">15-летний максимум, февраль 2025</div><div class="delta">× 1,3 к 2022</div></div>
+      <div class="kpi"><div class="label">Качественный сегмент (оценка)</div><div class="value">8–15<span class="unit">млрд ₽</span></div><div class="note">~20–30 % объёма: авторский middle + премиум</div><div class="delta">CAGR 15–22 %</div></div>
+    </div>
+  </section>
+
+  <section id="dynamics" class="reveal">
+    <div class="sec-head"><div><div class="num">II</div><h2>Динамика и прогноз</h2></div><div class="sec-tagline">2020 → 2028</div></div>
+    <div class="panel">
+      <div class="panel-head">
+        <div><div class="panel-title">Рост рынка психологических услуг РФ</div><div class="panel-sub">Млрд ₽ · факт 2020–2024 · прогноз 2025–2028</div></div>
+        <div class="toggle" id="scenarioToggle">
+          <button data-scn="conservative">Консерватив. CAGR 8%</button>
+          <button data-scn="base" class="active">Базовый CAGR 12%</button>
+          <button data-scn="optimistic">Оптимист. CAGR 15%</button>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="marketChart"></canvas></div>
+      <div class="chart-foot">Источники: РБК Магазин исследований, Zdrav.expert, ВЦИОМ. Прогнозный коридор пересчитывается по сценариям.</div>
+    </div>
+  </section>
+
+  <section id="pricing" class="reveal">
+    <div class="sec-head"><div><div class="num">III</div><h2>Ценовые этажи</h2></div><div class="sec-tagline">Где сидят все · и где сидим мы</div></div>
+    <div class="panel">
+      <div class="panel-head"><div><div class="panel-title">Чек одной сессии и средняя стоимость программы</div><div class="panel-sub">Сегмент → Сессия → Программа сопровождения</div></div></div>
+      <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+      <div class="chart-foot">Серая полоса — диапазон чека за сессию (₽). Золотая точка — типовая стоимость программы 4–8 встреч.</div>
+    </div>
+    <div class="tier-grid">
+      <div class="tier"><div class="roman">I</div><div class="name">Платформенный масс-маркет</div><div class="price">2 000 – 4 000 ₽<small>за сессию</small></div><div class="ex">Алтер, Ясно, Зигмунд, Профи.ру. Анонимный поток, фильтры, обезличенность.</div></div>
+      <div class="tier zone"><div class="roman">II</div><div class="name">Авторская практика</div><div class="price">12 000 ₽ · разбор<small>6 000 ₽ · сопровождение · программа 30–100 тыс ₽</small></div><div class="ex">Двухуровневая модель: <b>разбор «до результата» (90–180 мин)</b> + сессии сопровождения. <b>«Значимо, но подъёмно».</b></div></div>
+      <div class="tier"><div class="roman">III</div><div class="name">Премиум</div><div class="price">15 000 – 30 000 ₽<small>за сессию · программа 200–500 тыс ₽</small></div><div class="ex">Известные имена, личный бренд, очереди, отбор клиентов.</div></div>
+      <div class="tier"><div class="roman">IV</div><div class="name">Капсульный</div><div class="price">40 000 – 80 000 ₽<small>за сессию · программа 500 тыс – 1,5 млн ₽</small></div><div class="ex">ТВ-фигуры, конференции, ограниченные слоты, waiting-листы.</div></div>
+      <div class="tier"><div class="roman">V</div><div class="name">Закрытое наставничество</div><div class="price">от 1 млн ₽<small>годовая программа · клуб</small></div><div class="ex">Бизнес-клубы, мастермайнды, годовые менторские контракты — отдельная вселенная.</div></div>
+    </div>
+  </section>
+
+  <section id="shifts" class="reveal">
+    <div class="sec-head"><div><div class="num">IV</div><h2>Шесть сдвигов запроса</h2></div><div class="sec-tagline">Куда движется верхний сегмент</div></div>
+    <div class="shifts">
+      <div class="shift"><div class="shift-head"><div class="shift-num">01</div><div class="shift-from-to">УСПЕХ <span class="arrow">→</span> СМЫСЛ</div></div><div class="shift-title">От достижения — к проживанию.</div><div class="shift-body">Достижительная парадигма «успеха» исчерпана у верхнего среднего класса. Цель сместилась с «дойти быстрее» на «понять, зачем иду». Запрос — на качество проживания, а не на новый KPI.</div><div class="shift-quote">«Всё есть. Незачем вставать утром» — самый частый стартовый запрос успешного клиента.</div></div>
+      <div class="shift"><div class="shift-head"><div class="shift-num">02</div><div class="shift-from-to">ПРОЦЕСС <span class="arrow">→</span> РЕЗУЛЬТАТ</div></div><div class="shift-title">От бесконечной терапии — к глубоким сдвигам.</div><div class="shift-body">Клиент 2026 года не готов «ходить пять лет». Он хочет фундаментального результата без обесценивания глубины. Скорость + глубина — главный конкурентный признак премиум-практики.</div><div class="shift-quote">Психолог-«бесконечник» проигрывает рынку: клиент уходит туда, где результат отвечает за себя.</div></div>
+      <div class="shift"><div class="shift-head"><div class="shift-num">03</div><div class="shift-from-to">ЖЕРТВА <span class="arrow">→</span> СУБЪЕКТ</div></div><div class="shift-title">От объяснений — к ответственности.</div><div class="shift-body">Усталость от «травматического языка» как способа никогда не делать выбор. Запрос — на возвращение субъектности: я не объект обстоятельств, я их автор. Это не «токсичный позитив», это работа со свободной волей.</div><div class="shift-quote">Антагонист — поп-психолог-«спасатель», который снимает ответственность ради удержания клиента.</div></div>
+      <div class="shift"><div class="shift-head"><div class="shift-num">04</div><div class="shift-from-to">МАТЕРИАЛИЗМ <span class="arrow">→</span> ИНТЕГРАЛЬНОСТЬ</div></div><div class="shift-title">От «биохимии» — к душе.</div><div class="shift-body">Чисто медицинская и КПТ-парадигма больше не закрывает запрос. Возврат интереса к Юнгу, Франклу, Ялому, к мистическому и трансцендентному измерению опыта. Не отрицание науки — её расширение.</div><div class="shift-quote">«Шизофреник тонет в тех же водах, в которых мистик плавает с удовольствием» (Юнг) — снова релевантно.</div></div>
+      <div class="shift"><div class="shift-head"><div class="shift-num">05</div><div class="shift-from-to">«НОРМИС» <span class="arrow">→</span> «СВОЙ»</div></div><div class="shift-title">От нормативной попсы — к умной речи.</div><div class="shift-body">Поколение 18–35 устало от шаблонной «безопасной поддержки». Растёт спрос на эксперта, который говорит просто о сложном, не сюсюкает, не патронирует и не боится прямоты. «Свой» вместо «правильного».</div><div class="shift-quote">Клиент не нормис — и хочет, чтобы его терапевт тоже не был.</div></div>
+      <div class="shift"><div class="shift-head"><div class="shift-num">06</div><div class="shift-from-to">ИНФОЦЫГАНЕ <span class="arrow">→</span> ЭКСПЕРТЫ С БАЗОЙ</div></div><div class="shift-title">От обещаний — к доказательству глубины.</div><div class="shift-body">После пика инфоцыганства аудитория стала разборчивее. Запрос — на специалиста, у которого видна школа, метод, способ думать. Премиум — это не цена, это интеллектуальная плотность речи.</div><div class="shift-quote">Цена не делает премиум. Премиум делает плотность мысли.</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- DARK MAP SECTION (flyer-style) -->
+<section id="map" class="map-section reveal">
+  <div class="sec-head"><div><div class="num">V</div><h2>Карта позиционирования</h2></div><div class="sec-tagline">Где никто не сидит</div></div>
+  <div class="map-panel">
+    <div class="map-inner">
+      <div class="panel-head"><div><div class="panel-title">Поле «Глубина × Тон»</div><div class="panel-sub">Вертикаль — экзистенциальная глубина. Горизонталь — тон коммуникации.</div></div></div>
+      <div class="map-grid" id="mapGrid">
+        <div class="axis-x"></div><div class="axis-y"></div>
+        <div class="axis-label ax-t">Высокая глубина</div>
+        <div class="axis-label ax-b">Поверхностно</div>
+        <div class="axis-label ax-l">Академично · «суше»</div>
+        <div class="axis-label ax-r">Поп · «теплее»</div>
+        <div class="dot" style="left:78%;top:78%"><div class="bubble"></div><div class="lbl">Платформы (Алтер / Ясно)</div></div>
+        <div class="dot" style="left:84%;top:60%"><div class="bubble"></div><div class="lbl">Поп-блогеры-психологи</div></div>
+        <div class="dot" style="left:70%;top:38%"><div class="bubble"></div><div class="lbl">Эзотерики и наставники-«гуру»</div></div>
+        <div class="dot" style="left:18%;top:24%"><div class="bubble"></div><div class="lbl">Академический психоанализ</div></div>
+        <div class="dot" style="left:30%;top:50%"><div class="bubble"></div><div class="lbl">Институциональный КПТ</div></div>
+        <div class="dot" style="left:24%;top:34%"><div class="bubble"></div><div class="lbl">Экзистенциальные классики (Ялом-style)</div></div>
+        <div class="dot" style="left:64%;top:62%"><div class="bubble"></div><div class="lbl">Бизнес-коучи / мастермайнды</div></div>
+        <div class="dot brand" style="left:60%;top:22%"><div class="bubble"></div><div class="lbl">Матвей Богатырёв</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section id="insights" class="reveal" style="padding-top:0;border-top:none">
+    <div class="sec-head"><div><div class="num">VI</div><h2>Тезисы для бренда</h2></div><div class="sec-tagline">Что из этого следует</div></div>
+    <div class="insight-list">
+      <div class="insight"><div class="tag">Позиция</div><div class="ttl">Окно — глубина без снобизма.</div><div class="body">Верхний правый «тёплый» угол сейчас занят попсой, верхний левый «холодный» — академией. Между ними — пустая зона: глубокое, экзистенциальное, но сказанное живым языком. Это место бренда.</div></div>
+      <div class="insight"><div class="tag">Чек</div><div class="ttl">«Значимо, но подъёмно» — это II этаж.</div><div class="body">Сессия 5–10 тыс ₽, программа 30–100 тыс ₽. Это не премиум — это качественный авторский middle. Сейчас задача — наполнить базу, отточить метод, собрать кейсы. Премиум-чек придёт потом — через имя и доказанный результат, а не через стартовую цену.</div></div>
+      <div class="insight"><div class="tag">Аудитория</div><div class="ttl">Не «все», а «не нормис».</div><div class="body">Умные, ищущие, чувствительные, уставшие от фальши. Выбирают по интеллектуальной плотности и по «своести» автора, а не по агрессивной воронке. Сегмент крупный и растёт быстрее рынка.</div></div>
+      <div class="insight"><div class="tag">Метод</div><div class="ttl">Скорость × глубина — главное оружие.</div><div class="body">Рынок устал от «бесконечной терапии». Бренд обещает фундаментальный сдвиг за обозримое число встреч. Это не магия, это методологическая дисциплина: выбор фокуса, отказ от утешений, работа со свободой.</div></div>
+      <div class="insight"><div class="tag">Тон</div><div class="ttl">Юнг + ламповый «кент».</div><div class="body">Соединение глубины (экзистенциализм, Юнг, психоанализ, КПТ) и непосредственной живой речи. Принять мистическое измерение, но без эзотерического тумана. Признать вынужденное страдание, но не утешать им.</div></div>
+      <div class="insight"><div class="tag">Антипозиция</div><div class="ttl">Кому не быть — главный фильтр.</div><div class="body">Не быть поп-блогером, не быть «спасателем», не быть инфоцыганом, не быть академическим скучным «правильным». Чёткий «анти-портрет» защищает бренд лучше любого манифеста.</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- DARK QUOTE BAND (flyer Dostoevsky-style) -->
+<div class="thesis">
+  <div class="lab">Главный вывод этапа</div>
+  <blockquote>«Рынок впервые перестал быть местом, где платят за облегчение. Он стал местом, где платят за встречу с собой. Это и есть точка входа для тех, кто работает на глубине».</blockquote>
+  <cite>— стратегический тезис · этап I</cite>
+</div>
+
+<div class="wrap">
+  <footer>
+    <h4>Источники</h4>
+    <ul>
+      <li><a href="https://marketing.rbc.ru/articles/15657/" target="_blank" rel="noopener">РБК — Российский рынок психологических услуг: рекордный рост ₽49,7 млрд</a></li>
+      <li><a href="https://companies.rbc.ru/news/XszS4sfsVk/" target="_blank" rel="noopener">РБК Компании — Психологическая помощь в цифрах</a></li>
+      <li><a href="https://marketing.rbc.ru/research/51373/" target="_blank" rel="noopener">РБК — Анализ рынка 2020-2024, прогноз 2025-2029</a></li>
+      <li><a href="https://www.vedomosti.ru/society/news/2025/02/10/1091329-uslugi-psihologov" target="_blank" rel="noopener">Ведомости — ВЦИОМ: 15-летний максимум спроса</a></li>
+      <li><a href="https://wciom.ru/analytical-reviews/analiticheskii-obzor/indeks-potrebnosti-rossijan-v-psikhologicheskoi-podderzhke" target="_blank" rel="noopener">ВЦИОМ — Индекс потребности в психологической поддержке</a></li>
+      <li><a href="https://gxpnews.net/2025/09/v-rossii-vyros-spros-na-psihologov-i-antidepressanty/" target="_blank" rel="noopener">GxP News — Рост спроса на психологов и антидепрессанты</a></li>
+      <li><a href="https://www.kommersant.ru/doc/7513804" target="_blank" rel="noopener">Коммерсантъ — Почему россияне стали чаще обращаться к психологам</a></li>
+      <li><a href="https://profi.ru/repetitor/psihoterapevty/price/" target="_blank" rel="noopener">Профи.ру — стоимость психотерапевтов 2025</a></li>
+      <li><a href="https://alter.ru/" target="_blank" rel="noopener">Alter — онлайн-сервис психологов</a></li>
+      <li><a href="https://yasno.live/" target="_blank" rel="noopener">Ясно — сервис видеоконсультаций</a></li>
+      <li><a href="https://zigmund.online/" target="_blank" rel="noopener">Zigmund.online — индивидуальные сессии</a></li>
+      <li><a href="https://vc.ru/id3757542/1872736-10-biznes-klubov-moskvy-2025-dlya-poiska-investorov-i-lichnostnogo-rosta" target="_blank" rel="noopener">VC.ru — 10 бизнес-клубов Москвы 2025</a></li>
+      <li><a href="https://vc.ru/terra/2774532-mastermajnd-v-moskve-2026-kak-vybrat-gruppu-dlya-predprinimatelei" target="_blank" rel="noopener">VC.ru — Мастермайнд-группы Москвы 2026</a></li>
+      <li><a href="https://www.hse.ru/edu/dpo/1088749521" target="_blank" rel="noopener">ВШЭ — курс «Экзистенциальный коучинг»</a></li>
+      <li><a href="https://bortnyak.ru/coach-blog/tpost/tt5kk0i9e1-ekzistentsialnii-kouching-dlya-predprini" target="_blank" rel="noopener">Bortnyak.ru — экзистенциальный коучинг для предпринимателей</a></li>
+      <li><a href="https://epsgroup-edu.ru/blog/2025/04/21/trendyi-v-psixologii-2025-2030-chto-budet-aktualno-v-blizhajshie-godyi/" target="_blank" rel="noopener">ВШПиМ — Тренды в психологии 2025–2030</a></li>
+      <li><a href="https://edprodpo.com/blog/psychology/trendy-v-psikhologii-2026/" target="_blank" rel="noopener">Edprodpo — Современные тренды в психологии 2026</a></li>
+      <li><a href="https://smart-inc.ru/blog/kuda-dvizhetsya-psihologiya-prognoz-professij-i-trendov-na-2026-god/" target="_blank" rel="noopener">Smart-inc — Куда движется психология: прогноз 2026</a></li>
+      <li><a href="https://5prism.ru/articles/media/krugom-odni-kouchi-kak-vyglyadit-rynok-kouchinga/" target="_blank" rel="noopener">5prism — Рынок коучинга 2026</a></li>
+      <li><a href="https://www.forbes.ru/young/549682-vzroslye-i-ustalye-pocemu-zumery-vybiraut-skucnyj-obraz-zizni" target="_blank" rel="noopener">Forbes — Почему зумеры выбирают «скучный» образ жизни</a></li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const id=a.getAttribute('href');
+      if(id && id.startsWith('#')){
+        const t=document.querySelector(id);
+        if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'});}
+      }
+    });
+  });
+
+  /* Chart palette — for cream bg, dark green ink */
+  const INK = '#3F4A36';
+  const INK_DEEP = '#2E3828';
+  const GOLD = '#A88A4A';
+  const GOLD_FILL = 'rgba(168,138,74,.14)';
+  const INK_FILL = 'rgba(63,74,54,.08)';
+  const TEXT_2 = '#525E45';
+  const GRID = 'rgba(63,74,54,.12)';
+
+  Chart.defaults.color = TEXT_2;
+  Chart.defaults.font.family = '"Inter","Helvetica Neue",system-ui,sans-serif';
+  Chart.defaults.font.size = 12;
+
+  const histYears  = [2020, 2021, 2022, 2023, 2024];
+  const histValues = [21.9, 27.5, 33.8, 39.4, 49.7];
+  const fcastYears = [2025, 2026, 2027, 2028];
+  function fc(cagr){ let last=49.7; const out=[]; for(let i=0;i<fcastYears.length;i++){ last=+(last*(1+cagr)).toFixed(1); out.push(last);} return out; }
+  const scenarios = {
+    conservative:{label:'Консервативный · 8% CAGR',data:fc(0.08)},
+    base:        {label:'Базовый · 12% CAGR',     data:fc(0.12)},
+    optimistic:  {label:'Оптимистичный · 15% CAGR',data:fc(0.15)},
+  };
+  const allYears = [...histYears, ...fcastYears];
+  const histPad = histValues.concat(Array(fcastYears.length).fill(null));
+  function buildForecast(scn){
+    const data = Array(histYears.length-1).fill(null);
+    data.push(histValues[histValues.length-1]);
+    for(const v of scenarios[scn].data) data.push(v);
+    return data;
+  }
+  const marketChart = new Chart(document.getElementById('marketChart').getContext('2d'),{
+    type:'line',
+    data:{labels:allYears,datasets:[
+      {label:'Факт',data:histPad,borderColor:INK_DEEP,backgroundColor:INK_FILL,fill:true,tension:.35,borderWidth:2,pointRadius:4,pointBackgroundColor:INK_DEEP},
+      {label:scenarios.base.label,data:buildForecast('base'),borderColor:GOLD,backgroundColor:GOLD_FILL,fill:true,tension:.35,borderWidth:2,borderDash:[6,4],pointRadius:4,pointBackgroundColor:GOLD}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{usePointStyle:true,padding:18,color:TEXT_2}},
+        tooltip:{backgroundColor:INK_DEEP,borderColor:GOLD,borderWidth:1,titleColor:GOLD,bodyColor:'#E8DEC4',padding:12,displayColors:false,callbacks:{label:(ctx)=>ctx.dataset.label+': '+ctx.parsed.y+' млрд ₽'}}
+      },
+      scales:{
+        x:{grid:{color:GRID,drawBorder:false},ticks:{color:TEXT_2}},
+        y:{grid:{color:GRID,drawBorder:false},ticks:{color:TEXT_2,callback:(v)=>v+' млрд'},beginAtZero:true}
+      }
+    }
+  });
+  document.querySelectorAll('#scenarioToggle button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('#scenarioToggle button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const scn=btn.dataset.scn;
+      marketChart.data.datasets[1].data=buildForecast(scn);
+      marketChart.data.datasets[1].label=scenarios[scn].label;
+      marketChart.update();
+    });
+  });
+
+  const tiers=[
+    {name:'I — Платформенный',range:[2000,4000],prog:18000},
+    {name:'II — Авторская практика',range:[5000,10000],prog:60000},
+    {name:'III — Премиум',range:[15000,30000],prog:300000},
+    {name:'IV — Капсульный',range:[40000,80000],prog:800000},
+    {name:'V — Закрытое наставничество',range:[100000,200000],prog:1200000}
+  ];
+  new Chart(document.getElementById('priceChart').getContext('2d'),{
+    type:'bar',
+    data:{labels:tiers.map(t=>t.name),datasets:[
+      {type:'bar',label:'Сессия, ₽ (диапазон)',data:tiers.map(t=>[t.range[0],t.range[1]]),
+        backgroundColor:ctx=>ctx.dataIndex===1?INK_DEEP:'rgba(82,94,69,.32)',
+        borderColor:ctx=>ctx.dataIndex===1?INK_DEEP:'rgba(82,94,69,.55)',
+        borderWidth:1,borderSkipped:false,borderRadius:0,
+        barPercentage:.55,categoryPercentage:.7,yAxisID:'y'},
+      {type:'line',label:'Программа сопровождения, ₽ (типовая)',data:tiers.map(t=>t.prog),
+        borderColor:GOLD,backgroundColor:'transparent',
+        pointBackgroundColor:GOLD,pointRadius:6,pointHoverRadius:8,showLine:false,yAxisID:'y2'}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{usePointStyle:true,padding:18,color:TEXT_2}},
+        tooltip:{backgroundColor:INK_DEEP,borderColor:GOLD,borderWidth:1,titleColor:GOLD,bodyColor:'#E8DEC4',padding:12,displayColors:false,
+          callbacks:{label:(ctx)=>{
+            if(ctx.dataset.type==='line') return 'Программа: '+ctx.parsed.y.toLocaleString('ru-RU')+' ₽';
+            const r=ctx.raw; return 'Сессия: '+r[0].toLocaleString('ru-RU')+' – '+r[1].toLocaleString('ru-RU')+' ₽';
+          }}
+        }
+      },
+      scales:{
+        x:{grid:{display:false},ticks:{color:TEXT_2,maxRotation:0,autoSkip:false}},
+        y:{position:'left',grid:{color:GRID},ticks:{color:TEXT_2,callback:(v)=>v.toLocaleString('ru-RU')+' ₽'},type:'logarithmic'},
+        y2:{position:'right',grid:{display:false},ticks:{color:GOLD,callback:(v)=>v.toLocaleString('ru-RU')+' ₽'},type:'logarithmic'}
+      }
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Матвей Богатырёв — психолог, человековед</title>
+<meta name="description" content="Авторская практика. Глубинный разбор до 3 часов · экзистенциальный метод · работа до результата, не до таймера." />
+<link rel="canonical" href="https://matveybogatyrev.ru/" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ru_RU" />
+<meta property="og:title" content="Матвей Богатырёв — психолог, человековед" />
+<meta property="og:description" content="Глубинный разбор до 3 часов · экзистенциальный метод · работа до результата, не до таймера." />
+<meta property="og:url" content="https://matveybogatyrev.ru/" />
+<meta name="theme-color" content="#3F4A36" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<!-- Единый счётчик Яндекс.Метрики для всех страниц. Номер вписывается в файле metrika.js -->
+<script src="metrika.js"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --gold-soft:rgba(168,138,74,.14);
+    --pearl:#FAF3DD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* === STICKY NAV === */
+  nav.nav{position:sticky;top:0;z-index:50;background:rgba(239,230,205,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);transition:background .3s, border-color .3s}
+  nav.nav.scrolled{background:rgba(46,56,40,.96);border-bottom-color:var(--gold)}
+  nav.nav.scrolled .nav-link{color:var(--ink-fg)}
+  nav.nav.scrolled .nav-link:hover{color:var(--gold)}
+  nav.nav.scrolled .nav-brand-name{color:var(--ink-fg)}
+  nav.nav.scrolled .nav-brand-mark{border-color:var(--gold);color:var(--gold)}
+  nav.nav.scrolled .nav-cta{background:var(--gold);color:var(--ink-bg);border-color:var(--gold)}
+  nav.nav.scrolled .nav-cta:hover{background:var(--ink-fg);color:var(--ink-bg)}
+  .nav-inner{max-width:1280px;margin:0 auto;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .nav-brand-mark{width:32px;height:32px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:18px;transition:all .3s}
+  .nav-brand-name{font-family:var(--serif);font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);transition:color .3s}
+  .nav-links{display:flex;gap:32px;align-items:center}
+  .nav-link{font-size:13px;color:var(--text-2);font-weight:400;transition:color .25s;letter-spacing:.04em}
+  .nav-link:hover{color:var(--ink)}
+  .nav-cta{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;background:transparent;color:var(--ink);border:1px solid var(--ink);padding:11px 22px;cursor:pointer;transition:all .25s}
+  .nav-cta:hover{background:var(--ink);color:var(--pearl)}
+
+  /* === HERO === */
+  .hero{min-height:88vh;display:flex;align-items:center;padding:80px 40px 120px;position:relative;overflow:hidden}
+  .hero-inner{max-width:1280px;margin:0 auto;width:100%}
+  .hero-eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;font-weight:600}
+  .hero-eyebrow .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin:0 12px;vertical-align:middle}
+  h1.hero-h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,8vw,124px);line-height:.9;letter-spacing:-.015em;margin:0 0 32px;color:var(--ink);max-width:1100px}
+  h1.hero-h1 em{font-style:italic;color:var(--gold)}
+  .hero-lede{max-width:680px;font-size:21px;color:var(--text-2);line-height:1.55;margin:0 0 40px;font-family:var(--serif);font-style:italic}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:var(--sans);font-size:12px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;padding:18px 32px;cursor:pointer;transition:all .25s;display:inline-block;text-align:center;border:1px solid transparent}
+  .btn-primary{background:var(--ink-bg);color:var(--pearl);border-color:var(--ink-bg)}
+  .btn-primary:hover{background:var(--gold);border-color:var(--gold);color:var(--ink-bg)}
+  .btn-secondary{background:transparent;color:var(--ink);border-color:var(--ink)}
+  .btn-secondary:hover{background:var(--ink);color:var(--pearl)}
+  .btn-ghost{background:transparent;color:var(--gold);border-color:var(--gold)}
+  .btn-ghost:hover{background:var(--gold);color:var(--ink-bg)}
+  .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--text-3);font-style:italic;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:var(--serif)}
+  .scroll-hint::after{content:"";width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent);animation:descend 2s ease-in-out infinite}
+  @keyframes descend{0%,100%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1)}}
+
+  /* === SECTION FRAMEWORK === */
+  section.scn{padding:120px 40px;position:relative}
+  .scn-inner{max-width:1100px;margin:0 auto}
+  .scn-eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
+  h2.scn-h2{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5vw,68px);line-height:1.0;letter-spacing:-.005em;margin:0 0 32px;color:var(--ink)}
+  h2.scn-h2 em{font-style:italic;color:var(--gold)}
+  .scn-lede{font-size:19px;color:var(--text-2);line-height:1.7;max-width:740px;margin:0 0 14px;font-family:var(--serif)}
+  .scn-lede:last-child{margin-bottom:0}
+  .scn-lede b{color:var(--ink);font-weight:500}
+  .scn-divider{display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--serif);font-style:italic;font-size:14px;letter-spacing:.3em;margin:48px 0;text-transform:uppercase}
+  .scn-divider::before, .scn-divider::after{content:"";flex:1;max-width:120px;height:1px;background:var(--line);margin:0 18px}
+
+  /* === PHILOSOPHY === */
+  .philosophy{background:var(--panel)}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:48px}
+  .pillar{padding-top:24px;border-top:1px solid var(--gold)}
+  .pillar-num{font-family:var(--serif);font-style:italic;font-size:48px;color:var(--gold);line-height:1;margin-bottom:8px}
+  .pillar h3{font-family:var(--serif);font-weight:400;font-size:26px;color:var(--ink);margin:0 0 12px;line-height:1.15}
+  .pillar p{font-size:15px;color:var(--text-2);line-height:1.7;margin:0}
+
+  /* === SUFFERING === */
+  .suffering-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:48px}
+  .suffering-col{background:var(--panel);padding:36px}
+  .suffering-col h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0 0 8px;font-weight:400}
+  .suffering-col h4 em{color:var(--gold);font-style:italic}
+  .suffering-col p{font-size:15px;color:var(--text-2);line-height:1.7;margin:0 0 8px}
+  .suffering-col .examples{font-size:13.5px;color:var(--text-3);font-style:italic;line-height:1.6}
+
+  /* === DARK SECTION (paradox) === */
+  .dark{background:var(--ink-bg);color:var(--ink-fg)}
+  .dark .scn-eyebrow{color:var(--gold)}
+  .dark h2.scn-h2{color:var(--pearl)}
+  .dark h2.scn-h2 em{color:var(--gold)}
+  .dark .scn-lede{color:var(--ink-fg)}
+  .dark .scn-lede b{color:var(--gold)}
+  .pull{font-family:var(--serif);font-style:italic;font-size:clamp(28px,3.5vw,42px);line-height:1.3;color:var(--pearl);margin:48px 0;padding-left:32px;border-left:3px solid var(--gold);max-width:920px}
+  .pull cite{display:block;margin-top:12px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.18em;text-transform:uppercase;font-family:var(--sans)}
+
+  /* === FORMATS === */
+  .formats{padding-top:120px;padding-bottom:120px}
+  .formats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+  .fmt{background:var(--panel);border:1px solid var(--line);padding:36px 32px 32px;display:flex;flex-direction:column;gap:14px;transition:transform .35s, border-color .35s, background .35s;position:relative}
+  .fmt:hover{transform:translateY(-4px);border-color:var(--gold);background:var(--panel-2)}
+  .fmt.flagship{background:var(--ink-bg);color:var(--ink-fg)}
+  .fmt.flagship:hover{background:var(--ink-bg-2)}
+  .fmt-badge{position:absolute;top:-1px;right:-1px;background:var(--gold);color:var(--ink-bg);font-size:9px;letter-spacing:.22em;padding:5px 10px;font-weight:600;text-transform:uppercase}
+  .fmt-num{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--gold);letter-spacing:.18em;text-transform:uppercase}
+  .fmt h3{font-family:var(--serif);font-size:32px;line-height:1.1;color:var(--ink);margin:0;font-weight:400}
+  .fmt.flagship h3{color:var(--pearl)}
+  .fmt-sub{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--text-2);line-height:1.45}
+  .fmt.flagship .fmt-sub{color:var(--ink-fg-2)}
+  .fmt-sep{height:1px;background:var(--line);margin:8px 0}
+  .fmt.flagship .fmt-sep{background:rgba(168,138,74,.4)}
+  .fmt-body{font-size:14px;line-height:1.65;color:var(--text)}
+  .fmt.flagship .fmt-body{color:var(--ink-fg)}
+  .fmt-price{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:14px}
+  .fmt.flagship .fmt-price{border-top-color:rgba(168,138,74,.4)}
+  .fmt-price-val{font-family:var(--serif);font-size:32px;color:var(--ink);line-height:1}
+  .fmt.flagship .fmt-price-val{color:var(--pearl)}
+  .fmt-price-val small{font-size:14px;color:var(--gold);font-style:italic;display:block;margin-top:2px}
+  .fmt-cta{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);background:transparent;border:1px solid var(--ink);padding:10px 16px;cursor:pointer;transition:all .25s;font-weight:600}
+  .fmt.flagship .fmt-cta{color:var(--gold);border-color:var(--gold)}
+  .fmt-cta:hover{background:var(--ink);color:var(--pearl)}
+  .fmt.flagship .fmt-cta:hover{background:var(--gold);color:var(--ink-bg);border-color:var(--gold)}
+  .support-note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);padding:28px 32px;margin-top:32px}
+  .support-note .lab{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600}
+  .support-note h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:0 0 6px;font-weight:400;line-height:1.25}
+  .support-note h4 em{color:var(--gold);font-style:italic}
+  .support-note p{font-size:14px;color:var(--text-2);margin:0;line-height:1.65}
+
+  /* === ADVANTAGE (до результата) === */
+  .advantage{padding-top:0;padding-bottom:120px}
+  .advantage-card{background:var(--ink-bg);color:var(--ink-fg);border:1px solid var(--gold);overflow:hidden}
+  .advantage-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:0}
+  .advantage-left{padding:56px 56px}
+  .advantage-right{padding:56px 56px;background:var(--ink-bg-2);border-left:1px solid rgba(168,138,74,.4);display:flex;flex-direction:column;justify-content:center}
+  .advantage-tag{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:600}
+  .advantage h3{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,46px);line-height:1.1;color:var(--pearl);margin:0 0 24px}
+  .advantage h3 em{color:var(--gold);font-style:italic}
+  .advantage p{font-size:15.5px;color:var(--ink-fg);line-height:1.7;margin:0 0 14px}
+  .advantage p b{color:var(--gold)}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .compare-col .l{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-fg-2);margin-bottom:12px;font-weight:600}
+  .compare-col .v{font-family:var(--serif);font-size:60px;line-height:1;color:var(--pearl)}
+  .compare-col.brand .v{color:var(--gold)}
+  .compare-col .v small{display:block;font-size:18px;color:var(--gold);font-style:italic;margin-top:6px}
+  .compare-col.brand .v small{color:var(--ink-fg-2)}
+  .compare-col .d{font-size:13px;color:var(--ink-fg-2);line-height:1.5;margin-top:14px}
+  .advantage-formula{margin-top:32px;padding-top:24px;border-top:1px solid rgba(168,138,74,.4);font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold)}
+
+  /* === ANTI-LIST === */
+  .anti{background:var(--ink-bg);color:var(--ink-fg)}
+  .anti-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(168,138,74,.3);border:1px solid var(--gold);margin-top:48px}
+  .anti-cell{background:var(--ink-bg);padding:28px 32px;display:flex;flex-direction:column;gap:8px;transition:background .3s}
+  .anti-cell:hover{background:var(--ink-bg-2)}
+  .anti-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px;letter-spacing:.04em}
+  .anti-cell h4{font-family:var(--serif);font-size:22px;color:var(--pearl);margin:0;line-height:1.25;font-weight:400}
+  .anti-cell p{font-size:14px;color:var(--ink-fg-2);line-height:1.65;margin:0}
+
+  /* === ABOUT === */
+  .about-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start;margin-top:48px}
+  .about-photo{background:var(--ink-bg);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:var(--gold);font-family:var(--serif);font-style:italic;font-size:18px;letter-spacing:.06em;border:1px solid var(--gold);position:relative;overflow:hidden}
+  .about-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--ink-bg) 0%,var(--ink-bg-2) 100%)}
+  .about-photo span{position:relative;z-index:1;font-size:14px;color:var(--ink-fg-2);text-align:center;padding:20px}
+  .about-text p{font-size:17px;color:var(--text);line-height:1.75;margin:0 0 18px;font-family:var(--serif)}
+  .about-text p:last-child{margin:0}
+  .about-text p b{color:var(--ink);font-weight:500}
+  .about-creds{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:32px}
+  .about-cred{background:var(--panel);padding:18px 22px}
+  .about-cred .l{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:4px}
+  .about-cred .v{font-family:var(--serif);font-size:16px;color:var(--ink);line-height:1.3}
+
+  /* === PRICE EXPLAINER === */
+  .price-section{background:var(--panel)}
+  .price-explainer{background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--gold);padding:48px 56px;margin-top:48px}
+  .price-explainer h3{font-family:var(--serif);font-size:30px;color:var(--ink);margin:0 0 24px;font-weight:400;line-height:1.2}
+  .price-explainer h3 em{color:var(--gold);font-style:italic}
+  .price-explainer p{font-size:16px;color:var(--text);line-height:1.75;margin:0 0 16px}
+  .price-explainer p b{color:var(--ink);font-weight:500}
+  .price-explainer p:last-child{margin-bottom:0}
+
+  /* === FILTER CTA === */
+  .filter-cta{background:var(--ink-bg);color:var(--ink-fg);padding:80px 40px;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .filter-cta-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:64px;align-items:center}
+  .filter-cta .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;font-weight:600}
+  .filter-cta h2{font-family:var(--serif);font-size:clamp(32px,4vw,52px);color:var(--pearl);margin:0 0 18px;line-height:1.05;font-weight:400}
+  .filter-cta h2 em{color:var(--gold);font-style:italic}
+  .filter-cta p{font-size:16px;color:var(--ink-fg);line-height:1.7;margin:0 0 24px;max-width:540px}
+  .filter-cta-actions{text-align:right}
+  .filter-cta-actions .btn-ghost{font-size:12px;padding:20px 38px}
+
+  /* === CHANNELS === */
+  .channels-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+  .channel{background:var(--panel);border:1px solid var(--line);padding:36px 36px;display:flex;flex-direction:column;gap:12px;transition:border-color .35s, transform .35s}
+  .channel:hover{border-color:var(--gold);transform:translateY(-3px)}
+  .channel-icon{font-family:var(--serif);font-style:italic;font-size:28px;color:var(--gold);line-height:1}
+  .channel h4{font-family:var(--serif);font-size:26px;color:var(--ink);margin:0;line-height:1.15;font-weight:400}
+  .channel p{font-size:14.5px;color:var(--text-2);line-height:1.65;margin:0}
+  .channel-link{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);font-family:var(--sans);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600}
+
+  /* === BOOKING FORM === */
+  .booking{background:var(--bg-2)}
+  .booking-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start;margin-top:48px}
+  .booking-text p{font-size:17px;color:var(--text);line-height:1.75;font-family:var(--serif);margin:0 0 16px}
+  .booking-text p b{color:var(--ink);font-weight:500}
+  .booking-text .quote{font-style:italic;color:var(--text-2);font-size:18px;border-left:2px solid var(--gold);padding-left:18px;margin-top:24px}
+  .booking-form{background:var(--panel);border:1px solid var(--line);padding:40px 36px}
+  .booking-form .form-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+  .booking-form h3{font-family:var(--serif);font-size:26px;color:var(--ink);margin:0 0 24px;font-weight:400;line-height:1.2}
+  .form-field{margin-bottom:20px}
+  .form-field label{display:block;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px;font-weight:500}
+  .form-field input, .form-field select, .form-field textarea{width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);padding:14px 16px;border-radius:0;transition:border-color .2s}
+  .form-field textarea{font-family:var(--serif);min-height:110px;resize:vertical;line-height:1.55}
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus{outline:none;border-color:var(--gold)}
+  .form-field input::placeholder, .form-field textarea::placeholder{color:var(--text-3);font-style:italic}
+  .form-submit{margin-top:8px}
+  .form-note{font-size:12px;color:var(--text-3);font-style:italic;margin-top:14px;line-height:1.5}
+
+  /* === FINAL THESIS === */
+  .final-thesis{background:var(--ink-bg);color:var(--ink-fg);text-align:center;padding:120px 40px}
+  .final-thesis-inner{max-width:900px;margin:0 auto}
+  .final-thesis .ornament{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:28px;letter-spacing:.2em;margin-bottom:32px}
+  .final-thesis p{font-family:var(--serif);font-size:clamp(22px,2.6vw,30px);line-height:1.5;color:var(--pearl);margin:0 0 14px}
+  .final-thesis p.imperative{color:var(--gold);font-style:italic;margin-top:24px;font-size:clamp(24px,2.8vw,32px)}
+
+  /* === FOOTER === */
+  footer{background:var(--bg-2);color:var(--text-3);padding:64px 40px 40px;border-top:1px solid var(--line)}
+  .footer-inner{max-width:1280px;margin:0 auto}
+  .footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+  .footer-brand .nav-brand-mark{margin-bottom:14px}
+  .footer-col h5{font-family:var(--serif);font-size:14px;color:var(--ink);margin:0 0 14px;font-weight:400;letter-spacing:.18em;text-transform:uppercase}
+  .footer-col ul{list-style:none;padding:0;margin:0}
+  .footer-col li{margin-bottom:8px;font-size:13.5px}
+  .footer-col li a{color:var(--text-2);transition:color .2s}
+  .footer-col li a:hover{color:var(--gold)}
+  .footer-bottom{padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer-bottom span{color:var(--text-3)}
+
+  /* === REVEAL ANIMATION === */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity 1s ease, transform 1s ease}
+  .reveal.in{opacity:1;transform:none}
+  .reveal-delay-1{transition-delay:.1s}
+  .reveal-delay-2{transition-delay:.2s}
+  .reveal-delay-3{transition-delay:.3s}
+
+  /* === RESPONSIVE === */
+  @media (max-width:980px){
+    .nav-inner{padding:14px 24px;gap:14px}
+    .nav-links{display:none}
+    .hero{padding:48px 24px 80px;min-height:auto}
+    section.scn, .filter-cta, .final-thesis{padding-left:24px;padding-right:24px;padding-top:80px;padding-bottom:80px}
+    .pillars{grid-template-columns:1fr;gap:32px}
+    .suffering-grid, .formats-grid, .channels-grid, .anti-grid, .compare-grid{grid-template-columns:1fr}
+    .advantage-grid, .filter-cta-inner, .booking-grid, .about-grid{grid-template-columns:1fr;gap:32px}
+    .advantage-left, .advantage-right{padding:40px 28px}
+    .advantage-right{border-left:none;border-top:1px solid rgba(168,138,74,.4)}
+    .filter-cta-actions{text-align:left}
+    .price-explainer{padding:32px 28px}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+    .about-creds{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== NAV ====== -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">
+      <div class="nav-brand-mark">M</div>
+      <div class="nav-brand-name">Матвей Богатырёв</div>
+    </a>
+    <div class="nav-links">
+      <a href="#philosophy" class="nav-link">Философия</a>
+      <a href="#formats" class="nav-link">Форматы</a>
+      <a href="#about" class="nav-link">О себе</a>
+      <a href="#filter" class="nav-link">Фильтр готовности</a>
+      <a href="#booking" class="nav-link">Заявка</a>
+    </div>
+    <a href="#booking" class="nav-cta">Записаться</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Психолог · Человековед<span class="dot"></span>Авторская практика</div>
+    <h1 class="hero-h1">Глубокая работа,<br/><em>а не терапия как образ жизни.</em></h1>
+    <p class="hero-lede">Я работаю до результата, а не до таймера. Один глубинный разбор может идти 90–180 минут — пока мы не пройдём точку. Моя задача — научить тебя обходиться без меня. Это не маркетинговая воронка, это серьёзная работа.</p>
+    <div class="hero-actions">
+      <a href="#filter" class="btn btn-primary">Пройти фильтр готовности</a>
+      <a href="#philosophy" class="btn btn-secondary">Прочитать манифест</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Прокрути</div>
+</section>
+
+<!-- ====== PHILOSOPHY ====== -->
+<section class="scn philosophy" id="philosophy">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел I · Природа человека</div>
+    <h2 class="scn-h2">Три тезиса,<br/>на которых <em>держится метод.</em></h2>
+    <p class="scn-lede">Их не нужно разделять, чтобы со мной работать. Но их полезно знать заранее — это <b>пароль для своих</b> и фильтр для тех, кому это не подходит.</p>
+    <div class="pillars">
+      <div class="pillar reveal reveal-delay-1">
+        <div class="pillar-num">I</div>
+        <h3>Человек обречён на свободу.</h3>
+        <p>Даже отказ от выбора — это выбор. Я не работаю с языком «жертвы обстоятельств». Возвращаю клиенту его субъектность — даже когда удобнее быть объектом.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-2">
+        <div class="pillar-num">II</div>
+        <h3>Душа — серьёзная категория.</h3>
+        <p>Я не материалист. Жизнь не сводится к биологии. Душа, смысл, призвание, смерть — для меня не метафоры. Но эзотерика без дисциплины — это уход от глубины, а не глубина.</p>
+      </div>
+      <div class="pillar reveal reveal-delay-3">
+        <div class="pillar-num">III</div>
+        <h3>Юнг прав в главном.</h3>
+        <p>Пугающее и сакральное часто живут в одних водах. «Шизофреник тонет в тех же водах, в которых мистик плавает с удовольствием». Работа психолога — научить плавать.</p>
+      </div>
+    </div>
+
+    <div class="scn-divider"><span>· Различение страдания ·</span></div>
+
+    <div class="suffering-grid">
+      <div class="suffering-col reveal">
+        <h4>Вынужденное страдание</h4>
+        <p>То, что вшито в ткань жизни и не убирается работой над собой.</p>
+        <p class="examples">Смерть близких. Хронические болезни от рождения. Утрата того, что нельзя вернуть. Осознание собственной конечности.</p>
+      </div>
+      <div class="suffering-col reveal reveal-delay-1">
+        <h4><em>Невынужденное</em> страдание</h4>
+        <p>То, что человек продолжает производить сам, потому что так выходит легче, чем взять ответственность.</p>
+        <p class="examples">Избегание выбора. Жизнь в обиде. Поиск виновных. Удержание идентичности «жертвы».</p>
+      </div>
+    </div>
+
+    <p class="scn-lede" style="margin-top:32px">Я работаю с обоими типами — но <b>по-разному</b>. С невынужденным — на изменение. С вынужденным — на способ <i>быть</i>, чтобы оно тебя не разрушило.</p>
+  </div>
+</section>
+
+<!-- ====== ADVANTAGE: ДО РЕЗУЛЬТАТА ====== -->
+<section class="scn advantage">
+  <div class="scn-inner reveal">
+    <div class="advantage-card">
+      <div class="advantage-grid">
+        <div class="advantage-left">
+          <div class="advantage-tag">Главное отличие</div>
+          <h3>Разбор идёт <em>до результата</em>, а не до таймера.</h3>
+          <p>Стандарт рынка — 50 минут раз в неделю, длительностью «когда вам станет лучше». Я считаю этот формат экономически устроенным под удержание клиента, а не под результат.</p>
+          <p>Я работаю иначе. Сессия-разбор у меня может идти <b>90–180 минут</b>. Не потому, что «дольше — лучше», а потому что настоящая работа часто начинается только после первого часа, когда у клиента рассеивается сопротивление.</p>
+          <p>На 55-й минуте психолог говорит «время вышло» — и человек закрывает то, что только начало раскрываться. У меня — нет таймера. Идём, пока не пройдём точку.</p>
+          <div class="advantage-formula">«Не таймер на стене решает, когда работа закончена».</div>
+        </div>
+        <div class="advantage-right">
+          <div class="advantage-tag">Сравнение</div>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <div class="l">Стандарт</div>
+              <div class="v">50<small>минут</small></div>
+              <div class="d">Сессия упирается в таймер. Сопротивление часто остаётся непройденным.</div>
+            </div>
+            <div class="compare-col brand">
+              <div class="l">Глубинный разбор</div>
+              <div class="v">180<small>минут максимум</small></div>
+              <div class="d">12 000 ₽ flat. Один разбор закрывает то, на что в стандарте уходит 4–6 встреч.</div>
+            </div>
+          </div>
+          <div class="advantage-formula">Один разбор ≈ месяц «обычной» терапии. Не дороже — плотнее и честнее.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PARADOX (DARK) ====== -->
+<section class="scn dark" id="paradox">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел II · Парадокс</div>
+    <h2 class="scn-h2">Парадокс <em>хорошего психолога.</em></h2>
+    <p class="scn-lede">Я глубоко убеждён в том, что задача хорошего специалиста — научить человека жить и справляться <b>самостоятельно</b>. Без постоянных походов к психологу. Моя работа — дать инструмент, систему, глубокое понимание и научить ими пользоваться.</p>
+    <blockquote class="pull">«Хороший специалист — тот, чья задача сделать так, чтобы человеку больше не понадобились его услуги».<cite>— принцип практики</cite></blockquote>
+    <p class="scn-lede">В этом — параллель с врачами: вы вряд ли хотите всю жизнь ходить к врачу, который лечит вашу болячку ровно до той степени, чтобы она не сильно мешала вам жить, но не прошла полностью.</p>
+    <p class="scn-lede">Если кому-то нравится ходить к психологу раз в неделю — это не плохо. Но человек не должен <b>«подсаживаться»</b> на это. Подобное желание должно исходить из «я могу жить и без этого, но мне нравится», а не из «я не справлюсь без этого». Это разные позиции — и они ведут в разные жизни.</p>
+  </div>
+</section>
+
+<!-- ====== FORMATS ====== -->
+<section class="scn formats" id="formats">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел III · Форматы</div>
+    <h2 class="scn-h2">Три формы.<br/><em>Одна работа.</em></h2>
+    <p class="scn-lede">Все опираются на одну методологию — отличаются <b>масштабом задачи</b>. Формат выбирается не по бюджету, а по тому, какого размера у тебя задача.</p>
+
+    <div class="formats-grid">
+      <div class="fmt flagship reveal reveal-delay-1">
+        <div class="fmt-badge">Флагман</div>
+        <div class="fmt-num">Формат 01</div>
+        <h3>Глубинный разбор</h3>
+        <div class="fmt-sub">Одна встреча. 90–180 минут. До результата.</div>
+        <div class="fmt-sep"></div>
+        <div class="fmt-body">Точка входа. Подходит, когда есть конкретный кризис, дилемма, и нужен честный взгляд со стороны без долгих процедур. Не «начало терапии» — конкретный сдвиг за один заход.</div>
+        <div class="fmt-price">
+          <div class="fmt-price-val">12 000 ₽<small>flat</small></div>
+          <a href="#booking" class="fmt-cta">Забронировать</a>
+        </div>
+      </div>
+
+      <div class="fmt reveal reveal-delay-2">
+        <div class="fmt-num">Формат 02</div>
+        <h3>Сопровождение<br/>до результата</h3>
+        <div class="fmt-sub">5–7 встреч за 6–10 недель.</div>
+        <div class="fmt-sep"></div>
+        <div class="fmt-body">Структурированная работа над прохождением конкретного перелома: смена работы, развод, переезд, утрата, кризис идентичности. Точка выхода фиксируется заранее.</div>
+        <div class="fmt-price">
+          <div class="fmt-price-val">от 30 000 ₽<small>за пакет</small></div>
+          <a href="#booking" class="fmt-cta">Обсудить</a>
+        </div>
+      </div>
+
+      <div class="fmt reveal reveal-delay-3">
+        <div class="fmt-num">Формат 03</div>
+        <h3>Великое<br/>делание</h3>
+        <div class="fmt-sub">12 встреч за 3 месяца. Длинная трансформация.</div>
+        <div class="fmt-sep"></div>
+        <div class="fmt-body">Юнгианское <em>opus magnum</em> в честном масштабе — три месяца плотной работы по перенастройке отношений с собой, со смыслом, со свободой.</div>
+        <div class="fmt-price">
+          <div class="fmt-price-val">90 000 ₽<small>за программу</small></div>
+          <a href="#booking" class="fmt-cta">Знакомство</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="support-note reveal">
+      <div class="lab">Дополнительно</div>
+      <h4>Поддерживающая <em>терапия</em> — после основной работы.</h4>
+      <p>1–2 раза в месяц без ограничения по числу встреч, по индивидуальной договорённости. Это не отдельный формат для входа: сначала мы понимаем, кто мы друг для друга, потом — переходим в постоянный ритм, если он действительно нужен.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== ANTI-FILTER (DARK) ====== -->
+<section class="scn anti dark">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел IV · Жёсткий фильтр</div>
+    <h2 class="scn-h2">Кому я <em>не подойду.</em></h2>
+    <p class="scn-lede">Это не кокетство — это честное предупреждение, написанное из уважения к твоему времени. Если ты узнаёшь себя — значит, сейчас тебе подойдёт другой специалист, или нужно подождать. Я никуда не денусь.</p>
+    <div class="anti-grid">
+      <div class="anti-cell">
+        <div class="anti-num">01</div>
+        <h4>«Утешь меня и обещай.»</h4>
+        <p>Я не предсказатель и не гарант. Я не утешаю и не путаю поддержку с жалостью.</p>
+      </div>
+      <div class="anti-cell">
+        <div class="anti-num">02</div>
+        <h4>«Найди мне виновного.»</h4>
+        <p>У всех вокруг тебя были свои причины и свои ограничения. Работа здесь — про тебя.</p>
+      </div>
+      <div class="anti-cell">
+        <div class="anti-num">03</div>
+        <h4>«Сделай за меня.»</h4>
+        <p>Я создаю условия, в которых работа становится возможной. Делать её придётся самому.</p>
+      </div>
+      <div class="anti-cell">
+        <div class="anti-num">04</div>
+        <h4>«Дай мне 5 правил.»</h4>
+        <p>У меня нет правил для всех — есть твой случай, твой выбор и твоя ответственность.</p>
+      </div>
+      <div class="anti-cell">
+        <div class="anti-num">05</div>
+        <h4>«Я хочу остаться, как есть.»</h4>
+        <p>Если в глубине ты не готов меняться — не подменяй встречу со мной встречей с собой.</p>
+      </div>
+      <div class="anti-cell">
+        <div class="anti-num">06</div>
+        <h4>«Поработай в долг.»</h4>
+        <p>«Тяжело сейчас, давай в рассрочку». Нет. Это размывает работу нас обоих.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== ABOUT ====== -->
+<section class="scn" id="about">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел V · О себе</div>
+    <h2 class="scn-h2">Кто <em>я.</em></h2>
+    <div class="about-grid">
+      <!-- Заглушка-монограмма. Замените блок на настоящее фото: <img src="photo.jpg" alt="Матвей Богатырёв" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1"> -->
+      <div class="about-photo" role="img" aria-label="Матвей Богатырёв">
+        <span style="position:relative;z-index:1;font-family:var(--serif);font-style:italic;font-size:96px;line-height:1;color:var(--gold);letter-spacing:.02em">М.Б.</span>
+      </div>
+      <div class="about-text">
+        <p>Я психолог-консультант, психолог-человековед. Веду частную практику в малом объёме — не строю «фабрику терапии», беру тех, чья глубина мне понятна и интересна.</p>
+        <p>Параллельно с практикой я <b>преподаю в вузе практикум для студентов-психологов старших курсов</b>. Не из тщеславия, а потому что хочу, чтобы у будущих коллег была не только теория, но и понимание того, как реально устроена работа в кабинете. Это даёт мне необходимую дисциплину: учить можно только тому, что у тебя самого работает.</p>
+        <p>Я живу в той же реальности, что и ты. Я не «специалист с олимпа», который смотрит на людей сверху как на объекты. Я такой же человек, только прошёл дальше в некоторых вопросах и хочу поделиться этим путём.</p>
+
+        <div class="about-creds">
+          <div class="about-cred">
+            <div class="l">Метод</div>
+            <div class="v">Интегративный<br/>с экзистенциальной осью</div>
+          </div>
+          <div class="about-cred">
+            <div class="l">Школы</div>
+            <div class="v">Юнг · Франкл · Ялом · КПТ</div>
+          </div>
+          <div class="about-cred">
+            <div class="l">Преподаёт</div>
+            <div class="v">Практикум<br/>для студентов-психологов</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PRICE EXPLAINER ====== -->
+<section class="scn price-section">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел VI · О цене</div>
+    <h2 class="scn-h2">Скажу прямо,<br/><em>почему она такая.</em></h2>
+    <div class="price-explainer">
+      <h3>Цена — это <em>не маркетинг</em>, это часть метода.</h3>
+      <p>Я работаю индивидуально, не по шаблону — каждая встреча требует подготовки и больше сил, чем стандартная сессия по конвейеру. Такой формат не масштабируется и не должен.</p>
+      <p>Это <b>мой минимум</b>, при котором я не выгораю как специалист. По московскому рынку, кстати, это не дорого: премиум-сегмент идёт от 25–30 тыс ₽ за сессию.</p>
+      <p>Цена работает и на твою сторону. Когда платишь значимую сумму — у тебя возникает правильное напряжение «нужно отработать», и оно распределяется между нами обоими. Бесплатные форматы у меня не работают: в 90% случаев это «психологические туристы», которые пытаются себя развлечь — качественная работа в таком регистре просто не идёт.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FILTER CTA ====== -->
+<section class="filter-cta" id="filter">
+  <div class="filter-cta-inner reveal">
+    <div>
+      <div class="lab">Самоосмотр перед заходом</div>
+      <h2>Прежде чем идти ко мне — <em>посмотри на себя.</em></h2>
+      <p>Бесплатный фильтр готовности из трёх частей. Узнавание себя в формулировках · скрининг состояния по 5 шкалам · честность про готовность к работе. На выходе — снимок, заключение и рекомендация формата. <b>Если подходит «пока не сейчас» — я так и скажу.</b></p>
+    </div>
+    <div class="filter-cta-actions">
+      <a href="filter.html" class="btn btn-ghost">Пройти фильтр</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CHANNELS · СКРЫТО ДО СОЗДАНИЯ КАНАЛОВ ====== -->
+<!-- Чтобы вернуть раздел «Где я пишу и говорю»: создайте Telegram/YouTube, впишите реальные ссылки и снимите обёртку-комментарий с блока section ниже. -->
+<!--
+<section class="scn">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел VII · Думаю публично</div>
+    <h2 class="scn-h2">Где я пишу <em>и говорю.</em></h2>
+    <p class="scn-lede">Длинные тексты в Telegram и видео-эссе на YouTube — мой основной способ присутствия. Не «контент-маркетинг», а способ <b>думать публично</b>. Если резонирует — подпишись.</p>
+
+    <div class="channels-grid">
+      <a href="https://t.me/matveybogatyrev" class="channel" target="_blank" rel="noopener">
+        <div class="channel-icon">T</div>
+        <h4>Telegram-канал</h4>
+        <p>Длинные посты-эссе, короткие реплики, цитаты с разбором, стримы вопросов-ответов раз в месяц. 3–5 публикаций в неделю. Без сторис, без голосовых.</p>
+        <div class="channel-link">→ @matveybogatyrev</div>
+      </a>
+      <a href="https://youtube.com/@matveybogatyrev" class="channel" target="_blank" rel="noopener">
+        <div class="channel-icon">Y</div>
+        <h4>YouTube-канал</h4>
+        <p>Длинные видео-эссе на смысловые темы — экзистенциализм, юнгианство, Достоевский как психолог. 15–45 минут, один кадр, без музыкального давления, без CTA «ставь лайк».</p>
+        <div class="channel-link">→ youtube.com/@matveybogatyrev</div>
+      </a>
+    </div>
+  </div>
+</section>
+-->
+
+<!-- ====== BOOKING ====== -->
+<section class="scn booking" id="booking">
+  <div class="scn-inner reveal">
+    <div class="scn-eyebrow">Раздел VIII · Заявка</div>
+    <h2 class="scn-h2">Заявка на <em>собеседование.</em></h2>
+
+    <div class="booking-grid">
+      <div class="booking-text">
+        <p>Это не «оставьте контакт». Это <b>заявка на собеседование</b> — короткое предварительное письмо, по которому я решаю, готовы ли мы работать вместе.</p>
+        <p>Я выбираю клиентов так же, как и они выбирают меня. Не потому что я сноб, а потому что серьёзная работа требует совпадения по тону, методу и готовности. Если совпадаем — двигаемся к разбору. Если нет — я честно скажу.</p>
+        <p>Отвечаю на заявки в течение 1–2 рабочих дней.</p>
+        <div class="quote">«Я не работаю за тебя. Я создаю условия, в которых работа становится возможной. Твой ход — прийти и взять».</div>
+      </div>
+
+      <div class="booking-form">
+        <div class="form-eyebrow">Форма заявки</div>
+        <h3>Расскажи о себе и запросе</h3>
+
+        <form action="send.php" method="POST" id="bookingForm">
+          <!-- honeypot: ловушка для спам-ботов, людям не видна -->
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <label>Не заполняйте это поле</label>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-field">
+            <label>Имя · как к тебе обращаться</label>
+            <input type="text" name="name" placeholder="Матвей" required />
+          </div>
+
+          <div class="form-field">
+            <label>Контакт для связи</label>
+            <input type="text" name="contact" placeholder="Telegram-username или email" required />
+          </div>
+
+          <div class="form-field">
+            <label>Возраст</label>
+            <input type="text" name="age" placeholder="22 / 28 / 35..." />
+          </div>
+
+          <div class="form-field">
+            <label>Запрос своими словами — без шаблонов</label>
+            <textarea name="request" placeholder="С чем ты приходишь? Что подталкивает к этой встрече? Можно длинно, можно коротко — главное честно." required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label>Что ты пробовал с этим — и почему не сработало?</label>
+            <textarea name="tried" placeholder="Психологи, книги, разговоры с близкими, медитация, что угодно — расскажи."></textarea>
+          </div>
+
+          <div class="form-field">
+            <label>Какой формат тебя интересует</label>
+            <select name="format">
+              <option value="">— выбери —</option>
+              <option>Глубинный разбор · 12 000 ₽</option>
+              <option>Сопровождение до результата · от 30 000 ₽</option>
+              <option>Великое делание · 90 000 ₽</option>
+              <option>Не уверен — нужна твоя рекомендация</option>
+            </select>
+          </div>
+
+          <label class="form-consent" style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text-2);line-height:1.5;margin:4px 0 10px;cursor:pointer">
+            <input type="checkbox" name="consent" required style="margin-top:3px;flex:0 0 auto" />
+            <span>Я соглашаюсь с <a href="privacy.html" target="_blank" rel="noopener" style="color:var(--gold-2);text-decoration:underline">политикой конфиденциальности</a> и обработкой персональных данных.</span>
+          </label>
+
+          <button type="submit" class="btn btn-primary form-submit">Отправить заявку</button>
+          <div class="form-note">Данные нужны только для нашей возможной работы. Без спама, без передачи третьим лицам.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FINAL THESIS ====== -->
+<section class="final-thesis">
+  <div class="final-thesis-inner reveal">
+    <div class="ornament">·  ·  ·</div>
+    <p>Психолог не работает за тебя.</p>
+    <p>Он создаёт условия, в которых работа становится возможной.</p>
+    <p>Мои условия — глубина, скорость и честность.</p>
+    <p class="imperative">Твой ход — прийти и взять.</p>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-brand-mark">M</div>
+        <div style="font-family:var(--serif);font-size:18px;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Матвей Богатырёв</div>
+        <div style="font-size:12px;color:var(--text-3);font-style:italic;line-height:1.6">Психолог · Человековед.<br/>Авторская практика, малый объём.</div>
+      </div>
+      <div class="footer-col">
+        <h5>Разделы</h5>
+        <ul>
+          <li><a href="#philosophy">Философия</a></li>
+          <li><a href="#paradox">Парадокс</a></li>
+          <li><a href="#formats">Форматы</a></li>
+          <li><a href="#about">О себе</a></li>
+          <li><a href="#filter">Фильтр готовности</a></li>
+          <li><a href="#booking">Заявка</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Материалы</h5>
+        <ul>
+          <li><a href="manifest.html">Манифест</a></li>
+          <li><a href="filter.html">Фильтр готовности</a></li>
+          <li><a href="privacy.html">Конфиденциальность</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Контакты</h5>
+        <ul>
+          <li><a href="mailto:hello@matveybogatyrev.ru">hello@matveybogatyrev.ru</a></li>
+          <li><a href="#booking">Заявка на собеседование</a></li>
+          <li>Санкт-Петербург · очно · онлайн по РФ и СНГ</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Матвей Богатырёв · Авторская практика</span>
+      <span><a href="privacy.html">Политика конфиденциальности</a> · <a href="manifest.html">Условия работы</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Sticky nav darken on scroll
+  const nav = document.getElementById('nav');
+  const HERO_HEIGHT = window.innerHeight * 0.7;
+  function onScroll(){
+    if(window.scrollY > HERO_HEIGHT){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>

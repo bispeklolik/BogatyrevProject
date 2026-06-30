@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Концепт Telegram-бота — Этап VIII. Матвей Богатырёв</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --gold-soft:rgba(168,138,74,.14);
+    --pearl:#FAF3DD;
+    --tg-bg:#1F2733; --tg-bot:#2A3441; --tg-user:#4F6249; --tg-text:#E5E0CD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    --mono:"SF Mono","Menlo","Monaco",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+  /* RIBBON */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:64px 40px 96px}
+
+  /* HERO */
+  .hero{padding-bottom:48px;border-bottom:1px solid var(--line);margin-bottom:64px}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.2vw,64px);line-height:1.0;letter-spacing:-.005em;margin:0 0 22px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:780px;font-size:17px;color:var(--text-2);line-height:1.7;margin:0 0 14px}
+  .lede:last-child{margin:0}
+  .lede b{color:var(--ink);font-weight:500}
+
+  /* TOC */
+  nav.toc{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:0 0 64px}
+  nav.toc a{background:var(--panel);padding:18px 12px;text-decoration:none;color:var(--text-3);font-size:11px;letter-spacing:.22em;text-transform:uppercase;transition:color .25s,background .25s;text-align:center}
+  nav.toc a:hover{color:var(--ink);background:var(--panel-2)}
+  nav.toc a span.num{display:block;font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:6px;letter-spacing:0;text-transform:none}
+
+  /* SECTIONS */
+  section{padding:48px 0;border-top:1px solid var(--line-soft)}
+  section:first-of-type{border-top:none;padding-top:0}
+  .sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px;gap:24px;flex-wrap:wrap}
+  .sec-head .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.04em}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;color:var(--ink)}
+  .sec-tagline{color:var(--text-3);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+  h3{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);margin:32px 0 14px;line-height:1.2}
+  h3 em{color:var(--gold);font-style:italic}
+  p{margin:0 0 14px;line-height:1.7}
+  p b{color:var(--ink);font-weight:500}
+  ul.clean{padding-left:0;list-style:none;margin:14px 0}
+  ul.clean li{padding-left:24px;position:relative;margin-bottom:10px;line-height:1.65}
+  ul.clean li::before{content:"·";position:absolute;left:6px;top:-3px;color:var(--gold);font-size:28px;font-weight:600;font-family:var(--serif);line-height:1}
+  ul.clean li b{color:var(--ink);font-weight:500}
+
+  /* DO/DON'T COMPARE */
+  .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin:24px 0}
+  .vs-col{padding:32px 30px}
+  .vs-col.no{background:var(--bg-2)}
+  .vs-col.yes{background:var(--ink-bg);color:var(--ink-fg)}
+  .vs-col.yes h4{color:var(--pearl)}
+  .vs-col.yes ul.clean li b{color:var(--gold)}
+  .vs-col .lab{font-size:11px;letter-spacing:.32em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .vs-col.no .lab{color:#A84C3A}
+  .vs-col.yes .lab{color:var(--gold)}
+  .vs-col h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0 0 18px;font-weight:400;line-height:1.2}
+
+  /* FUNCTION CARDS */
+  .fn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .fn-card{background:var(--panel);padding:28px 30px;display:flex;flex-direction:column;gap:8px}
+  .fn-num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:14px;letter-spacing:.18em;text-transform:uppercase}
+  .fn-card h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:4px 0 10px;line-height:1.2;font-weight:400}
+  .fn-card h4 em{color:var(--gold);font-style:italic}
+  .fn-card .body{font-size:14px;line-height:1.65;color:var(--text-2)}
+  .fn-card .body b{color:var(--ink)}
+  .fn-card .why{font-size:12.5px;color:var(--text-3);font-style:italic;border-top:1px dashed var(--line);padding-top:10px;margin-top:auto}
+  .fn-card .why b{color:var(--gold);font-style:normal}
+  .fn-card .phase{display:inline-block;align-self:flex-start;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--text-3);padding:3px 10px;border:1px solid var(--line);margin-top:10px}
+  .fn-card .phase.mvp{color:var(--gold);border-color:var(--gold)}
+
+  /* TEST GRID — compact */
+  .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .test-card{background:var(--panel);padding:22px 22px;display:flex;flex-direction:column;gap:6px}
+  .test-card .test-cat{font-size:9.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600}
+  .test-card h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:2px 0 6px;font-weight:400;line-height:1.2}
+  .test-card h5 em{color:var(--gold);font-style:italic}
+  .test-card .test-body{font-size:13px;line-height:1.55;color:var(--text-2)}
+  .test-card .test-meta{font-size:11px;color:var(--text-3);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+
+  /* AI DIARY BLOCK */
+  .ai-block{background:var(--ink-bg);color:var(--ink-fg);padding:0;margin-top:24px;border:1px solid var(--gold);overflow:hidden}
+  .ai-block-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .ai-left{padding:36px 36px}
+  .ai-right{padding:36px 36px;background:var(--ink-bg-2);border-left:1px solid rgba(168,138,74,.4)}
+  .ai-tag{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600}
+  .ai-block h4{font-family:var(--serif);font-size:28px;color:var(--pearl);margin:0 0 16px;font-weight:400;line-height:1.15}
+  .ai-block h4 em{color:var(--gold);font-style:italic}
+  .ai-block h5{font-family:var(--serif);font-size:18px;color:var(--pearl);margin:18px 0 8px;font-weight:400;font-style:italic}
+  .ai-block p{color:var(--ink-fg);font-size:14.5px;line-height:1.7;margin:0 0 12px}
+  .ai-block p b{color:var(--gold)}
+  .ai-block ul.clean{margin:8px 0}
+  .ai-block ul.clean li{font-size:13.5px;color:var(--ink-fg);line-height:1.65}
+  .ai-block ul.clean li::before{color:var(--gold)}
+  .ai-block ul.clean li b{color:var(--pearl)}
+  .ai-summary-mock{background:var(--bg);color:var(--text);padding:22px 24px;border:1px solid var(--gold);font-family:var(--serif);font-size:14px;line-height:1.7;margin-top:6px}
+  .ai-summary-mock .mock-lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-family:var(--sans);font-weight:600}
+  .ai-summary-mock h6{font-family:var(--serif);font-size:18px;color:var(--ink);margin:0 0 10px;font-weight:400;line-height:1.25}
+  .ai-summary-mock i{color:var(--text-3)}
+  .ai-summary-mock b{color:var(--ink)}
+
+  /* ETHICS NOTE */
+  .ethics-note{margin-top:24px;padding:24px 28px;background:var(--bg-2);border-left:3px solid #A84C3A;border:1px solid var(--line);border-left:3px solid #A84C3A}
+  .ethics-note .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:#A84C3A;margin-bottom:10px;font-weight:600}
+  .ethics-note h5{font-family:var(--serif);font-size:20px;color:var(--ink);margin:0 0 10px;font-weight:400;line-height:1.2}
+  .ethics-note ul.clean{margin:8px 0 0}
+  .ethics-note ul.clean li{font-size:13.5px;line-height:1.6}
+  .ethics-note ul.clean li::before{color:#A84C3A}
+
+  /* CHAT MOCKUPS */
+  .chat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+  .chat-screen{background:var(--tg-bg);border:1px solid #0d1218;padding:0;border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+  .chat-header{padding:14px 18px;background:#2D3441;border-bottom:1px solid #0d1218;display:flex;align-items:center;gap:12px}
+  .chat-avatar{width:36px;height:36px;border-radius:50%;background:var(--ink-bg);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:18px;border:1px solid var(--gold)}
+  .chat-name{font-family:var(--sans);font-size:14px;color:#E8E8E8;font-weight:500}
+  .chat-status{font-family:var(--sans);font-size:11px;color:#7C8898;margin-top:1px}
+  .chat-mockup-title{font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);padding:14px 18px 0;background:var(--tg-bg)}
+  .chat-body{padding:16px 12px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .bubble{max-width:78%;padding:9px 13px;font-size:14px;line-height:1.45;font-family:var(--sans);position:relative;word-wrap:break-word}
+  .bubble.bot{background:var(--tg-bot);color:var(--tg-text);border-radius:14px 14px 14px 4px;align-self:flex-start}
+  .bubble.user{background:var(--tg-user);color:var(--tg-text);border-radius:14px 14px 4px 14px;align-self:flex-end}
+  .bubble b{color:#FFF;font-weight:500}
+  .bubble i{color:#C8C0A8}
+  .bubble.italic{font-style:italic}
+  .bubble-time{font-size:10px;color:#7C8898;margin-top:2px;text-align:right}
+  .bubble-buttons{display:flex;flex-direction:column;gap:4px;margin-top:2px;align-self:flex-start;width:78%;max-width:78%}
+  .bubble-btn{background:#3A4555;color:#9DC2FF;border:1px solid #2A3441;padding:9px 12px;border-radius:8px;font-size:13px;text-align:center;font-family:var(--sans);cursor:default}
+
+  /* TECH STACK */
+  .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .stack-cell{background:var(--panel);padding:24px}
+  .stack-cell .lab{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+  .stack-cell h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:0 0 6px;font-weight:400;line-height:1.2}
+  .stack-cell h5 em{color:var(--gold);font-style:italic}
+  .stack-cell p{font-size:13px;line-height:1.6;color:var(--text-2);margin:0}
+  .stack-cell code{font-family:var(--mono);font-size:12px;background:var(--bg-2);padding:1px 6px;color:var(--ink)}
+
+  /* PHASES */
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .phase-card{background:var(--panel);padding:28px 28px;display:flex;flex-direction:column;gap:10px}
+  .phase-card.mvp{background:var(--ink-bg);color:var(--ink-fg)}
+  .phase-card.mvp h4{color:var(--pearl)}
+  .phase-card.mvp .meta{color:var(--ink-fg-2);border-top-color:rgba(168,138,74,.4)}
+  .phase-card.mvp ul.clean li{color:var(--ink-fg)}
+  .phase-card.mvp ul.clean li b{color:var(--gold)}
+  .phase-card.mvp .ph-num{color:var(--gold)}
+  .ph-num{font-family:var(--serif);font-style:italic;font-size:42px;color:var(--gold);line-height:1}
+  .phase-card h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:8px 0 4px;font-weight:400;line-height:1.2}
+  .phase-card h4 em{color:var(--gold);font-style:italic}
+  .phase-card .meta{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);padding-top:8px;border-top:1px solid var(--line);margin-top:auto}
+
+  /* METRICS */
+  .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
+  .metric{background:var(--panel);padding:22px 24px}
+  .metric-lab{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:6px}
+  .metric h5{font-family:var(--serif);font-size:18px;color:var(--ink);margin:0 0 6px;font-weight:400;line-height:1.25}
+  .metric p{font-size:13.5px;line-height:1.6;color:var(--text-2);margin:0}
+
+  /* QUESTIONS POOL SAMPLE */
+  .questions-sample{background:var(--bg-2);border:1px solid var(--line);padding:28px 32px;margin-top:20px}
+  .questions-sample .lab{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:600}
+  .questions-sample ol{margin:0;padding-left:22px;color:var(--text);font-family:var(--serif);font-style:italic;font-size:16px;line-height:1.75}
+  .questions-sample ol li{margin-bottom:10px}
+
+  /* THESIS */
+  .thesis{margin-top:64px;padding:44px 48px;background:var(--ink-bg);color:var(--ink-fg);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold)}
+  .thesis .lab{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .thesis blockquote{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.4;color:var(--pearl);margin:0;font-style:italic;max-width:840px}
+  .thesis cite{display:block;margin-top:16px;font-size:12px;color:var(--ink-fg-2);font-style:normal;letter-spacing:.16em;text-transform:uppercase}
+
+  footer{margin-top:48px;padding-top:28px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);line-height:1.7;letter-spacing:.04em;text-align:center}
+
+  @media (max-width:980px){
+    .ribbon-inner,.wrap{padding-left:24px;padding-right:24px}
+    nav.toc{grid-template-columns:repeat(3,1fr)}
+    .vs-grid,.fn-grid,.stack,.phases,.metrics,.chat-grid,.test-grid{grid-template-columns:1fr}
+    .ai-block-grid{grid-template-columns:1fr}
+    .ai-right{border-left:none;border-top:1px solid rgba(168,138,74,.4)}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    nav.toc{display:none}
+    .chat-screen{background:#fff;border:1px solid #ccc}
+    .bubble.bot,.bubble.user{background:#fff;border:1px solid #ccc;color:#222}
+    .vs-col.yes,.phase-card.mvp,.thesis{background:#fff;color:#111}
+  }
+</style>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Этап <strong>VIII / IX</strong> · Telegram-бот · Апрель 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">Концепт уникального Telegram-бота · @matveybogatyrev_bot</div>
+    <h1>Спутник <em>практики.</em></h1>
+    <p class="lede">Бот, который ничего не продаёт и не пытается удержать. Технический «спутник» практики Матвея — не «AI-психолог», не FAQ-машина, не геймифицированный курс. Тихий инструмент с пятью точечными функциями: <b>принять заявку, дать задать один вопрос, прислать утренний вопрос, сохранить твой архив, повторить фильтр готовности через месяц</b>.</p>
+    <p class="lede">У 95% психологов в Telegram бот — это либо отсутствует, либо работает как форма «оставить контакт для записи». То, что описано здесь — это <b>самостоятельный продукт</b>, который сам по себе уже даёт пользу: даже если ты никогда не запишешься на встречу, бот может сопровождать тебя как тихий собеседник.</p>
+  </div>
+
+  <nav class="toc">
+    <a href="#philosophy"><span class="num">I</span>Философия</a>
+    <a href="#functions"><span class="num">II</span>Функции</a>
+    <a href="#extended"><span class="num">III</span>Расширенный слой</a>
+    <a href="#flows"><span class="num">IV</span>UX-сценарии</a>
+    <a href="#questions"><span class="num">V</span>Утр. вопросы</a>
+    <a href="#tech"><span class="num">VI</span>Стек</a>
+  </nav>
+
+  <!-- I. PHILOSOPHY -->
+  <section id="philosophy">
+    <div class="sec-head">
+      <div><div class="num">I</div><h2>Философия бота</h2></div>
+      <div class="sec-tagline">Что он НЕ делает · и что делает</div>
+    </div>
+
+    <p class="lede" style="font-size:15px">Большинство ботов в нише — это либо «AI-друг, который ответит вместо психолога», либо «продающая воронка с автосообщениями». Оба формата провалятся в нашем случае: они ломают тональность бренда. Бот работает на анти-принципах рынка.</p>
+
+    <div class="vs-grid">
+      <div class="vs-col no">
+        <div class="lab">Чего бот НЕ делает</div>
+        <h4>Анти-механика</h4>
+        <ul class="clean">
+          <li>Не «угадывает» твой вопрос и не отвечает «вместо психолога»</li>
+          <li>Не присылает 5 пушей в день «как ты сегодня?»</li>
+          <li>Не считает «streak» и не выдаёт ачивок</li>
+          <li>Не пытается удержать «вернись, мы скучаем»</li>
+          <li>Не использует имитацию эмоций («понимаю тебя», «переживаю за тебя»)</li>
+          <li>Не предлагает «премиум-подписку» на бота</li>
+          <li>Не флудит цитатами «доброго утра, друг»</li>
+        </ul>
+      </div>
+      <div class="vs-col yes">
+        <div class="lab">Что бот делает</div>
+        <h4>Тихий инструмент</h4>
+        <ul class="clean">
+          <li><b>Принимает</b> анкету первой встречи и передаёт Матвею до разбора</li>
+          <li><b>Хранит</b> один вопрос пользователя и доставляет ответ от Матвея в четверг</li>
+          <li><b>Шлёт один утренний вопрос</b> на подумать (если подписан, можно отключить)</li>
+          <li><b>Сохраняет</b> личный архив: вопросы, ответы, результаты фильтра</li>
+          <li><b>Позволяет</b> повторить фильтр готовности раз в 30+ дней — увидеть динамику</li>
+          <li>Даёт ровно столько, сколько нужно — и замолкает</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- II. FUNCTIONS -->
+  <section id="functions">
+    <div class="sec-head">
+      <div><div class="num">II</div><h2>Базовые функции бота</h2></div>
+      <div class="sec-tagline">Шесть точечных инструментов · MVP · Phase 2 · Phase 3</div>
+    </div>
+
+    <p>Каждая функция работает автономно. Можно пользоваться одной — без остальных. Все опционные кроме «Анкеты первой встречи» (которая запускается автоматически после бронирования).</p>
+
+    <div class="fn-grid">
+      <div class="fn-card">
+        <div class="fn-num">Функция 01</div>
+        <h4>Анкета первой встречи</h4>
+        <div class="body">После того как клиент бронирует разбор на сайте, бот запускает 5-этапную анкету: биографический минимум, запрос «своими словами», что уже пробовал и почему не сработало, чего НЕ хочешь от встречи, что должно произойти, чтобы встреча была не зря.<br/><br/>Ответы хранятся, передаются Матвею за 24 ч до встречи. Это <b>часть продукта</b> — Матвей приходит подготовленным, а не «расскажи о себе».</div>
+        <div class="why"><b>Зачем:</b> формулировка запроса — половина работы. Без анкеты первая встреча — это всегда минимум 30 минут «разогрева».</div>
+        <span class="phase mvp">MVP · обязательная</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Функция 02</div>
+        <h4>«Один вопрос» <em>по четвергам</em></h4>
+        <div class="body">Любой пользователь может задать <b>один развёрнутый вопрос</b> Матвею раз в 3 месяца. Бот принимает вопрос, ставит в очередь. По четвергам Матвей отвечает лично, текстом, не шаблоном — длиной столько, сколько считает нужным.<br/><br/>Бот доставляет ответ обратно в личный чат. Это не «ответ на FAQ» — это персональное размышление вслух.</div>
+        <div class="why"><b>Зачем:</b> низкобарьерное знакомство с голосом и подходом Матвея. Без денег, без созвона, без обязательств. Конвертирует в платный разбор лучше любых лендингов.</div>
+        <span class="phase mvp">MVP · ключевая</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Функция 03</div>
+        <h4>Утренний вопрос</h4>
+        <div class="body">Опциональная подписка. Каждое утро (фиксированное время по часовому поясу пользователя) бот присылает <b>один экзистенциальный вопрос</b> на подумать в течение дня. Из авторского пула в 200+ вопросов.<br/><br/>Можно отвечать в чат — ответы хранятся только у пользователя, никто не читает. Можно молча носить вопрос с собой. Можно поставить на паузу или отписаться в один клик.</div>
+        <div class="why"><b>Зачем:</b> формирование привычки рефлексии без принуждения. Это часть «работы», которая идёт между встречами или вообще без встреч.</div>
+        <span class="phase">Phase 2</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Функция 04</div>
+        <h4>Карта состояния</h4>
+        <div class="body">Возможность <b>повторить фильтр готовности раз в 30 дней</b>. Бот сохраняет результаты, показывает динамику: «месяц назад твой радар выглядел так, сегодня — так. Что сдвинулось?»<br/><br/>Полезно и тем, кто работает с Матвеем (видеть прогресс), и тем, кто пока следит за брендом (отслеживать собственное состояние).</div>
+        <div class="why"><b>Зачем:</b> объективизация «как мне сейчас». На длинной дистанции — ценность накапливается. Этот хвост удерживает аудиторию без push-маркетинга.</div>
+        <span class="phase">Phase 2</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Функция 05</div>
+        <h4>Личный архив</h4>
+        <div class="body">Меню «моя история» — где собраны: пройденные фильтры, заданные вопросы, ответы Матвея, ответы на утренние вопросы, забронированные встречи. Без накруток, без ачивок — просто <b>память</b>.<br/><br/>Многие боты «забывают» пользователя. Этот — нет. Через год можно вернуться и увидеть свой путь.</div>
+        <div class="why"><b>Зачем:</b> ощущение, что бот — твой личный спутник, а не одноразовый сервис. Это редкий формат среди психологических ботов.</div>
+        <span class="phase">Phase 3</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Функция 06</div>
+        <h4>Меню форматов <em>+ бронирование</em></h4>
+        <div class="body">Внутри бота — описание трёх форматов работы (разбор · сопровождение · великое делание) с ценами и кнопкой «забронировать». Бронирование делается на сайте, бот лишь даёт прямую ссылку с pre-filled параметрами.<br/><br/>Это не «продаёт» — это просто <b>удобный путь</b> для тех, кто уже решил.</div>
+        <div class="why"><b>Зачем:</b> низкое трение для готовых клиентов. Без воронки и без «оставь контакт».</div>
+        <span class="phase mvp">MVP · базовая</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- III. EXTENDED LAYER -->
+  <section id="extended">
+    <div class="sec-head">
+      <div><div class="num">III</div><h2>Расширенный слой</h2></div>
+      <div class="sec-tagline">Тесты · AI-дневник · 5 идей</div>
+    </div>
+
+    <p>Поверх базовой механики бот растёт в полноценную <b>экосистему сопровождения</b>: библиотеку валидированных тестов, AI-дневник с еженедельным разбором, и пять авторских механик, которых нет ни у кого на рынке. Всё это — не «больше функций ради функций», а инструменты, каждый из которых решает одну точечную задачу.</p>
+
+    <h3>А · Библиотека тестов-самодиагностик</h3>
+    <p>Не «развлекательные тесты на тип Хогвартса». Только <b>валидированные методики</b> с понятным научным основанием — в первую очередь те, которые работают в экзистенциально-юнгианской рамке практики Матвея. Все тесты бесплатны, результаты сохраняются в личный архив, можно повторять и видеть динамику.</p>
+
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-cat">Эмоциональное состояние</div>
+        <h5>Цветовой тест Люшера <em>(8 цветов)</em></h5>
+        <div class="test-body">Швейцарская проективная методика, адаптация Цыганка. Экспресс-диагностика текущего эмоционального состояния, источников тревоги, скрытых конфликтов.</div>
+        <div class="test-meta">2–3 мин · валидирован · подходит для регулярного повтора</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Осмысленность жизни</div>
+        <h5>Шкала экзистенции <em>(ШЭ)</em></h5>
+        <div class="test-body">А. Лэнгле и К. Орглер. Самый релевантный тест для экзистенциальной практики. Четыре субшкалы: самодистанцирование, самотрансценденция, свобода, ответственность.</div>
+        <div class="test-meta">10–12 мин · ВШЭ-валидация · база метода Матвея</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Экзистенциальная тревога</div>
+        <h5>Опросник тревоги <em>EAQ</em></h5>
+        <div class="test-body">По концепции Пола Тиллиха. Диагностика тревоги по четырём фундаментальным компонентам: смерть, бессмысленность, изоляция, свобода. Прямой ключ к разделению вынужденного и невынужденного страдания.</div>
+        <div class="test-meta">7–10 мин · валидирован</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Архетипы Юнга</div>
+        <h5>PMAI <em>· Pearson-Marr</em></h5>
+        <div class="test-body">Единственный научно валидированный тест архетипов Юнга. 12 архетипов (Невинный, Сирота, Воин, Заботливый, Искатель, Любящий, Разрушитель, Творец, Правитель, Маг, Мудрец, Шут).</div>
+        <div class="test-meta">15–20 мин · 2020 ред. · англо- и русскоязычная адаптация</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Личность</div>
+        <h5>Big Five <em>(BFI-2)</em></h5>
+        <div class="test-body">Современная научная модель личности. Пять черт: открытость, сознательность, экстраверсия, дружелюбие, нейротизм. Базовая «карта типа», от которой отталкивается дальнейшая работа.</div>
+        <div class="test-meta">10 мин · валидирован глобально</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Жизнестойкость</div>
+        <h5>Шкала Мадди <em>(адапт. Леонтьева)</em></h5>
+        <div class="test-body">Три компонента: вовлечённость, контроль, принятие риска. Показывает, насколько человек способен превращать стресс в опыт, а не в травму.</div>
+        <div class="test-meta">8 мин · ВШЭ-адаптация</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Самоотношение</div>
+        <h5>Шкала самосострадания <em>(SCS)</em></h5>
+        <div class="test-body">Кристин Нефф. Шесть субшкал: доброта к себе vs самокритика, общая человечность vs изоляция, осознанность vs идентификация с эмоцией. Антидот «токсичной самокритики».</div>
+        <div class="test-meta">8 мин · короткая версия</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Тревожность</div>
+        <h5>Тест Спилбергера-Ханина</h5>
+        <div class="test-body">Классическая клиническая методика. Различает реактивную (ситуативную) и личностную тревожность — это совершенно разные состояния, требующие разной работы.</div>
+        <div class="test-meta">6 мин · клинический стандарт РФ</div>
+      </div>
+
+      <div class="test-card">
+        <div class="test-cat">Отношения</div>
+        <h5>Тип привязанности <em>(Hazan-Shaver)</em></h5>
+        <div class="test-body">Короткий опросник для определения паттерна в близких отношениях: безопасный, тревожно-избегающий, тревожно-захватывающий, дезорганизованный.</div>
+        <div class="test-meta">3–5 мин · короткая версия</div>
+      </div>
+    </div>
+
+    <p style="margin-top:18px;font-size:13.5px;color:var(--text-3);font-style:italic">Все тесты — без диагнозов. Это инструменты для расширения самопонимания, а не основания для медицинских заключений. После каждого теста — короткое заключение в авторском тоне Матвея и предложение повторить через 30+ дней.</p>
+
+    <h3 style="margin-top:48px">Б · AI-дневник рефлексии</h3>
+    <p>Дневник, который ты ведёшь — а раз в неделю он показывает тебе паттерны, которые ты сам не видел. Это не «AI-психолог» и не «эмоциональный AI-друг». Это <b>зеркало с экзистенциальной рамой</b>, настроенное на стиль работы Матвея.</p>
+
+    <div class="ai-block">
+      <div class="ai-block-grid">
+        <div class="ai-left">
+          <div class="ai-tag">Как это работает</div>
+          <h4>Записи · еженедельный <em>разбор от AI</em></h4>
+          <p>Записи делаются в свободной форме (текст или голосовое → транскрибация). Категории: <b>после-сессии · ежедневное · инсайт · трудный момент · сон</b>. Бот не отвечает на каждую запись — он молчит, как нужно.</p>
+          <h5>Воскресный разбор</h5>
+          <ul class="clean">
+            <li>Темы недели — <b>что повторялось</b> в записях</li>
+            <li>Эмоциональная динамика — <b>тон</b> на старте недели и в финале</li>
+            <li>Замеченные сдвиги — что появилось <b>впервые</b></li>
+            <li>2–3 вопроса <b>на следующую неделю</b></li>
+          </ul>
+          <p style="margin-top:14px;font-size:13px;font-style:italic;color:var(--ink-fg-2)">Можно отключить AI-разбор — оставить только дневник как чистое пространство для записей. Дисциплина решает.</p>
+        </div>
+        <div class="ai-right">
+          <div class="ai-tag">Образец воскресного саммари</div>
+          <div class="ai-summary-mock">
+            <div class="mock-lab">Воскресенье · 11 мая</div>
+            <h6>Твоя неделя · 7 записей</h6>
+            <p>Главная сквозная тема — <b>усталость от собственной требовательности</b>. Ты три раза за неделю возвращался к мысли «я опять не сделал, как надо», и каждый раз это <i>не было</i> связано с реальной задачей — это была работа какого-то внутреннего голоса.</p>
+            <p>В понедельник тон был жёстче, к четвергу — мягче. После записи во вторник о разговоре с матерью что-то качественно сместилось.</p>
+            <p><b>Вопрос на следующую неделю:</b> <i>«Чей голос звучит, когда ты говоришь себе "не как надо"? Он узнаваем?»</i></p>
+            <p style="margin-top:14px;font-size:11.5px;color:var(--text-3);font-style:italic">— Это разбор AI на основе твоих записей. Это не диагноз. Это зеркало, в котором видны паттерны.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ethics-note">
+      <div class="lab">Этика AI-функций · обязательное</div>
+      <h5>AI работает по жёстким правилам.</h5>
+      <ul class="clean">
+        <li><b>AI не диагностирует.</b> Никаких «ты страдаешь от X» или «у тебя признаки Y». Только описание паттернов и вопросы.</li>
+        <li><b>AI не даёт ответов.</b> Только наводящие вопросы и точные наблюдения о том, что было в записях.</li>
+        <li><b>AI не имитирует эмпатию.</b> Никаких «я понимаю тебя», «я волнуюсь за тебя» — это техническое зеркало, не «друг».</li>
+        <li><b>AI не заменяет психолога.</b> Если в записях появляются признаки серьёзных состояний — AI <i>не утешает</i> и <i>не лечит</i>, а напоминает: «это территория живой работы, а не текстового зеркала».</li>
+        <li><b>Все данные шифруются.</b> Анонимизированы при отправке в API; пользователь может удалить любую запись и весь архив одним нажатием.</li>
+        <li><b>Прозрачность модели.</b> В шапке ответа AI всегда указано: «Это разбор AI».</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:48px">В · Пять авторских механик</h3>
+    <p>Идеи в духе бренда — то, чего нет у конкурентов и что глубоко аутентично методу Матвея. Эти функции — <b>в бэклог Phase 4</b>: разрабатывать после стабилизации MVP и Phase 2–3.</p>
+
+    <div class="fn-grid">
+      <div class="fn-card">
+        <div class="fn-num">Идея 01 · Юнгианская</div>
+        <h4>Карта снов</h4>
+        <div class="body">Записать сон → AI помогает выделить <b>ключевые символы и архетипические мотивы</b> → предлагает наводящие вопросы из юнгианской рамки. Не «толкование» — помощь в саморазборе. Сны накапливаются — раз в месяц AI делает «карту твоих снов»: что повторяется, что меняется.</div>
+        <div class="why"><b>Зачем:</b> единственный массовый канал, через который проявляется коллективное бессознательное. Большинство «толкователей снов» в интернете — попса; этот формат работает аутентично.</div>
+        <span class="phase">Phase 4 · Backlog</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Идея 02 · Экзистенциальная</div>
+        <h4>Карта выборов жизни</h4>
+        <div class="body">Пользователь записывает <b>10–20 значимых выборов</b> своей жизни (что выбрал, что отверг, что отложил). AI помогает увидеть <b>паттерны</b>: на что ты ставишь, чего избегаешь, что повторяешь. Можно дополнять со временем.</div>
+        <div class="why"><b>Зачем:</b> экзистенциалисты учат, что мы — сумма наших выборов. Большинство людей не видят свою «карту» — они живут в сюжете, а не в наблюдении его.</div>
+        <span class="phase">Phase 4 · Backlog</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Идея 03 · Юнгианская</div>
+        <h4>«Тень» — 30-дневный челлендж</h4>
+        <div class="body">Каждый день в течение месяца ты записываешь: <b>кто и чем тебя сегодня раздражал</b>. AI накапливает паттерны. Через 30 дней — карта твоей <b>Тени</b>: что в других ты не выносишь, и что это говорит о тебе. Юнгианский принцип: «всё, что нас раздражает в других, может вести к пониманию себя».</div>
+        <div class="why"><b>Зачем:</b> один из самых неочевидных и плодотворных юнгианских ходов. В этом виде — нигде не реализован. Конкурентного аналога нет.</div>
+        <span class="phase">Phase 4 · Backlog</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Идея 04 · Симулятор</div>
+        <h4>Тренажёр экзистенциальной встречи</h4>
+        <div class="body">Три «тренажёра» для саморазбора: <b>встреча с Сартром</b> (про свободу и ответственность), <b>с Франклом</b> (про смысл в трудных обстоятельствах), <b>с Юнгом</b> (про Тень и индивидуацию). Бот ведёт сократический диалог в стиле каждого автора, заставляя задавать себе важные вопросы.</div>
+        <div class="why"><b>Зачем:</b> демонстрирует глубину классиков на практике. Это не «викторина», а серьёзный инструмент саморефлексии — впервые в TG-формате.</div>
+        <span class="phase">Phase 4 · Backlog</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Идея 05 · Простое и мощное</div>
+        <h4>Письмо себе через год</h4>
+        <div class="body">Пользователь пишет письмо своему «я» через 1 / 3 / 12 месяцев. Бот возвращает его <b>точно в назначенный день</b>. Можно написать сразу несколько писем с разными датами доставки. Юнгианский акт встречи с собой будущим — без сложной механики, очень мощный.</div>
+        <div class="why"><b>Зачем:</b> простой формат с глубоким эффектом. Письмо, написанное год назад и прочитанное сегодня, часто говорит о тебе больше, чем 10 сессий терапии.</div>
+        <span class="phase">Phase 4 · Backlog</span>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-num">Идея 06 · Бонус</div>
+        <h4>Видео-якоря Матвея</h4>
+        <div class="body">12 коротких персональных видео (5–10 мин) от Матвея на ключевые экзистенциальные темы: выбор, страх, свобода, потеря, призвание, любовь, гнев, благодарность, конечность, одиночество, идентичность, смерть. Доступны через бот «когда нужно». Не публичный YouTube-контент — личное обращение.</div>
+        <div class="why"><b>Зачем:</b> ощущение, что у тебя в кармане «личный голос Матвея на 12 случаев». Без замены живой работы — но как опора в моменты, когда нужен конкретный голос.</div>
+        <span class="phase">Phase 4 · Backlog</span>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;font-size:14px;color:var(--text-3);font-style:italic">Эти шесть идей — не план реализации, а <b>карта возможностей</b>. Из них выбирается 2–3 для Phase 4 после анализа того, что в первых трёх фазах работает лучше всего. Остальные — в долгий бэклог как направления развития бренда.</p>
+  </section>
+
+  <!-- IV. FLOWS -->
+  <section id="flows">
+    <div class="sec-head">
+      <div><div class="num">IV</div><h2>UX-сценарии</h2></div>
+      <div class="sec-tagline">Образцы тона и взаимодействия</div>
+    </div>
+
+    <p>Тон бота — спокойный, точный, ровно как у Матвея. Никаких смайликов и восклицательных знаков. Бот не «общается» — он <b>работает</b>.</p>
+
+    <div class="chat-grid">
+
+      <!-- MOCKUP 1: First contact -->
+      <div class="chat-screen">
+        <div class="chat-mockup-title">Сценарий 01 · Первый запуск бота</div>
+        <div class="chat-header">
+          <div class="chat-avatar">M</div>
+          <div>
+            <div class="chat-name">Спутник Матвея</div>
+            <div class="chat-status">бот · @matveybogatyrev_bot</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="bubble user">/start</div>
+          <div class="bubble bot">Привет.</div>
+          <div class="bubble bot">Это технический спутник практики Матвея Богатырёва. У меня нет цели тебя развлечь или удержать. Я нужен для пяти вещей:</div>
+          <div class="bubble bot">→ записать тебя на встречу<br/>→ дать тебе задать <b>один вопрос</b> Матвею (отвечает по четвергам)<br/>→ присылать <b>один вопрос на подумать</b> утром (если хочешь)<br/>→ хранить твою <b>карту состояния</b>, чтобы видеть динамику<br/>→ собирать твой <b>личный архив</b></div>
+          <div class="bubble bot">Всё опционально. С чего начнём?</div>
+          <div class="bubble-buttons">
+            <div class="bubble-btn">Записаться на встречу</div>
+            <div class="bubble-btn">Задать вопрос Матвею</div>
+            <div class="bubble-btn">Утренний вопрос</div>
+            <div class="bubble-btn">Узнать про форматы</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOCKUP 2: Anketa flow -->
+      <div class="chat-screen">
+        <div class="chat-mockup-title">Сценарий 02 · Анкета первой встречи</div>
+        <div class="chat-header">
+          <div class="chat-avatar">M</div>
+          <div>
+            <div class="chat-name">Спутник Матвея</div>
+            <div class="chat-status">бот · @matveybogatyrev_bot</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="bubble bot">Бронирование принято. Разбор · 12 мая, 15:00 · 90–180 мин.</div>
+          <div class="bubble bot">Сейчас попрошу заполнить анкету — это часть продукта. Без неё первая встреча превращается в «расскажи о себе»; нам обоим жалко времени.</div>
+          <div class="bubble bot">Вопрос 1 из 5:<br/><br/><b>Что произошло в твоей жизни за последние 1–3 месяца, что подталкивает к этой встрече?</b><br/><br/>Своими словами, без шаблонов. Можно длинно.</div>
+          <div class="bubble user">Меня уволили в марте, и с тех пор я не могу собраться. Не понимаю — это про работу или про что-то большее...</div>
+          <div class="bubble bot">Записал. Спасибо.</div>
+          <div class="bubble bot">Вопрос 2 из 5:<br/><br/><b>Что ты уже пробовал с этой темой — и почему не сработало?</b></div>
+          <div class="bubble user"><i>(пишет следующий ответ)</i></div>
+        </div>
+      </div>
+
+      <!-- MOCKUP 3: One question -->
+      <div class="chat-screen">
+        <div class="chat-mockup-title">Сценарий 03 · Один вопрос Матвею</div>
+        <div class="chat-header">
+          <div class="chat-avatar">M</div>
+          <div>
+            <div class="chat-name">Спутник Матвея</div>
+            <div class="chat-status">бот · @matveybogatyrev_bot</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="bubble user">Хочу задать вопрос</div>
+          <div class="bubble bot">Один вопрос. Без обязательств. Матвей отвечает по четвергам — лично, текстом, не шаблоном. Следующий вопрос можно будет задать через 3 месяца.</div>
+          <div class="bubble bot">Сформулируй своими словами то, что тебе важно разобрать. Можно длинно — но <b>один вопрос за раз</b>, не цепочка.</div>
+          <div class="bubble user">У меня всё хорошо со стороны — карьера, семья, друзья. Но иногда внутри пусто, и я не понимаю, имею ли я право на это «пусто», когда у других реальные проблемы. Это нормально или я что-то не так делаю?</div>
+          <div class="bubble bot">Принято. Очередь: ты #4. Матвей отвечает в четверг до конца дня — пришлёт сюда.</div>
+          <div class="bubble bot italic">P.S. Ответ часто получается не на сам вопрос, а на то, что под ним.</div>
+        </div>
+      </div>
+
+      <!-- MOCKUP 4: Morning question -->
+      <div class="chat-screen">
+        <div class="chat-mockup-title">Сценарий 04 · Утренний вопрос</div>
+        <div class="chat-header">
+          <div class="chat-avatar">M</div>
+          <div>
+            <div class="chat-name">Спутник Матвея</div>
+            <div class="chat-status">бот · @matveybogatyrev_bot</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="bubble bot">Доброе утро.</div>
+          <div class="bubble bot">Один вопрос на сегодня:</div>
+          <div class="bubble bot italic"><b>Что в твоей жизни ты продолжаешь делать только потому, что начал — а не потому, что это всё ещё твоё?</b></div>
+          <div class="bubble bot">Если хочешь — ответь в этот чат. Это хранится только у тебя; никто не читает. Можно молча носить с собой.</div>
+          <div class="bubble user">Работу. Я её начал 6 лет назад как «временно», и она стала «всем»...</div>
+          <div class="bubble bot">Записал в твой архив. Хорошего дня.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- V. QUESTIONS POOL -->
+  <section id="questions">
+    <div class="sec-head">
+      <div><div class="num">V</div><h2>Утренние вопросы · образцы пула</h2></div>
+      <div class="sec-tagline">200+ авторских вопросов</div>
+    </div>
+
+    <p>Главный смысловой ресурс бота — пул утренних вопросов. Это не «мотивирующие цитаты». Это <b>экзистенциальные провокации</b> — короткие, точные, без шаблонов. Один вопрос в день, без повторов, в течение полугода.</p>
+
+    <p>Темы пула: свобода и выбор · идентичность · отношения с собой · значимое vs принятое · смерть и конечность · сопротивление · смысл · ответственность · одиночество · близость. По каждой теме — 15–25 вопросов. Можно создавать тематические недели («неделя про идентичность», «неделя про выбор»).</p>
+
+    <div class="questions-sample">
+      <div class="lab">Образец · 12 вопросов из пула</div>
+      <ol>
+        <li>Что в твоей жизни ты продолжаешь делать только потому, что начал?</li>
+        <li>Кому в твоей голове ты постоянно что-то доказываешь? Когда стартовал этот разговор?</li>
+        <li>Если бы ты прожил эту неделю последний раз в жизни — что бы изменил?</li>
+        <li>Какая твоя сильная сторона маскируется под слабость? А какая слабость — под силу?</li>
+        <li>Что в твоём «застревании» даёт тебе что-то, чего иначе у тебя не было бы?</li>
+        <li>Когда последний раз тебе чего-то по-настоящему хотелось — не «надо», а хотелось?</li>
+        <li>Что для тебя «своё место» — место среди людей или место в самом себе?</li>
+        <li>Что бы ты сделал прямо сейчас, если бы знал, что не ошибёшься?</li>
+        <li>Если глубина — это сила, что мешает тебе на неё опираться?</li>
+        <li>Что именно сопротивляется в тебе — ты сам, или часть, которая боится?</li>
+        <li>Какую правду о себе ты знаешь, но обходишь?</li>
+        <li>За что ты благодарен сегодня, но не позволяешь себе быть благодарным?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- VI. TECH STACK -->
+  <section id="tech">
+    <div class="sec-head">
+      <div><div class="num">VI</div><h2>Стек и поэтапный запуск</h2></div>
+      <div class="sec-tagline">MVP за 2–3 недели · бюджет — 5–15к ₽/мес на хостинг</div>
+    </div>
+
+    <h3>Технологический стек</h3>
+    <div class="stack">
+      <div class="stack-cell">
+        <div class="lab">Бот</div>
+        <h5>Python <em>+ aiogram</em></h5>
+        <p>Современная асинхронная библиотека для Telegram Bot API. Альтернатива: <code>node-telegram-bot-api</code> (Node.js) — если разработчик предпочитает.</p>
+      </div>
+      <div class="stack-cell">
+        <div class="lab">База данных</div>
+        <h5>PostgreSQL <em>+ SQLAlchemy</em></h5>
+        <p>Хранение пользователей, анкет, вопросов-ответов, утренних вопросов и подписок. Для MVP можно <code>SQLite</code>.</p>
+      </div>
+      <div class="stack-cell">
+        <div class="lab">Хостинг</div>
+        <h5>VPS <em>(Selectel / Timeweb)</em></h5>
+        <p>1 ядро, 1 ГБ RAM — этого хватит на тысячи пользователей. Стоимость — около 200–400 ₽/мес.</p>
+      </div>
+      <div class="stack-cell">
+        <div class="lab">Планировщик</div>
+        <h5>APScheduler <em>+ cron</em></h5>
+        <p>Для утренних вопросов и напоминаний. Без оверхеда отдельного очередного сервиса.</p>
+      </div>
+      <div class="stack-cell">
+        <div class="lab">Платежи</div>
+        <h5>Telegram Payments <em>или ЮKassa</em></h5>
+        <p>Для бронирования встреч. На MVP можно обойтись без интеграции — оплата по реквизитам с подтверждением вручную.</p>
+      </div>
+      <div class="stack-cell">
+        <div class="lab">Админ-панель</div>
+        <h5>Простой web-UI <em>(FastAPI / Flask)</em></h5>
+        <p>Для Матвея: видеть очередь вопросов, отвечать, отслеживать пользователей, добавлять утренние вопросы в пул.</p>
+      </div>
+    </div>
+
+    <h3>Фазы запуска</h3>
+    <div class="phases">
+      <div class="phase-card mvp">
+        <div class="ph-num">MVP</div>
+        <h4>2–3 недели</h4>
+        <p>Минимально жизнеспособная версия: <b>анкета первой встречи</b>, <b>один вопрос по четвергам</b>, меню форматов с ссылкой на сайт.</p>
+        <ul class="clean">
+          <li>Базовая структура диалогов</li>
+          <li>Очередь вопросов с уведомлением Матвея</li>
+          <li>Простая админ-панель: видеть и отвечать на вопросы</li>
+          <li>Тестовый пользователь — сам Матвей и 3–5 близких</li>
+        </ul>
+        <div class="meta">Бюджет разработки: 80–150к ₽ · MVP-разработчик 1 чел.</div>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">Phase<br/>II</div>
+        <h4>+1,5–2 месяца</h4>
+        <p>Расширение базы: <b>утренний вопрос</b> с пулом, <b>карта состояния</b>, <b>библиотека тестов</b> (5–6 базовых: Люшер, ШЭ, Big Five, Спилбергер, Мадди-Леонтьев).</p>
+        <ul class="clean">
+          <li>Пул из 200+ утренних вопросов в админке</li>
+          <li>Сравнительная визуализация двух радаров</li>
+          <li>Прохождение и интерпретация тестов</li>
+          <li>Динамика результатов тестов во времени</li>
+        </ul>
+        <div class="meta">Доп. бюджет: 100–160к ₽</div>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">Phase<br/>III</div>
+        <h4>+2 месяца</h4>
+        <p>Глубокий слой: <b>AI-дневник</b> с воскресным разбором, <b>личный архив</b>, расширение библиотеки (PMAI, EAQ, SCS, Hazan-Shaver).</p>
+        <ul class="clean">
+          <li>AI-дневник с категориями записей</li>
+          <li>Воскресный AI-разбор (Claude или GPT API)</li>
+          <li>Этический слой (анти-диагностика, прозрачность)</li>
+          <li>Архив + экспорт в PDF</li>
+        </ul>
+        <div class="meta">Доп. бюджет: 150–250к ₽ + API ~5к/мес</div>
+      </div>
+      <div class="phase-card">
+        <div class="ph-num">Phase<br/>IV</div>
+        <h4>Бэклог</h4>
+        <p>Авторские механики из пяти идей. Выбираются 2–3 после анализа того, что работает в первых трёх фазах. Не «всё сразу», а точечно и хорошо.</p>
+        <ul class="clean">
+          <li>Карта снов или 30-дневная Тень</li>
+          <li>Письмо себе через год</li>
+          <li>Карта выборов жизни</li>
+          <li>Тренажёр или видео-якоря</li>
+        </ul>
+        <div class="meta">Доп. бюджет: 80–200к ₽ за выбранный пакет</div>
+      </div>
+    </div>
+
+    <p style="margin-top:24px;font-size:14px;color:var(--text-3)"><b>Итоговый бюджет:</b> MVP — 80–150к ₽; до конца Phase III — 330–560к ₽ (около 6–9 месяцев работы); полный цикл с Phase IV — 410–760к ₽ за 12+ месяцев. Обслуживание: 5–15к ₽/мес хостинг + 5–10к ₽/мес AI API на Phase III+.</p>
+  </section>
+
+  <!-- VII. METRICS -->
+  <section id="metrics">
+    <div class="sec-head">
+      <div><div class="num">VII</div><h2>Метрики бота</h2></div>
+      <div class="sec-tagline">Что мерим · что не мерим</div>
+    </div>
+
+    <p>Бот — не «продукт для роста», это <b>инструмент сопровождения</b>. Метрики тут другие: не DAU, не retention rate, а <b>качество соединения</b> с аудиторией.</p>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-lab">Полезность</div>
+        <h5>Доля «один вопрос» → разбор</h5>
+        <p>Сколько из тех, кто задал один вопрос, потом записываются на платный разбор. Целевая конверсия: 15–25 % за 3 месяца.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Удержание</div>
+        <h5>Подписчики утреннего вопроса</h5>
+        <p>Сколько подписалось / сколько отписалось. Если отписки массовые — пул вопросов слабый. Целевой удержание: 70 %+ через 30 дней.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Динамика</div>
+        <h5>Повторные карты состояния</h5>
+        <p>Сколько пользователей возвращаются и проходят фильтр повторно. Ценно как для них, так и как индикатор качества инструмента.</p>
+      </div>
+      <div class="metric">
+        <div class="metric-lab">Качество анкеты</div>
+        <h5>Заполняемость 5/5</h5>
+        <p>Доля бронирующих, которые честно заполняют все 5 вопросов анкеты. Если ниже 80 % — анкета слишком тяжёлая или слишком формальная.</p>
+      </div>
+    </div>
+
+    <h3>Что НЕ мерим</h3>
+    <ul class="clean">
+      <li><b>DAU/MAU.</b> Бот не должен использоваться каждый день. Один утренний вопрос — это <i>достаточно</i>.</li>
+      <li><b>Время в боте.</b> Чем меньше — тем лучше. Бот не должен заменять жизнь.</li>
+      <li><b>Engagement rate.</b> Молчаливый пользователь, который раз в неделю присылает короткий ответ — может быть лучшим клиентом, чем активный.</li>
+    </ul>
+  </section>
+
+  <!-- THESIS -->
+  <div class="thesis">
+    <div class="lab">Главный принцип бота</div>
+    <blockquote>«Хороший бот, как и хороший психолог — тот, чья задача сделать так, чтобы он был не нужен. Не "удерживать", а сопровождать. Я хочу, чтобы человек уходил из бота не с зависимостью, а с инструментом — и приходил, когда инструмент действительно нужен».</blockquote>
+    <cite>— Принцип бота · этап VIII</cite>
+  </div>
+
+  <footer>
+    Концепт Telegram-бота · этап VIII бренда «Матвей Богатырёв» · апрель 2026.<br/>
+    Реализация после этапа VIII (сайт). Итоговый бюджет MVP — 80–150к ₽, полный цикл — 190–330к ₽.
+  </footer>
+</div>
+
+</body>
+</html>

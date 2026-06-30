@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Манифест — Матвей Богатырёв</title>
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --panel-2:#F1E8CE;
+    --line:#C8BEA0; --line-soft:#D9CFB1;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-bg-2:#465339; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236;
+    --pearl:#FAF3DD;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* RIBBON */
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold);font-family:var(--sans)}
+  .ribbon-inner{max-width:880px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .ribbon .brand{display:flex;align-items:center;gap:14px}
+  .ribbon .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .ribbon .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-fg)}
+  .ribbon .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px;font-family:var(--sans)}
+  .ribbon .meta{text-align:right;font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase;font-family:var(--sans)}
+  .ribbon .meta strong{color:var(--gold);font-weight:500;letter-spacing:.18em}
+
+  /* CTA */
+  .pdf-cta{max-width:880px;margin:24px auto 0;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .pdf-cta .hint{font-family:var(--sans);font-size:11.5px;color:var(--text-3);letter-spacing:.06em;font-style:italic}
+  .btn-pdf{background:var(--ink-bg);color:var(--gold);border:1px solid var(--gold);padding:11px 24px;font-family:var(--sans);font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:all .2s}
+  .btn-pdf:hover{background:var(--gold);color:var(--ink-bg)}
+
+  /* DOCUMENT */
+  .doc{max-width:780px;margin:0 auto;padding:80px 40px 96px;background:var(--bg)}
+
+  /* COVER */
+  .cover{text-align:center;padding-bottom:64px;border-bottom:1px solid var(--line);margin-bottom:64px}
+  .cover .ornament{font-family:var(--serif);font-size:32px;color:var(--gold);font-style:italic;margin-bottom:24px;letter-spacing:.2em}
+  .cover h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,7vw,84px);line-height:.95;margin:0 0 24px;color:var(--ink);letter-spacing:-.01em}
+  .cover .author{font-family:var(--serif);font-size:22px;color:var(--text);margin:0 0 6px;font-style:italic}
+  .cover .role{font-family:var(--sans);font-size:11px;color:var(--text-3);letter-spacing:.36em;text-transform:uppercase}
+  .cover .tagline{margin-top:36px;font-family:var(--serif);font-style:italic;color:var(--text-2);font-size:18px;line-height:1.5;max-width:520px;margin-left:auto;margin-right:auto}
+
+  /* PREAMBLE */
+  .preamble{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--text-2);line-height:1.7;text-align:center;max-width:640px;margin:0 auto 64px;padding:0 20px}
+
+  /* DIVIDER */
+  .divider{display:flex;align-items:center;justify-content:center;margin:48px 0;color:var(--gold);font-family:var(--serif)}
+  .divider::before, .divider::after{content:"";flex:1;height:1px;background:var(--line)}
+  .divider::before{margin-right:18px}
+  .divider::after{margin-left:18px}
+  .divider span{font-style:italic;font-size:14px;letter-spacing:.3em}
+
+  /* SECTIONS */
+  .sec{margin-bottom:56px}
+  .sec-num{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--gold);letter-spacing:.16em;margin-bottom:8px;text-transform:uppercase}
+  .sec h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4vw,46px);line-height:1.05;color:var(--ink);margin:0 0 32px;letter-spacing:-.005em}
+  .sec h3{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);margin:32px 0 14px;line-height:1.2;font-style:italic}
+  .sec p{margin:0 0 18px;color:var(--text);font-size:17.5px;line-height:1.75}
+  .sec p:last-child{margin-bottom:0}
+  .sec p b, .sec p strong{font-weight:500;color:var(--ink)}
+  .sec p em{font-style:italic;color:var(--text)}
+
+  /* DROP CAP first paragraph after h2 */
+  .sec h2 + p::first-letter{
+    font-family:var(--serif);
+    font-size:64px;
+    font-weight:400;
+    color:var(--gold);
+    float:left;
+    line-height:.95;
+    margin:8px 12px 0 0;
+    font-style:italic;
+  }
+
+  /* PULL QUOTE */
+  blockquote.pull{font-family:var(--serif);font-style:italic;font-size:24px;line-height:1.45;color:var(--ink);margin:32px 0;padding:0 0 0 24px;border-left:2px solid var(--gold);text-align:left}
+  blockquote.pull cite{display:block;font-size:12px;color:var(--text-3);font-style:normal;letter-spacing:.18em;text-transform:uppercase;margin-top:8px;font-family:var(--sans)}
+
+  /* BULLETS */
+  .sec ul{padding-left:0;list-style:none;margin:18px 0}
+  .sec ul li{padding-left:28px;position:relative;margin-bottom:12px;line-height:1.7;font-size:17.5px;color:var(--text)}
+  .sec ul li::before{content:"·";position:absolute;left:8px;top:-2px;color:var(--gold);font-size:32px;font-weight:600;font-family:var(--serif);line-height:1}
+  .sec ul li b{color:var(--ink);font-weight:500}
+
+  /* FORMAT BLOCKS */
+  .fmt-block{margin:24px 0 32px;padding:24px 28px;background:var(--panel);border-left:3px solid var(--gold)}
+  .fmt-block .fmt-num-line{font-family:var(--sans);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .fmt-block h4{font-family:var(--serif);font-size:24px;color:var(--ink);margin:0 0 8px;font-weight:400;line-height:1.15}
+  .fmt-block .fmt-meta{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--text-2);margin-bottom:14px}
+  .fmt-block .fmt-meta b{font-style:normal;font-weight:500;color:var(--ink)}
+  .fmt-block p{font-size:16px;line-height:1.7;margin-bottom:0;color:var(--text)}
+
+  /* ANTI-LIST */
+  .anti-block p{position:relative;padding-left:32px;margin-bottom:14px}
+  .anti-block p::before{content:"—";position:absolute;left:0;top:0;color:var(--gold);font-weight:500}
+  .anti-block .closing{padding-left:0;color:var(--text-2);font-style:italic;margin-top:24px;border-top:1px solid var(--line-soft);padding-top:18px}
+  .anti-block .closing::before{content:""}
+
+  /* PRICE EXPLAINER */
+  .price-explainer{margin:24px 0 32px;padding:28px 32px;background:var(--bg-2);border-left:3px solid var(--gold)}
+  .price-explainer .lab{font-family:var(--sans);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .price-explainer h4{font-family:var(--serif);font-size:22px;color:var(--ink);margin:0 0 14px;font-weight:400;line-height:1.2;font-style:italic}
+  .price-explainer p{margin:0 0 12px;font-size:16px;line-height:1.7}
+  .price-explainer p:last-child{margin:0}
+
+  /* TERMS — definition-style */
+  .terms-list{margin:24px 0}
+  .terms-list .term{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--line-soft)}
+  .terms-list .term:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+  .terms-list .term h5{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--ink);margin:0 0 4px;font-weight:500}
+  .terms-list .term p{font-size:16px;line-height:1.65;margin:0;color:var(--text)}
+
+  /* CLOSING */
+  .closing-block{margin-top:80px;padding-top:64px;border-top:1px solid var(--line);text-align:center}
+  .closing-block .ornament{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:24px;letter-spacing:.2em;margin-bottom:24px}
+  .closing-block p{font-family:var(--serif);font-size:22px;line-height:1.55;color:var(--ink);margin:0 0 12px;max-width:560px;margin-left:auto;margin-right:auto}
+  .closing-block p.imperative{font-style:italic;color:var(--gold);margin-top:24px;font-size:24px}
+
+  /* TOOLTIP — для профессиональных терминов */
+  .tip{
+    border-bottom:1px dotted var(--gold);
+    cursor:help;
+    position:relative;
+    color:var(--ink);
+    font-style:inherit;
+    font-weight:inherit;
+    transition:background .15s;
+  }
+  .tip:hover, .tip:focus{
+    outline:none;
+    background:rgba(168,138,74,.08);
+  }
+  .tip::after{
+    content:attr(data-def);
+    position:absolute;
+    bottom:calc(100% + 10px);
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--ink-bg);
+    color:var(--ink-fg);
+    padding:14px 18px;
+    font-size:13px;
+    font-style:normal;
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.55;
+    width:320px;
+    max-width:88vw;
+    border:1px solid var(--gold);
+    box-shadow:0 8px 24px rgba(46,56,40,.18);
+    z-index:100;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .2s, visibility .2s;
+    text-align:left;
+    letter-spacing:0;
+    text-transform:none;
+    white-space:normal;
+  }
+  .tip::before{
+    content:"";
+    position:absolute;
+    bottom:calc(100% + 4px);
+    left:50%;
+    transform:translateX(-50%);
+    border:6px solid transparent;
+    border-top-color:var(--gold);
+    z-index:101;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .2s, visibility .2s;
+  }
+  .tip:hover::after, .tip:focus::after, .tip.active::after,
+  .tip:hover::before, .tip:focus::before, .tip.active::before{
+    opacity:1;
+    visibility:visible;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width:720px){
+    .doc{padding:48px 28px 72px}
+    .ribbon-inner,.pdf-cta{padding-left:28px;padding-right:28px}
+    .sec h2 + p::first-letter{font-size:52px;margin-right:8px}
+    blockquote.pull{font-size:20px}
+    .tip::after{width:280px}
+  }
+
+  /* PRINT — clean book layout */
+  @media print{
+    @page{margin:18mm 16mm}
+    body{background:#fff;color:#222;font-size:13pt;line-height:1.55}
+    .ribbon, .pdf-cta{display:none !important}
+    .doc{padding:0;max-width:none;background:#fff}
+    .cover{padding-bottom:36pt;margin-bottom:36pt}
+    .cover h1{font-size:48pt;color:#1a1a1a}
+    .cover .author{color:#1a1a1a;font-size:18pt}
+    .cover .role{color:#666}
+    .cover .tagline{color:#444;font-size:14pt}
+    .cover .ornament{color:#A88A4A;font-size:24pt}
+    .preamble{font-size:13pt;color:#444;margin-bottom:36pt}
+    .sec{margin-bottom:30pt;page-break-inside:avoid}
+    .sec h2{font-size:24pt;color:#1a1a1a;page-break-after:avoid}
+    .sec h3{font-size:15pt;color:#1a1a1a;page-break-after:avoid}
+    .sec p{font-size:11.5pt;color:#222;line-height:1.55;margin-bottom:10pt}
+    .sec h2 + p::first-letter{font-size:42pt;color:#A88A4A;margin:4pt 8pt 0 0}
+    .sec ul li{font-size:11.5pt;color:#222}
+    .sec-num{color:#A88A4A;font-size:11pt}
+    blockquote.pull{font-size:14pt;color:#1a1a1a;border-left-color:#A88A4A;page-break-inside:avoid;margin:20pt 0}
+    .fmt-block{background:#f7f1de;border-left-color:#A88A4A;padding:14pt 18pt;margin:18pt 0;page-break-inside:avoid}
+    .fmt-block h4{color:#1a1a1a;font-size:15pt}
+    .fmt-block .fmt-num-line{color:#A88A4A;font-size:9pt}
+    .fmt-block .fmt-meta{color:#444;font-size:11pt}
+    .fmt-block p{color:#222;font-size:11pt}
+    .price-explainer{background:#f7f1de;border-left-color:#A88A4A;padding:14pt 18pt;page-break-inside:avoid}
+    .price-explainer h4{color:#1a1a1a;font-size:14pt}
+    .price-explainer .lab{color:#A88A4A;font-size:9pt}
+    .price-explainer p{color:#222;font-size:11pt}
+    .terms-list .term h5{color:#1a1a1a}
+    .terms-list .term p{color:#222}
+    .terms-list .term{border-bottom-color:#bbb}
+    .anti-block p::before{color:#A88A4A}
+    .closing-block{border-top-color:#888;page-break-before:auto;page-break-inside:avoid;margin-top:48pt;padding-top:36pt}
+    .closing-block p{color:#1a1a1a;font-size:14pt}
+    .closing-block p.imperative{color:#A88A4A;font-size:15pt}
+    .closing-block .ornament{color:#A88A4A;font-size:18pt}
+    .divider{margin:24pt 0}
+    .divider::before,.divider::after{background:#bbb}
+    .divider span{color:#A88A4A;font-size:10pt}
+    /* Tooltips invisible in print */
+    .tip{border-bottom:none;background:transparent !important;color:inherit}
+    .tip::after, .tip::before{display:none !important}
+  }
+</style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<script src="metrika.js"></script>
+</head>
+<body>
+
+<!-- RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <a class="brand" href="index.html" style="text-decoration:none">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </a>
+    <a class="meta" href="index.html" style="text-decoration:none">← На сайт</a>
+  </div>
+</div>
+
+<!-- PDF CTA -->
+<div class="pdf-cta">
+  <div class="hint">Подчёркнутые слова — наведи курсор или коснись, чтобы увидеть определение.</div>
+  <button type="button" class="btn-pdf" onclick="window.print()">Сохранить в PDF</button>
+</div>
+
+<!-- DOCUMENT -->
+<div class="doc">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="ornament">·  ·  ·</div>
+    <h1>Манифест</h1>
+    <div class="author">Матвей Богатырёв</div>
+    <div class="role">Психолог · Человековед</div>
+    <div class="tagline">Кто я. Как я работаю. Кому подойду — и кому нет.</div>
+  </div>
+
+  <!-- PREAMBLE -->
+  <div class="preamble">
+    Это не коммерческое предложение и не маркетинговая воронка. Это документ, в котором я излагаю своё понимание работы психолога — чтобы ты мог решить, хочешь ли ты идти в эту работу со мной. Я выбираю клиентов так же, как и они выбирают меня.
+  </div>
+
+  <div class="divider"><span>· I ·</span></div>
+
+  <!-- I -->
+  <section class="sec">
+    <div class="sec-num">Раздел первый</div>
+    <h2>Кто я</h2>
+    <p>Я психолог-консультант, <span class="tip" data-def="Не мой выдуманный титул, а способ обозначить акцент: я работаю не с симптомами, а с человеком как целым — с его смыслами, отношениями, свободой. Из той же традиции, что Юнг, Франкл, Ялом.">психолог-человековед</span>. Веду частную практику в малом объёме — не строю «фабрику терапии», беру тех, чья глубина мне понятна и интересна.</p>
+    <p>Параллельно с практикой я преподаю в вузе практикум для студентов-психологов старших курсов. Не из тщеславия, а потому что хочу, чтобы у будущих коллег была не только теория, но и понимание того, как реально устроена работа в кабинете. Это даёт мне необходимую дисциплину: учить можно только тому, что у тебя самого работает.</p>
+    <p>Я живу в той же реальности, что и ты. Я не «специалист с олимпа», который смотрит на людей сверху как на объекты. Я такой же человек, только прошёл дальше в некоторых вопросах и хочу поделиться этим путём.</p>
+  </section>
+
+  <div class="divider"><span>· II ·</span></div>
+
+  <!-- II -->
+  <section class="sec">
+    <div class="sec-num">Раздел второй</div>
+    <h2>Природа человека — как я её вижу</h2>
+    <p>Несколько положений, которые задают тон всей работе. Их не обязательно разделять, чтобы со мной работать — но их полезно знать заранее.</p>
+
+    <h3>Свобода — не привилегия, а необходимость</h3>
+    <p>Я разделяю <span class="tip" data-def="Экзистенциализм — философское направление XX века, рассматривающее человека через призму свободы, выбора, конечности и поиска смысла. Главные имена: Сартр, Хайдеггер, Кьеркегор, Камю. В психологии — Франкл, Ялом, Мэй.">экзистенциальное</span> допущение: <span class="tip" data-def="Тезис Жан-Поля Сартра: человек не может не выбирать. Даже отказ от выбора — выбор. Свобода не дана как привилегия, она наложена как условие существования.">человек обречён на свободу</span>. Даже отказ от выбора — это выбор. Это значит, что я не работаю с языком «жертвы обстоятельств», даже когда обстоятельства реально жёсткие. С этим работают по-разному: иногда возвращая человеку его выборы, иногда помогая принять то, что выбора действительно нет. Но не подменяя одно другим.</p>
+
+    <h3>Душа — серьёзная категория</h3>
+    <p>Я не материалист в том смысле, что всё сводится к биологии и нейромедиаторам. Жизнь человека — это и больше тоже. Душа, смысл, призвание, смерть — для меня не метафоры. Поэтому я с удовольствием работаю с темами, которые «нормальная клиническая психология» обходит как «не своё». При этом я не подменяю этим работу: эзотерика без дисциплины — это не глубина, это уход от глубины.</p>
+
+    <h3><span class="tip" data-def="Карл Густав Юнг (1875–1961) — швейцарский психиатр, ученик Фрейда и основатель аналитической психологии. Ввёл понятия коллективного бессознательного, архетипов, индивидуации (становления цельного «я»).">Юнг</span> прав не во всём, но прав в главном</h3>
+    <p>Я опираюсь на юнгианскую мысль о <span class="tip" data-def="То, что выходит за пределы повседневного опыта и рационального объяснения. В юнгианской традиции — измерение, в которое попадают встречи с архетипами, символами, мистическим. Не противоположность научному — расширение его.">трансцендентном</span> измерении опыта. Знаменитая фраза:</p>
+    <blockquote class="pull">«Шизофреник тонет в тех же самых водах, в которых мистик плавает с удовольствием».<cite>— К. Г. Юнг</cite></blockquote>
+    <p>Для меня это не литературный приём. Это про то, что пугающее и сакральное часто живут в одних водах, и работа психолога — научить плавать.</p>
+
+    <h3>Страдание — двух типов</h3>
+    <p>Это, возможно, самое важное различие в моей работе.</p>
+    <p>Есть страдание <b>вынужденное</b> — то, что вшито в ткань жизни и не убирается работой над собой. Смерть близких, утраты, диагнозы, осознание собственной конечности. Это не «надо переработать» — это надо прожить так, чтобы оно тебя не разрушило.</p>
+    <p>И есть страдание <b>невынужденное</b> — то, что человек продолжает производить сам, потому что так выходит легче, чем взять на себя ответственность. Избегание выбора, жизнь в обиде, поиск виновных, удержание идентичности «жертвы». Это можно изменить — и это моя работа.</p>
+    <p>В реальном запросе почти всегда есть и то, и другое. Я работаю с обоими типами — но по-разному. Различение даёт точность того, <b>где именно</b> прикладывать усилие.</p>
+  </section>
+
+  <div class="divider"><span>· III ·</span></div>
+
+  <!-- III -->
+  <section class="sec">
+    <div class="sec-num">Раздел третий</div>
+    <h2>Метод</h2>
+    <p>Я работаю в интегративной парадигме с экзистенциализмом как осью. Это значит, что в одном кабинете — несколько подходов, выбираемых под задачу, а не под мою привычку.</p>
+    <ul>
+      <li><b><span class="tip" data-def="Метод и теория З. Фрейда (и продолжателей — Юнга, Лакана и др.), исследующие бессознательное: то, что скрыто от сознания, но управляет нашим поведением, желаниями, реакциями.">Психоанализ</span></b> — для глубины и работы с тем, что человек о себе не знает.</li>
+      <li><b><span class="tip" data-def="Современный научно обоснованный метод психотерапии, работающий с автоматическими мыслями, убеждениями и поведением. Эффективен в работе с тревогой, депрессией, фобиями.">Когнитивно-поведенческий подход</span></b> — для механики и тактики, чтобы перевести понимание в действие.</li>
+      <li><b>Экзистенциализм</b> (<span class="tip" data-def="Виктор Франкл (1905–1997) — австрийский психиатр, основатель логотерапии. Прошёл нацистские концлагеря, после чего написал «Человек в поисках смысла» — одну из ключевых книг экзистенциальной психологии.">Франкл</span>, <span class="tip" data-def="Ирвин Ялом (р. 1931) — американский психотерапевт, автор «Экзистенциальной психотерапии» и художественных книг про работу с клиентами («Когда Ницше плакал», «Шопенгауэр как лекарство»). Сформулировал четыре «данности» человеческого существования: смерть, свобода, изоляция, бессмысленность.">Ялом</span>, Сартр, Камю) — для смыслового скелета и работы со свободой, выбором, конечностью.</li>
+      <li><b>Юнгианский слой</b> — для <span class="tip" data-def="По Юнгу — древние, общечеловеческие психические структуры, проявляющиеся в мифах, снах, искусстве. Архетип не «изобретается» культурой — он находится в каждом из нас как наследие коллективного бессознательного.">архетипического</span>, мистического, того, что больше биографии.</li>
+    </ul>
+    <p>Это не эклектика. Эклектика — это когда смешиваешь, чтобы было «чем-то». Я смешиваю, чтобы было точно: выбираю инструмент под задачу, а не под собственное предпочтение.</p>
+
+    <h3>Я работаю быстро. И вот почему.</h3>
+    <p>Стандартный психотерапевтический формат — 50 минут раз в неделю, длительностью «когда вам станет лучше».</p>
+    <p>Я не говорю, что такой формат не имеет права на существование. Он работает — в том числе и со мной — но в определённых условиях: когда между клиентом и психологом уже сложился <span class="tip" data-def="Сложившаяся между клиентом и психологом связка: доверие, ощущение безопасности, общая рамка работы. Без него глубина невозможна. Формируется обычно за 2–4 встречи и определяет успех всей терапии больше, чем выбранный метод.">терапевтический союз</span>, появилось доверие, и мы хорошо знаем друг друга. В этих условиях 50–60 минут достаточно: контекст загружен, разогрев не нужен, можно сразу заходить в материал.</p>
+    <p>Но в моей практике и на моём опыте — особенно в начале работы — ограничение в один час часто не даёт нужной глубины. Сессия-разбор у меня может идти <b>до 180 минут</b>. Не потому, что я «работаю долго», а потому, что настоящая работа часто начинается только после первого часа, когда у клиента рассеивается <span class="tip" data-def="Психоаналитический термин: бессознательное противодействие клиента работе над тем, что было бы важно осознать. Проявляется как «забытьё», ускользание от темы, эмоциональная блокировка. Преодолеть его — половина работы.">сопротивление</span>. На 55-й минуте психолог говорит «время вышло, продолжим в следующий раз» — и человек закрывает то, что только начало раскрываться. У меня — нет таймера. Идём, пока не пройдём точку.</p>
+    <p>Это даёт <b>скорость через глубину</b>. Один глубинный разбор у меня закрывает столько содержания, сколько 4–6 «обычных» сессий. Это не «дольше — значит лучше». Это «сколько действительно требует процесс».</p>
+    <blockquote class="pull">«Не таймер на стене решает, когда работа закончена».</blockquote>
+  </section>
+
+  <div class="divider"><span>· IV ·</span></div>
+
+  <!-- IV — PARADOX -->
+  <section class="sec">
+    <div class="sec-num">Раздел четвёртый</div>
+    <h2>Парадокс хорошего психолога</h2>
+    <p>Я глубоко убеждён в том, что задача хорошего психолога — научить человека жить и справляться с жизненными трудностями <b>самостоятельно</b>. Без постоянных походов к психологу. Моя работа — дать инструмент, систему, глубокое понимание, и научить ими пользоваться.</p>
+    <blockquote class="pull">«Хороший специалист — тот, чья задача сделать так, чтобы человеку больше не понадобились его услуги».</blockquote>
+    <p>В этом — парадокс хорошего психолога (как и многих других специалистов, например врачей). Вы вряд ли хотите всю жизнь ходить к врачу, который лечит вашу болячку ровно до той степени, чтобы она не сильно мешала вам жить, но при этом не прошла полностью — чтобы вы периодически «долечивались» у него каждую неделю. Привет фармакологии и антидепрессантам.</p>
+    <p>Если кому-то нравится ходить к психологу раз в неделю по 55 минут — это не плохо. Но человек не должен <b>«подсаживаться»</b> на это. Подобное желание должно исходить не из чувства «я не смогу без этого нормально жить», а из «я могу жить и без этого, но мне нравится ходить к психологу». Это разные позиции — и они ведут в разные жизни.</p>
+    <p>Мой ориентир — научить тебя обходиться без меня. Ровно поэтому форматы моей работы устроены так, как они устроены: с точкой выхода и с фиксированной длительностью. Не «ходить-ходить», а пройти и идти дальше.</p>
+  </section>
+
+  <div class="divider"><span>· V ·</span></div>
+
+  <!-- V — FORMATS -->
+  <section class="sec">
+    <div class="sec-num">Раздел пятый</div>
+    <h2>Форматы работы</h2>
+    <p>Три основных формата плюс один дополнительный. Все опираются на одну методологию — отличаются масштабом задачи. Формат выбирается не по бюджету, а по тому, какого размера у тебя задача.</p>
+
+    <div class="fmt-block">
+      <div class="fmt-num-line">Формат 01 · Флагман</div>
+      <h4>Глубинный разбор</h4>
+      <div class="fmt-meta">Одна встреча, 90–180 минут · <b>12 000 ₽</b> за встречу</div>
+      <p>Точка входа и signature-формат. Подходит, когда есть конкретный кризис, точка, дилемма, и нужен честный взгляд со стороны без долгих процедур. Не «начало терапии» — а конкретный сдвиг за один заход. Один разбор ≈ месяц «обычной» терапии.</p>
+    </div>
+
+    <div class="fmt-block">
+      <div class="fmt-num-line">Формат 02</div>
+      <h4>Сопровождение до результата</h4>
+      <div class="fmt-meta">5–7 встреч за 6–10 недель · <b>от 30 000 ₽</b> за пакет</div>
+      <p>Структурированная работа над прохождением конкретного перелома: смена работы, развод, переезд, утрата, кризис идентичности. Точка выхода фиксируется заранее, по ней мы и работаем. 5 встреч — 30 000 ₽, 7 встреч — 42 000 ₽; включена между-сессионная связь.</p>
+    </div>
+
+    <div class="fmt-block">
+      <div class="fmt-num-line">Формат 03</div>
+      <h4>Великое делание</h4>
+      <div class="fmt-meta">12 встреч за 3 месяца · <b>90 000 ₽</b> за программу</div>
+      <p>Юнгианское <span class="tip" data-def="«Великое делание» — алхимический термин, перенесённый Юнгом в психологию. Обозначает процесс индивидуации: длительный путь становления себя, в котором человек встречается со своими тенями, архетипами и собирает разрозненные части в целостность."><em>opus magnum</em></span> в честном масштабе — не три года вялотекущего разговора, а три месяца плотной работы по перенастройке отношений с собой, со смыслом, со свободой.</p>
+    </div>
+
+    <div class="fmt-block">
+      <div class="fmt-num-line">Дополнительно</div>
+      <h4>Поддерживающая терапия</h4>
+      <div class="fmt-meta">1–2 раза в месяц без ограничения · по индивидуальной договорённости</div>
+      <p>Это не отдельный формат для входа: сначала мы проходим один из трёх основных форматов и понимаем, кто мы друг для друга — потом, при необходимости, переходим в постоянный поддерживающий ритм.</p>
+    </div>
+  </section>
+
+  <div class="divider"><span>· VI ·</span></div>
+
+  <!-- VI — ANTI-FILTER -->
+  <section class="sec anti-block">
+    <div class="sec-num">Раздел шестой</div>
+    <h2>Кому я не подойду</h2>
+    <p>Это не кокетство. Это честное предупреждение, написанное из уважения к чужому времени.</p>
+    <p><b>Я не подойду тем, кто хочет, чтобы их утешили</b> и пообещали, что всё будет хорошо. Я не предсказатель и не гарант.</p>
+    <p><b>Я не подойду тем, кто ищет, на кого свалить свою жизнь.</b> У всех вокруг тебя были свои причины и свои ограничения. Работа здесь — про тебя.</p>
+    <p><b>Я не подойду тем, кто хочет, чтобы психолог решил их проблему.</b> Я создаю условия, в которых работа становится возможной. Делать её придётся самому.</p>
+    <p><b>Я не подойду тем, кто ищет «5 правил счастья».</b> У меня нет правил для всех — есть твой случай, твой выбор и твоя ответственность.</p>
+    <p><b>Я не подойду тем, кто в глубине не готов меняться.</b> Не подменяй встречу со мной встречей с собой. Сначала будь готов — потом приходи.</p>
+    <p class="closing">Если ты узнал себя в одном из пунктов — это не конец разговора. Это знак, что сейчас, возможно, тебе подойдёт другой специалист, или что нужно подождать. Я никуда не денусь. Когда внутри что-то поменяется — приходи.</p>
+  </section>
+
+  <div class="divider"><span>· VII ·</span></div>
+
+  <!-- VII — TERMS -->
+  <section class="sec">
+    <div class="sec-num">Раздел седьмой</div>
+    <h2>Условия работы</h2>
+
+    <div class="price-explainer">
+      <div class="lab">О цене</div>
+      <h4>Скажу прямо, почему она такая.</h4>
+      <p>Я работаю индивидуально, не по шаблону — каждая встреча требует подготовки и больше сил, чем стандартная сессия по конвейеру. Такой формат не масштабируется и не должен.</p>
+      <p>Это мой минимум, при котором я не выгораю как специалист. По московскому рынку, кстати, это не дорого: премиум-сегмент идёт от 25–30 тыс ₽ за сессию.</p>
+      <p>Цена работает и на твою сторону. Когда платишь значимую сумму — у тебя возникает правильное напряжение «нужно отработать», и оно распределяется между нами обоими. Бесплатные форматы у меня не работают: в 90% случаев это «психологические туристы», которые пытаются себя развлечь — качественная работа в таком регистре просто не идёт. Оставшиеся 10% — те, кому реально нужна помощь и кто действительно готов работать. Но это, как правило, исключение.</p>
+    </div>
+
+    <div class="terms-list">
+      <div class="term">
+        <h5>Формат встреч</h5>
+        <p>Видеосвязь (Zoom или иной сервис). Очные встречи в Санкт-Петербурге — по запросу. Онлайн — по России и СНГ.</p>
+      </div>
+      <div class="term">
+        <h5>Оплата</h5>
+        <p>До встречи, переводом по реквизитам. После оплаты приходит подтверждение и анкета первичной встречи.</p>
+      </div>
+      <div class="term">
+        <h5>Перенос встречи</h5>
+        <p>За 24 часа — без штрафа. Менее 24 часов — оплата 50 %. Не пришёл без уведомления — оплата 100 %. Это не «жадность» — это уважение к структуре дня и к тем клиентам, которые могли бы взять этот слот.</p>
+      </div>
+      <div class="term">
+        <h5>Конфиденциальность</h5>
+        <p>Всё, что обсуждается на встрече, остаётся между нами. Я не веду публичных разборов кейсов без явного согласия.</p>
+      </div>
+      <div class="term">
+        <h5>Возврат</h5>
+        <p>Я не работаю по «оплати-попробуй-верни». Если ты колеблешься, начни с одного «Глубинного разбора» — после него ты будешь знать, твоё это или нет. Это самая честная проверка из возможных.</p>
+      </div>
+      <div class="term">
+        <h5>Подготовка</h5>
+        <p>Анкета первой встречи приходит после бронирования. Заполнять её честно — половина продукта.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="closing-block">
+    <div class="ornament">·  ·  ·</div>
+    <p>Психолог не работает за тебя.</p>
+    <p>Он создаёт условия, в которых работа становится возможной.</p>
+    <p>Мои условия — глубина, скорость и честность.</p>
+    <p class="imperative">Твой ход — прийти и взять.</p>
+  </div>
+
+  <div class="no-print" style="text-align:center;margin-top:48px">
+    <a href="index.html#booking" style="display:inline-block;background:var(--ink-bg);color:var(--pearl);border:1px solid var(--ink-bg);padding:16px 34px;font-family:var(--sans);font-size:12px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;text-decoration:none">Оставить заявку</a>
+  </div>
+
+</div>
+
+<script>
+  // Tooltip touch/click support — для мобильных устройств
+  document.querySelectorAll('.tip').forEach(t => {
+    t.setAttribute('tabindex', '0');
+    t.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      document.querySelectorAll('.tip.active').forEach(other => {
+        if(other !== t) other.classList.remove('active');
+      });
+      t.classList.toggle('active');
+    });
+  });
+  document.addEventListener('click', e => {
+    if(!e.target.closest('.tip')){
+      document.querySelectorAll('.tip.active').forEach(t => t.classList.remove('active'));
+    }
+  });
+  // Esc closes any open tooltip
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.tip.active').forEach(t => t.classList.remove('active'));
+    }
+  });
+</script>
+
+</body>
+</html>
