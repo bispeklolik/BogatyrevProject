@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Редизайн канала — 3 направления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --page:#101214; --panel:#181B1E; --edge:#2A2F34; --muted:#8A9099; --fg:#E8E9EA;
+    --sys:"Manrope","Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --display:"Unbounded",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--page);color:var(--fg);font-family:var(--sys);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:48px 32px 90px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,4vw,52px);line-height:1.02;margin:0 0 18px;letter-spacing:-.01em}
+  .intro{max-width:820px;color:#C3C7CC;font-size:16px;line-height:1.7}
+  .intro b{color:#fff}
+  .arg{margin:22px 0 0;padding:16px 20px;border-left:3px solid #C4362A;background:#1b1614;border-radius:0 8px 8px 0;max-width:820px;font-size:15px;line-height:1.65;color:#D8CFC9}
+  .arg b{color:#fff}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px}
+  @media (max-width:1120px){.grid{grid-template-columns:1fr;max-width:460px;margin-left:auto;margin-right:auto}}
+  .col{min-width:0}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .name{font-family:var(--display);font-weight:800;font-size:24px;margin:6px 0 4px;letter-spacing:-.01em}
+  .concept{color:#B7BCC2;font-size:13.5px;line-height:1.55;min-height:58px}
+
+  /* phone */
+  .phone{margin-top:16px;background:#05070A;border-radius:34px;padding:9px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+  .screen{border-radius:27px;overflow:hidden}
+  .top{padding:11px 14px;display:flex;align-items:center;gap:11px;border-bottom:1px solid rgba(0,0,0,.25)}
+  .ava{width:38px;height:38px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .tt{font-size:14px;font-weight:700;line-height:1.15}
+  .ts{font-size:11px;opacity:.7}
+  .pin{padding:7px 14px;font-size:11.5px;display:flex;gap:8px;align-items:center;border-bottom:1px solid rgba(0,0,0,.2)}
+  .pin b{font-weight:700}
+  .feed{padding:13px 10px 18px;display:flex;flex-direction:column;gap:11px}
+  .day{align-self:center;font-size:10.5px;padding:2px 11px;border-radius:11px;opacity:.85}
+  .msg{border-radius:15px;overflow:hidden;max-width:320px;align-self:flex-start}
+  .mbody{padding:9px 13px 7px;font-size:14px;line-height:1.5}
+  .mbody b{font-weight:700}
+  .mfoot{display:flex;justify-content:space-between;align-items:center;padding:0 13px 9px;font-size:10px;opacity:.6}
+  .rx{display:flex;gap:5px}
+  .rx span{border-radius:10px;padding:1px 7px;font-size:11px}
+  .sig{font-size:11.5px;opacity:.55;margin-top:9px}
+  .card{aspect-ratio:1/1;position:relative;display:flex;flex-direction:column;justify-content:center;padding:22px}
+  .cover{aspect-ratio:4/5;position:relative;display:flex;flex-direction:column;justify-content:center;padding:24px}
+
+  .verdict{margin-top:16px;font-size:13px;line-height:1.6}
+  .verdict .p{color:#9FE0B0}.verdict .m{color:#E7A6A0}
+  .verdict .p b,.verdict .m b{color:#fff}
+  .chips{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
+  .chip{width:30px;height:30px;border-radius:6px;border:1px solid rgba(255,255,255,.14)}
+  .fonts{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+  /* ============ A · САМИЗДАТ ============ */
+  .a .screen{background:#EDE7DA}
+  .a .top{background:#E4DCCB}
+  .a .ava{border-radius:0;background:#111;color:#E9E23A;font-family:var(--display);font-weight:800;font-size:15px;border:2px solid #111}
+  .a .tt{color:#111;font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:-.01em}
+  .a .ts{color:#5a5245}
+  .a .pin{background:#111;color:#EDE7DA}.a .pin b{color:#E9E23A}
+  .a .day{background:#111;color:#EDE7DA;border-radius:0}
+  .a .msg{background:#F6F2E8;border:2px solid #111;border-radius:0}
+  .a .mbody{color:#141414}
+  .a .mfoot{opacity:1;color:#6a6250}
+  .a .rx span{background:#111;color:#EDE7DA;border-radius:0}
+  .a .sig{font-family:var(--mono);color:#C4362A;opacity:1;text-transform:uppercase;letter-spacing:.12em;font-size:10px}
+  .a .cover{background:#111;border-radius:0}
+  .a .cov-k{font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:#E9E23A;text-transform:uppercase}
+  .a .cov-h{font-family:var(--display);font-weight:800;color:#EDE7DA;font-size:34px;line-height:.98;margin-top:14px;letter-spacing:-.02em}
+  .a .cov-b{font-family:var(--mono);font-size:10px;color:#9a927f;margin-top:16px;text-transform:uppercase;letter-spacing:.14em}
+  .a .card{background:#E9E23A;border-radius:0}
+  .a .card .q{font-family:var(--display);font-weight:800;color:#111;font-size:21px;line-height:1.08;letter-spacing:-.01em}
+  .a .card .f{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#111;margin-top:16px;opacity:.7}
+  .a .stamp{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:9px;color:#111;border:1.5px solid #111;padding:2px 6px;text-transform:uppercase;letter-spacing:.1em}
+
+  /* ============ B · ТЁМНЫЙ КАБИНЕТ ============ */
+  .b .screen{background:#0E100D}
+  .b .top{background:#151812}
+  .b .ava{border-radius:50%;background:#0E100D;border:1px solid #C79A54;color:#C79A54;font-family:var(--serif);font-style:italic;font-size:21px}
+  .b .tt{color:#EDE7D6}
+  .b .ts{color:#8b8a7d}
+  .b .pin{background:#151812;color:#b9b3a1}.b .pin b{color:#C79A54}
+  .b .day{background:rgba(255,255,255,.06);color:#c9c3b2}
+  .b .msg{background:#171A15}
+  .b .mbody{color:#E6E1D2}.b .mbody b{color:#fff}
+  .b .mbody i{color:#C79A54;font-style:italic}
+  .b .rx span{background:#26291f;color:#cfc9b6}
+  .b .sig{color:#8b8a7d}
+  .b .cover{background:linear-gradient(160deg,#14170F 0%,#0C0E0A 100%)}
+  .b .cov-k{font-family:var(--sys);font-size:10px;letter-spacing:.36em;color:#C79A54;text-transform:uppercase}
+  .b .cov-h{font-family:var(--serif);font-weight:600;color:#F3EEDD;font-size:44px;line-height:.98;margin-top:12px}
+  .b .cov-h em{font-style:italic;color:#C79A54}
+  .b .cov-r{width:46px;height:1px;background:#C79A54;margin:16px 0}
+  .b .cov-b{font-family:var(--serif);font-style:italic;font-size:15px;color:#a9a390}
+  .b .card{background:#0E100D;border:1px solid #2b2e22}
+  .b .card .mk{font-family:var(--serif);color:#C79A54;font-size:52px;line-height:.3}
+  .b .card .q{font-family:var(--serif);color:#F3EEDD;font-size:24px;line-height:1.3;margin-top:16px}
+  .b .card .q em{font-style:italic;color:#C79A54}
+  .b .card .f{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#8b8a7d;margin-top:16px}
+
+  /* ============ C · ДОСЬЕ ============ */
+  .c .screen{background:#F3F1EB}
+  .c .top{background:#EAE7DE}
+  .c .ava{border-radius:8px;background:#14181C;color:#F3F1EB;font-family:var(--mono);font-weight:700;font-size:13px}
+  .c .tt{color:#14181C;font-weight:800}
+  .c .ts{color:#767b70}
+  .c .pin{background:#EAE7DE;color:#5b6058}.c .pin b{color:#7A2E2E}
+  .c .day{background:#e0ddd2;color:#5b6058}
+  .c .msg{background:#FBFAF7;border:1px solid #D8D4C7}
+  .c .mbody{color:#1b1f22}.c .mbody b{color:#000}
+  .c .rx span{background:#eceae0;color:#5b6058;border:1px solid #D8D4C7}
+  .c .sig{font-family:var(--mono);color:#7A2E2E;opacity:1;font-size:10px;letter-spacing:.08em}
+  .c .cover{background:#FBFAF7;border:1px solid #D8D4C7}
+  .c .cov-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:#7A2E2E;text-transform:uppercase}
+  .c .cov-h{font-family:var(--display);font-weight:600;color:#14181C;font-size:30px;line-height:1.02;margin-top:12px;letter-spacing:-.01em}
+  .c .cov-rule{height:1px;background:#D8D4C7;margin:16px 0}
+  .c .cov-meta{font-family:var(--mono);font-size:10px;color:#767b70;line-height:1.7}
+  .c .card{background:#14181C}
+  .c .card .q{font-family:var(--display);font-weight:600;color:#F3F1EB;font-size:20px;line-height:1.12}
+  .c .card .f{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#8f9aa0;margin-top:16px}
+  .c .card .idx{font-family:var(--mono);font-size:10px;color:#7A2E2E;position:absolute;top:18px;left:22px}
+
+  .foot{margin-top:56px;padding:26px 28px;border:1px solid var(--edge);border-radius:14px;background:var(--panel);max-width:920px}
+  .foot h3{font-family:var(--display);font-weight:600;margin:0 0 10px;font-size:19px}
+  .foot p{color:#C3C7CC;font-size:14.5px;line-height:1.7;margin:0 0 8px}
+  .foot b{color:#fff}
+  .rec{color:#E9E23A}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Редизайн · три направления</div>
+  <h1>Не «красивый психолог».<br>Живая мысль, у которой есть лицо.</h1>
+  <p class="intro">Три свежих направления вместо «старой книги». Ниже — как выглядит лента для читателя в каждом. Текст постов Telegram всё равно рисует системным шрифтом — поэтому характер задают <b>обложки, цитатные карточки и аватар</b>. Их и показываю.</p>
+  <div class="arg"><b>Почему ушёл от «старой книги»:</b> мшисто-золотой переплёт с серифами — красиво, но это ровно та отполированная академическая эстетика, которую твой манифест-крик разносит («в стенах академичности умирает живая мысль», «Идущий к реке» против кафедры). Форма спорила с сутью. Новые варианты — про живое, прямое, честное.</div>
+
+  <div class="grid">
+
+    <!-- ============ A ============ -->
+    <div class="col a">
+      <div class="tag">Направление A</div>
+      <div class="name">Самиздат</div>
+      <div class="concept">Манифест на заборе. Газетная бумага, чёрный, сигнальный жёлтый. Жирный гротеск, штампованная нумерация «ЗАПИСКА No». Панк-интеллигент, «Идущий к реке» в типографике.</div>
+      <div class="phone"><div class="screen">
+        <div class="top"><div class="ava">М</div><div><div class="tt">МАТВЕЙ БОГАТЫРЁВ</div><div class="ts">канал · 1 240</div></div></div>
+        <div class="pin"><b>ЗАКРЕП</b> · читать с начала → No01</div>
+        <div class="feed">
+          <div class="day">3 СЕНТЯБРЯ</div>
+          <div class="msg"><div class="cover">
+            <div class="stamp">No00</div>
+            <div class="cov-k">Матвей Богатырёв</div>
+            <div class="cov-h">ЗАПИСКИ ЧЕЛОВЕКО&shy;ВЕДА</div>
+            <div class="cov-b">читается с начала — как книга</div>
+          </div></div>
+          <div class="msg"><div class="mbody"><b>В стенах академичности умирает живая мысль.</b><br><br>Я ушёл оттуда, где мысль заставляют цитировать, — туда, где она обязана менять чью-то жизнь. Иначе это спам, а не знание.<div class="sig">— ЗАПИСКА No01 · ПРОЛОГ</div></div>
+            <div class="mfoot"><div class="rx"><span>96</span><span>31</span></div><div>2.4K</div></div></div>
+          <div class="msg"><div class="card">
+            <div class="q">Любовь к себе — это перестать предавать себя в мелочах.</div>
+            <div class="f">Записки · Богатырёв</div>
+          </div><div class="mfoot"><div class="rx"><span>210</span></div><div>5.1K</div></div></div>
+        </div>
+      </div></div>
+      <div class="verdict">
+        <div class="p"><b>+</b> Точно про тебя: анти-кафедра, стёб, дерзость. Жёлтый бьёт в ленте, карточки репостят.</div>
+        <div class="m"><b>–</b> Громко. Нужна мера, чтобы не читалось «активистский плакат». Для горя/тонких тем — приглушать.</div>
+      </div>
+      <div class="chips"><div class="chip" style="background:#EDE7DA"></div><div class="chip" style="background:#111"></div><div class="chip" style="background:#E9E23A"></div><div class="chip" style="background:#C4362A"></div></div>
+      <div class="fonts">Unbounded (дисплей) · JetBrains Mono (метки) · системный (текст)</div>
+    </div>
+
+    <!-- ============ B ============ -->
+    <div class="col b">
+      <div class="tag">Направление B · рекомендую</div>
+      <div class="name">Тёмный кабинет</div>
+      <div class="concept">Разговор в два часа ночи. Тёплый уголь, пергамент, свет свечи (янтарь). Серифный дисплей на тёмном — драматично, не пыльно. Глубина и интимность; твой портрет тут светится.</div>
+      <div class="phone"><div class="screen">
+        <div class="top"><div class="ava">М</div><div><div class="tt">Матвей Богатырёв</div><div class="ts">канал · 1 240 подписчиков</div></div></div>
+        <div class="pin"><b>Закреплено</b> · читать с начала → Записка №1</div>
+        <div class="feed">
+          <div class="day">3 сентября</div>
+          <div class="msg"><div class="cover">
+            <div class="cov-k">Матвей Богатырёв</div>
+            <div class="cov-h">Записки<br><em>человековеда</em></div>
+            <div class="cov-r"></div>
+            <div class="cov-b">канал читается с начала — как книга</div>
+          </div></div>
+          <div class="msg"><div class="mbody"><b>В стенах академичности умирает живая мысль.</b><br><br>Философия — про мудрость: как уменьшить страдание. А мне дали глоссарии и «сначала прочти десять тысяч страниц». <i>Мысль, которая не свободна, — не мысль.</i><br><br>Я ушёл в живую работу с человеком.<div class="sig">Записка №1 · пролог</div></div>
+            <div class="mfoot"><div class="rx"><span>❤ 96</span><span>🤔 23</span></div><div>2.4K</div></div></div>
+          <div class="msg"><div class="card">
+            <div class="mk">«</div>
+            <div class="q">Не таймер на стене решает, когда работа <em>закончена.</em></div>
+            <div class="f">Записки · Матвей Богатырёв</div>
+          </div><div class="mfoot"><div class="rx"><span>❤ 210</span><span>⚡ 44</span></div><div>5.1K</div></div></div>
+        </div>
+      </div></div>
+      <div class="verdict">
+        <div class="p"><b>+</b> Сохраняет глубину и «свой голос», но без академической пыли. Портрет и образы выглядят кинематографично.</div>
+        <div class="m"><b>–</b> Тёмная тема у части читателей стоит светлая — карточки должны читаться и там (мы это учли).</div>
+      </div>
+      <div class="chips"><div class="chip" style="background:#0E100D"></div><div class="chip" style="background:#171A15"></div><div class="chip" style="background:#C79A54"></div><div class="chip" style="background:#F3EEDD"></div></div>
+      <div class="fonts">Cormorant Garamond (дисплей) · системный (текст) · золото тонкой нитью</div>
+    </div>
+
+    <!-- ============ C ============ -->
+    <div class="col c">
+      <div class="tag">Направление C</div>
+      <div class="name">Досье человековеда</div>
+      <div class="concept">Полевые записи о человеке. Светлая бумага, швейцарская сетка, гротеск + моно, одна чернильно-винная краска. Нумерованные «записи», метки-теги. Холодный ум, но не декор.</div>
+      <div class="phone"><div class="screen">
+        <div class="top"><div class="ava">МБ</div><div><div class="tt">Матвей Богатырёв</div><div class="ts">канал · 1 240</div></div></div>
+        <div class="pin"><b>ЗАКРЕП</b> · читать с начала → №01</div>
+        <div class="feed">
+          <div class="day">03.09</div>
+          <div class="msg"><div class="cover">
+            <div class="cov-k">Досье · человековед</div>
+            <div class="cov-h">ЗАПИСКИ<br>О ЧЕЛОВЕКЕ</div>
+            <div class="cov-rule"></div>
+            <div class="cov-meta">автор — М. Богатырёв<br>читать с записи №01</div>
+          </div></div>
+          <div class="msg"><div class="mbody"><b>В стенах академичности умирает живая мысль.</b><br><br>Знание, которое нельзя прожить и применить, — информационный шум. Я ушёл туда, где идея проходит стресс-тест реальностью каждый день.<div class="sig">запись №01 · пролог</div></div>
+            <div class="mfoot"><div class="rx"><span>96</span><span>31</span></div><div>2.4K</div></div></div>
+          <div class="msg"><div class="card">
+            <div class="idx">№03</div>
+            <div class="q">Одиночество — не от изоляции, а от трения.</div>
+            <div class="f">Записки · Богатырёв</div>
+          </div><div class="mfoot"><div class="rx"><span>210</span></div><div>5.1K</div></div></div>
+        </div>
+      </div></div>
+      <div class="verdict">
+        <div class="p"><b>+</b> Умно, чисто, «человековед ведёт записи». Отлично масштабируется, легко верстать, хорошо стареет.</div>
+        <div class="m"><b>–</b> Рационально и сдержанно — меньше эмоции и огня, чем у A и B. Может выйти прохладным.</div>
+      </div>
+      <div class="chips"><div class="chip" style="background:#F3F1EB"></div><div class="chip" style="background:#14181C"></div><div class="chip" style="background:#7A2E2E"></div><div class="chip" style="background:#D8D4C7"></div></div>
+      <div class="fonts">Unbounded (заголовки) · JetBrains Mono (метки) · системный (текст)</div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <h3>Что я рекомендую</h3>
+    <p><b class="rec">B «Тёмный кабинет»</b> — золотая середина: сохраняет глубину и твой литературный голос, но снимает «академическую пыль», против которой ты сам восстаёшь. Драматично, интимно, современно; портрет и образы смотрятся кинематографично.</p>
+    <p><b>A «Самиздат»</b> — если хочешь идти ва-банк в дерзость и стёб: самое смелое и самое «ты», но требует чувства меры на тонких темах.</p>
+    <p><b>C «Досье»</b> — если тянет к холодной ясности и системности «человековеда, ведущего записи».</p>
+    <p style="margin-top:12px">Можно и <b>гибрид</b>: например, кабинет B как база канала + жёлтая карточка A специально для стёб-рубрики «Разбор вредного совета». Выбери направление (или скажи, что докрутить) — пересоберу концепт и финальный прототип под него.</p>
+  </div>
+</div>
+</body>
+</html>
