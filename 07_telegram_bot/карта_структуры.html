@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Карта структуры — Дневник человековеда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --page:#0F110D; --panel:#16190F; --edge:#2A2E20; --muted:#8f8b78; --fg:#EDE8D8;
+    --gold:#C79A54; --red:#C4362A; --green:#7C9A63; --blue:#6AA0C7; --purple:#A98CC0; --parch:#B7B098;
+    --sys:"Manrope","Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--page);color:var(--fg);font-family:var(--sys);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:44px 26px 90px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,50px);line-height:1.03;margin:0 0 14px}
+  h1 em{font-style:italic;color:var(--gold)}
+  .intro{max-width:860px;color:#cbc6b4;font-size:15.5px;line-height:1.7}
+  .intro b{color:#fff}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:34px;margin-top:34px;align-items:start}
+  @media (max-width:1040px){.layout{grid-template-columns:1fr}}
+  .mapwrap{background:linear-gradient(180deg,#141710,#0e100b);border:1px solid var(--edge);border-radius:16px;padding:8px;overflow-x:auto}
+  svg{display:block;width:100%;height:auto;min-width:560px}
+
+  .side{display:flex;flex-direction:column;gap:20px;position:sticky;top:20px}
+  .box{border:1px solid var(--edge);border-radius:13px;background:var(--panel);padding:18px 20px}
+  .box h3{font-family:var(--serif);font-weight:600;font-size:19px;margin:0 0 10px}
+  .box p{color:#c4bfad;font-size:13.5px;line-height:1.6;margin:0 0 8px}
+  .box p:last-child{margin:0}
+  .box b{color:#fff}
+  .leg{display:flex;flex-direction:column;gap:9px}
+  .leg .row{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.4}
+  .leg .sw{width:13px;height:13px;border-radius:4px;flex:0 0 auto;margin-top:2px}
+  .leg .rn{color:#fff;font-weight:600}
+  .leg .rd{color:var(--muted)}
+  .thread{font-family:var(--mono);font-size:12px;color:var(--gold);background:rgba(199,154,84,.1);border:1px solid rgba(199,154,84,.3);border-radius:8px;padding:10px 12px;line-height:1.5}
+  .thread b{color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Приоритет · скелет, не украшения</div>
+  <h1>Карта структуры — <em>дневник человековеда</em></h1>
+  <p class="intro">Не лента постов, а <b>сеть</b>. Сплошные линии — сквозная <b>нить</b> (каждая записка открывает следующую). Пунктир — <b>лейтмотив</b>: тема возвращается через много постов и углубляется. Цвет узла — рубрика. Слева наверху — <b>вход</b> (Telegram показывает новичку последний пост, поэтому парадная дверь — закреп). Это ДНК «дневника», перенесённая на тебя.</p>
+
+  <div class="layout">
+    <div class="mapwrap">
+      <svg viewBox="0 0 620 1330" xmlns="http://www.w3.org/2000/svg" font-family="Manrope, sans-serif">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#C79A54"/></marker>
+          <marker id="arc" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9A8" opacity="0.8"/></marker>
+        </defs>
+
+        <!-- ARC BANDS -->
+        <g>
+          <rect x="150" y="150" width="460" height="118" rx="10" fill="#C79A54" opacity="0.06"/>
+          <text x="162" y="140" fill="#C79A54" font-size="12" letter-spacing="3" font-family="JetBrains Mono, monospace">ПРОЛОГ</text>
+
+          <rect x="150" y="292" width="460" height="330" rx="10" fill="#C4362A" opacity="0.07"/>
+          <text x="162" y="286" fill="#C4362A" font-size="12" letter-spacing="3" font-family="JetBrains Mono, monospace">ЧАСТЬ I · ДИАГНОЗ</text>
+
+          <rect x="150" y="648" width="460" height="330" rx="10" fill="#7C9A63" opacity="0.08"/>
+          <text x="162" y="642" fill="#8bad70" font-size="12" letter-spacing="3" font-family="JetBrains Mono, monospace">ЧАСТЬ II · УСТРОЙСТВО ЧЕЛОВЕКА</text>
+
+          <rect x="150" y="1004" width="460" height="210" rx="10" fill="#6AA0C7" opacity="0.07"/>
+          <text x="162" y="998" fill="#6AA0C7" font-size="12" letter-spacing="3" font-family="JetBrains Mono, monospace">ЧАСТЬ III · СВОБОДА</text>
+        </g>
+
+        <!-- ENTRY -->
+        <g>
+          <rect x="20" y="40" width="200" height="70" rx="10" fill="#181B10" stroke="#C79A54" stroke-width="1.3"/>
+          <text x="34" y="66" fill="#C79A54" font-size="12" font-family="JetBrains Mono, monospace" letter-spacing="2">ЗАКРЕП · ВХОД</text>
+          <text x="34" y="86" fill="#EDE8D8" font-size="12.5">Кто я · читать с начала</text>
+          <text x="34" y="102" fill="#8f8b78" font-size="11.5">карта · бот-поиск</text>
+          <path d="M120,110 C120,128 200,120 200,150" fill="none" stroke="#C79A54" stroke-width="1.5" stroke-dasharray="3 3" marker-end="url(#ar)"/>
+        </g>
+
+        <!-- SPINE THREAD (solid) -->
+        <path d="M200,208 L200,346 L200,464 L200,582 L200,706 L200,824 L200,942 L200,1062 L200,1180"
+              fill="none" stroke="#C79A54" stroke-width="2"/>
+        <!-- thread arrows -->
+        <g fill="#C79A54"><circle cx="200" cy="208" r="0"/></g>
+
+        <!-- NODES: cx=200; label to right at x=224 -->
+        <!-- helper: each node = colored dot + number + title + optional thread note -->
+        <!-- 0 -->
+        <circle cx="200" cy="150" r="9" fill="#0F110D" stroke="#8f8b78" stroke-width="2"/>
+        <text x="224" y="146" fill="#EDE8D8" font-size="14.5" font-weight="700">№0 · Обложка (форзац)</text>
+        <text x="224" y="164" fill="#8f8b78" font-size="12">первый пост = «книга открывается»</text>
+
+        <!-- 1 -->
+        <circle cx="200" cy="208" r="9" fill="#C79A54"/>
+        <text x="224" y="204" fill="#EDE8D8" font-size="14.5" font-weight="700">№1 · Пролог — манифест-крик</text>
+        <text x="224" y="222" fill="#C79A54" font-size="12" font-family="JetBrains Mono, monospace">нить → «почему ушёл из философии»</text>
+
+        <!-- 2 -->
+        <circle cx="200" cy="346" r="9" fill="#C4362A"/>
+        <text x="224" y="342" fill="#EDE8D8" font-size="14.5" font-weight="700">№2 · «Психолог = маркетолог»</text>
+        <text x="224" y="360" fill="#8f8b78" font-size="12">Разбор вредного совета — ты против подделок</text>
+
+        <!-- 3 -->
+        <circle cx="200" cy="464" r="9" fill="#C4362A"/>
+        <text x="224" y="460" fill="#EDE8D8" font-size="14.5" font-weight="700">№3 · «Просто полюби себя» за 30к</text>
+        <text x="224" y="478" fill="#8f8b78" font-size="12">цитатная карточка · репостят</text>
+
+        <!-- пауза -->
+        <circle cx="200" cy="582" r="9" fill="#6AA0C7"/>
+        <text x="224" y="578" fill="#EDE8D8" font-size="14.5" font-weight="700">Пауза №1 — вопрос</text>
+        <text x="224" y="596" fill="#6AA0C7" font-size="12" font-family="JetBrains Mono, monospace">«что ты зовёшь ленью, чтобы не звать страхом?»</text>
+
+        <!-- 4 -->
+        <circle cx="200" cy="706" r="10" fill="#C79A54" stroke="#EDE8D8" stroke-width="1.5"/>
+        <text x="224" y="702" fill="#EDE8D8" font-size="14.5" font-weight="700">№4 · Эго боится смерти</text>
+        <text x="224" y="720" fill="#8f8b78" font-size="12">старт лейтмотива «эго» ↓</text>
+
+        <!-- реплика -->
+        <circle cx="200" cy="824" r="8" fill="#B7B098"/>
+        <text x="224" y="820" fill="#EDE8D8" font-size="14.5" font-weight="700">Реплика · «прозрачная дверь»</text>
+        <text x="224" y="838" fill="#8f8b78" font-size="12">границы — короткий контраст, воздух</text>
+
+        <!-- 5 -->
+        <circle cx="200" cy="942" r="9" fill="#7C9A63"/>
+        <text x="224" y="938" fill="#EDE8D8" font-size="14.5" font-weight="700">Из кабинета · сопротивление</text>
+        <text x="224" y="956" fill="#8f8b78" font-size="12">«build-update»: ты реально в практике</text>
+
+        <!-- 6 -->
+        <circle cx="200" cy="1062" r="9" fill="#C79A54"/>
+        <text x="224" y="1058" fill="#EDE8D8" font-size="14.5" font-weight="700">№6 · «Отказ от выбора — выбор»</text>
+        <text x="224" y="1076" fill="#8f8b78" font-size="12">Сартр через тебя</text>
+
+        <!-- 7 / continue -->
+        <circle cx="200" cy="1180" r="9" fill="#C79A54"/>
+        <text x="224" y="1176" fill="#EDE8D8" font-size="14.5" font-weight="700">№12 · Эго возвращается</text>
+        <text x="224" y="1194" fill="#9A8" font-size="12" font-family="JetBrains Mono, monospace">лейтмотив ↩ к №4, на новом витке</text>
+
+        <!-- CALLBACK arc (dashed) №12 -> №4 in left gutter -->
+        <path d="M191,1180 C70,1120 70,780 191,708" fill="none" stroke="#9A8" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85" marker-end="url(#arc)"/>
+        <text x="52" y="946" fill="#9A8" font-size="11" font-family="JetBrains Mono, monospace" transform="rotate(-90 52 946)" opacity="0.9">лейтмотив: эго</text>
+
+        <!-- tail -->
+        <path d="M200,1189 L200,1240" fill="none" stroke="#C79A54" stroke-width="2" stroke-dasharray="2 5"/>
+        <text x="200" y="1262" fill="#8f8b78" font-size="12" text-anchor="middle">…дальше по наитию: Смысл, Достоевский, сны, деньги</text>
+      </svg>
+    </div>
+
+    <div class="side">
+      <div class="box">
+        <h3>Сквозной сюжет</h3>
+        <p><b>Герой:</b> человековед, который строит честную практику и живое понимание человека — в мире, где почти всё подделка.</p>
+        <p><b>Ставка:</b> может ли глубина победить инфоцыганщину. Читатель идёт за человеком, а не за программой.</p>
+      </div>
+      <div class="box">
+        <h3>Рубрики = жанры</h3>
+        <div class="leg">
+          <div class="row"><span class="sw" style="background:#C79A54"></span><span><span class="rn">Записка</span> <span class="rd">— эссе, хребет сюжета</span></span></div>
+          <div class="row"><span class="sw" style="background:#C4362A"></span><span><span class="rn">Разбор вредного совета</span> <span class="rd">— ты против подделок</span></span></div>
+          <div class="row"><span class="sw" style="background:#7C9A63"></span><span><span class="rn">Из кабинета</span> <span class="rd">— принцип из практики</span></span></div>
+          <div class="row"><span class="sw" style="background:#6AA0C7"></span><span><span class="rn">Пауза</span> <span class="rd">— вопрос, вход в комменты</span></span></div>
+          <div class="row"><span class="sw" style="background:#B7B098"></span><span><span class="rn">Реплика</span> <span class="rd">— короткая, ритм</span></span></div>
+          <div class="row"><span class="sw" style="background:#A98CC0"></span><span><span class="rn">Классик</span> <span class="rd">— Юнг/Достоевский через тебя</span></span></div>
+        </div>
+      </div>
+      <div class="thread">
+        <b>Что такое «нить».</b><br>Каждая записка честно открывает следующую — не кликбейт, а вопрос, на который отвечают дальше. Так пропустить пост становится жалко.
+      </div>
+      <div class="box">
+        <h3>Погружение ≠ воронка</h3>
+        <p>Структура служит пониманию тебя, а не дожиму к продаже. «Работа со мной» живёт в закрепе — кто дозрел, придёт сам. Лучший прогрев — дать встретить живого человека.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
