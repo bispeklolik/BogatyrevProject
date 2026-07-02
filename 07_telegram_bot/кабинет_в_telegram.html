@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Тёмный кабинет — в реальном Telegram</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --page:#101214; --panel:#181B1E; --edge:#2A2F34; --muted:#8A9099; --fg:#E8E9EA;
+    --sys:"Manrope","Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    /* Тёмный кабинет — палитра айдентики (в картинках) */
+    --tk-bg:#0E100D; --tk-bg2:#14170F; --tk-ink:#F3EEDD; --tk-dim:#a9a390; --tk-gold:#C79A54;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--page);color:var(--fg);font-family:var(--sys);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:44px 28px 90px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,50px);line-height:1.03;margin:0 0 16px}
+  h1 em{font-style:italic;color:var(--tk-gold)}
+  .intro{max-width:840px;color:#C3C7CC;font-size:15.5px;line-height:1.7}
+  .intro b{color:#fff}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0 6px;font-size:12.5px;color:#B7BCC2}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:36px}
+  @media (max-width:1120px){.grid{grid-template-columns:1fr;max-width:440px;margin:36px auto 0}}
+  .lab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .h{font-family:var(--serif);font-weight:600;font-size:22px;margin:5px 0 3px}
+  .d{color:#B7BCC2;font-size:13px;line-height:1.55;min-height:56px}
+
+  .phone{margin-top:14px;background:#05070A;border-radius:34px;padding:9px;box-shadow:0 22px 55px rgba(0,0,0,.55)}
+  .screen{border-radius:27px;overflow:hidden;position:relative}
+  .top{padding:10px 13px;display:flex;align-items:center;gap:10px;position:relative;z-index:3}
+  .ava{width:36px;height:36px;border-radius:50%;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:#0E100D;border:1px solid var(--tk-gold);color:var(--tk-gold);font-family:var(--serif);font-style:italic;font-size:20px}
+  .tt{font-size:13.5px;font-weight:700;line-height:1.15}
+  .ts{font-size:11px;opacity:.7}
+  .feed{padding:14px 11px 20px;display:flex;flex-direction:column;gap:11px;position:relative;z-index:2}
+  .day{align-self:center;font-size:10.5px;padding:2px 11px;border-radius:11px}
+  .msg{max-width:322px;align-self:flex-start;width:100%}
+  .bub{border-radius:12px;padding:9px 12px 7px;font-size:13.5px;line-height:1.5}
+  .bub b{font-weight:700}
+  .bub i{font-style:italic}
+  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:7px;font-size:10px;opacity:.6}
+  .rx{display:flex;gap:5px}.rx span{border-radius:10px;padding:1px 7px;font-size:11px}
+  .sig{font-size:11px;opacity:.6;margin-top:8px}
+  .link{color:inherit}
+
+  /* ===== IMAGES = identity (identical in every theme) ===== */
+  .img{border-radius:12px;overflow:hidden}
+  .cover{aspect-ratio:4/5;background:linear-gradient(158deg,#14170F,#0B0D09);position:relative;display:flex;flex-direction:column;justify-content:center;padding:22px}
+  .cover .k{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--tk-gold)}
+  .cover .t{font-family:var(--serif);font-weight:600;color:var(--tk-ink);font-size:38px;line-height:.98;margin-top:12px}
+  .cover .t em{font-style:italic;color:var(--tk-gold)}
+  .cover .r{width:44px;height:1px;background:var(--tk-gold);margin:14px 0}
+  .cover .b{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--tk-dim)}
+  .quote{aspect-ratio:1/1;background:#0E100D;border:1px solid #2b2e22;display:flex;flex-direction:column;justify-content:center;padding:24px}
+  .quote .mk{font-family:var(--serif);color:var(--tk-gold);font-size:50px;line-height:.3}
+  .quote .q{font-family:var(--serif);color:var(--tk-ink);font-size:23px;line-height:1.28;margin-top:14px}
+  .quote .q em{font-style:italic;color:var(--tk-gold)}
+  .quote .f{font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--tk-dim);margin-top:16px}
+  .divider{aspect-ratio:16/7;background:#0E100D;border:1px solid #2b2e22;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:16px}
+  .divider .num{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--tk-gold)}
+  .divider .nm{font-family:var(--serif);font-size:22px;color:var(--tk-ink);margin-top:2px}
+
+  /* ================= THEME 1: LIGHT (reader default) ================= */
+  .light .screen{background:#cfd8e0}
+  .light .screen::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,#dbe2e8,#c5d0da);z-index:0}
+  .light .top{background:#f7f8fa;border-bottom:1px solid #dfe3e8}
+  .light .tt{color:#0e1621}.light .ts{color:#6d7a86}
+  .light .day{background:rgba(120,140,160,.35);color:#f4f7fa}
+  .light .bub{background:#ffffff;color:#0e1621;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+  .light .bub .link{color:#3390EC}
+  .light .rx span{background:#eaf1fb;color:#3a76c2}
+  .light .sig{color:#7c8894}
+
+  /* ================= THEME 2: DARK (reader dark) ================= */
+  .dark .screen{background:#0e1621}
+  .dark .top{background:#17212b;border-bottom:1px solid #0b131b}
+  .dark .tt{color:#fff}.dark .ts{color:#7d8b99}
+  .dark .day{background:rgba(255,255,255,.08);color:#c9d4de}
+  .dark .bub{background:#182533;color:#e9eef2}
+  .dark .bub .link{color:#6AB3F3}
+  .dark .rx span{background:#22303c;color:#8fb4d6}
+  .dark .sig{color:#7d8b99}
+
+  /* ================= THEME 3: BOOSTED (our wallpaper+accent) ================= */
+  .boost .screen{background:#0E100D}
+  .boost .screen::before{content:"";position:absolute;inset:0;z-index:0;
+    background:radial-gradient(120% 80% at 50% 0%,#191c12 0%,#0E100D 55%,#090A07 100%);}
+  .boost .screen::after{content:"";position:absolute;inset:0;z-index:1;opacity:.5;pointer-events:none;
+    background-image:radial-gradient(circle at 18% 30%, rgba(199,154,84,.10) 0 2px, transparent 3px),radial-gradient(circle at 72% 62%, rgba(199,154,84,.08) 0 2px, transparent 3px),radial-gradient(circle at 45% 85%, rgba(199,154,84,.07) 0 2px, transparent 3px)}
+  .boost .top{background:rgba(20,23,15,.85);border-bottom:1px solid #2a2e20;backdrop-filter:blur(4px)}
+  .boost .tt{color:var(--tk-ink)}.boost .ts{color:#8b8a7d}
+  .boost .day{background:rgba(199,154,84,.14);color:#d8cfb6}
+  .boost .bub{background:rgba(23,26,21,.92);color:#E6E1D2}
+  .boost .bub .link{color:var(--tk-gold)}
+  .boost .rx span{background:rgba(199,154,84,.16);color:#e0c48f}
+  .boost .sig{color:#8b8a7d}
+
+  .note{margin-top:14px;font-size:12.5px;line-height:1.6;color:#B7BCC2}
+  .note b{color:#fff}
+  .foot-box{margin-top:52px;padding:24px 26px;border:1px solid var(--edge);border-radius:14px;background:var(--panel);max-width:940px}
+  .foot-box h3{font-family:var(--serif);font-weight:600;margin:0 0 10px;font-size:20px}
+  .foot-box p{color:#C3C7CC;font-size:14.5px;line-height:1.7;margin:0 0 8px}
+  .foot-box b{color:#fff}.foot-box .g{color:var(--tk-gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Проверка реальностью · Тёмный кабинет</div>
+  <h1>Как «кабинет» выглядит <em>в настоящем Telegram</em></h1>
+  <p class="intro">Один и тот же канал у трёх читателей. Слева — читатель со <b>светлой</b> темой, в центре — с <b>тёмной</b>, справа — <b>прокачанный канал</b>, где мы выкрасили обои и акцент под себя (доступно на уровне бустов). Обрати внимание: <b>картинки (обложка, цитата, разделитель) выглядят одинаково везде</b> — они и держат айдентику. Меняются только «пузыри» текста, которые рисует тема читателя.</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#C79A54"></i> наши картинки — одинаковы у всех</span>
+    <span><i class="dot" style="background:#3390EC"></i> чужой интерфейс — по теме читателя</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- LIGHT -->
+    <div class="col light">
+      <div class="lab">Читатель · светлая тема</div>
+      <div class="h">Не наш контроль</div>
+      <div class="d">Фон и пузыри — светлые, ссылки синие. Но обложка и карточки — тёмный кабинет. Айдентика держится за счёт картинок.</div>
+      <div class="phone"><div class="screen">
+        <div class="top"><div class="ava">М</div><div><div class="tt">Матвей Богатырёв</div><div class="ts">канал · 1 240</div></div></div>
+        <div class="feed">
+          <div class="day">3 сентября</div>
+          <div class="msg"><div class="img cover"><div class="k">Матвей Богатырёв</div><div class="t">Записки<br><em>человековеда</em></div><div class="r"></div><div class="b">читается с начала — как книга</div></div></div>
+          <div class="msg"><div class="bub"><b>В стенах академичности умирает живая мысль.</b><br><br>Я ушёл в живую работу с человеком. <i>Мысль, которая не свободна, — не мысль.</i> Продолжение — <span class="link">Записка №2</span>.<div class="sig">Записка №1 · пролог</div></div><div class="foot"><div class="rx"><span>❤ 96</span><span>🤔 23</span></div><div>2.4K</div></div></div>
+          <div class="msg"><div class="img quote"><div class="mk">«</div><div class="q">Не таймер на стене решает, когда работа <em>закончена.</em></div><div class="f">Записки · Богатырёв</div></div><div class="foot"><div class="rx"><span>❤ 210</span></div><div>5.1K</div></div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- DARK -->
+    <div class="col dark">
+      <div class="lab">Читатель · тёмная тема</div>
+      <div class="h">Почти совпадает</div>
+      <div class="d">Тёмный фон Telegram + наши тёмные картинки почти сливаются. Именно так канал видит бо́льшая часть аудитории (у думающих чаще тёмная).</div>
+      <div class="phone"><div class="screen">
+        <div class="top"><div class="ava">М</div><div><div class="tt">Матвей Богатырёв</div><div class="ts">канал · 1 240</div></div></div>
+        <div class="feed">
+          <div class="day">3 сентября</div>
+          <div class="msg"><div class="img cover"><div class="k">Матвей Богатырёв</div><div class="t">Записки<br><em>человековеда</em></div><div class="r"></div><div class="b">читается с начала — как книга</div></div></div>
+          <div class="msg"><div class="bub"><b>В стенах академичности умирает живая мысль.</b><br><br>Я ушёл в живую работу с человеком. <i>Мысль, которая не свободна, — не мысль.</i> Продолжение — <span class="link">Записка №2</span>.<div class="sig">Записка №1 · пролог</div></div><div class="foot"><div class="rx"><span>❤ 96</span><span>🤔 23</span></div><div>2.4K</div></div></div>
+          <div class="msg"><div class="img divider"><div class="num">Глава II</div><div class="nm">Устройство человека</div></div></div>
+          <div class="msg"><div class="img quote"><div class="mk">«</div><div class="q">Не таймер на стене решает, когда работа <em>закончена.</em></div><div class="f">Записки · Богатырёв</div></div><div class="foot"><div class="rx"><span>❤ 210</span><span>⚡ 44</span></div><div>5.1K</div></div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- BOOSTED -->
+    <div class="col boost">
+      <div class="lab">Канал на бустах · наш контроль</div>
+      <div class="h">Полный кабинет</div>
+      <div class="d">Кастомные обои + янтарный акцент, видно всем посетителям. Тут интерфейс уже наш — весь канал становится «кабинетом». Нужны бусты (Premium-подписчики / giveaway).</div>
+      <div class="phone"><div class="screen">
+        <div class="top"><div class="ava">М</div><div><div class="tt">Матвей Богатырёв</div><div class="ts">канал · 1 240</div></div></div>
+        <div class="feed">
+          <div class="day">3 сентября</div>
+          <div class="msg"><div class="img cover"><div class="k">Матвей Богатырёв</div><div class="t">Записки<br><em>человековеда</em></div><div class="r"></div><div class="b">читается с начала — как книга</div></div></div>
+          <div class="msg"><div class="bub"><b>В стенах академичности умирает живая мысль.</b><br><br>Я ушёл в живую работу с человеком. <i>Мысль, которая не свободна, — не мысль.</i> Продолжение — <span class="link">Записка №2</span>.<div class="sig">Записка №1 · пролог</div></div><div class="foot"><div class="rx"><span>❤ 96</span><span>🤔 23</span></div><div>2.4K</div></div></div>
+          <div class="msg"><div class="img quote"><div class="mk">«</div><div class="q">Не таймер на стене решает, когда работа <em>закончена.</em></div><div class="f">Записки · Богатырёв</div></div><div class="foot"><div class="rx"><span>❤ 210</span><span>⚡ 44</span></div><div>5.1K</div></div></div>
+        </div>
+      </div></div>
+      <div class="note"><b>Это и есть «преодолеть Telegram».</b> Обои + акцент задаются в Настройки канала → Оформление, применяются ко всем. Единственное условие — уровень бустов.</div>
+    </div>
+
+  </div>
+
+  <div class="foot-box">
+    <h3>Короткий вывод</h3>
+    <p><b>Айдентику несут картинки</b> — они тёмно-янтарные у всех, независимо от темы. Обложка канала, цитатные карточки и разделители глав — вот где «кабинет» живёт с первого дня.</p>
+    <p><b class="g">На бустах</b> докрашиваем сам интерфейс: тёплые тёмные обои + янтарный акцент — и канал целиком читается как кабинет для каждого. Это ответ на «если можно преодолеть — давай»: <b>да, на уровне бустов — можно.</b></p>
+    <p style="margin-top:12px">Дальше про <b>структуру</b> (тот AI-канал): скинь ссылку/@ — разберу по косточкам, что именно там так системно устроено, и заложу этот уровень связности в архитектуру. Пока целюсь в: нумерованные записки + главы + явные связки «продолжение/начало» + карта-оглавление + бот-поиск по смыслу = каждый пост в системе, темы перетекают.</p>
+  </div>
+</div>
+</body>
+</html>
