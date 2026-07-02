@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Прототип канала — «Записки» Матвея Богатырёва</title>
+<style>
+  :root{
+    --bg:#EFE6CD; --bg-2:#E8DEC4; --panel:#F6EED7; --line:#C8BEA0;
+    --ink:#2E3828; --text:#3F4A36; --text-2:#525E45; --text-3:#6F7C61;
+    --ink-bg:#3F4A36; --ink-fg:#E8DEC4; --ink-fg-2:#C2B89C;
+    --gold:#A88A4A; --gold-2:#8E7236; --pearl:#FAF3DD;
+    --tg-bg:#1B2431; --tg-card:#212D3B; --tg-card-2:#263342; --tg-text:#E7E4D9;
+    --tg-dim:#7C8898; --tg-link:#9DC2FF;
+    --serif:"Cormorant Garamond","EB Garamond","Playfair Display",Georgia,"Times New Roman",serif;
+    --sans:"Inter","Helvetica Neue",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+  .ribbon{background:var(--ink-bg);color:var(--ink-fg);padding:14px 0;border-bottom:1px solid var(--gold)}
+  .ribbon-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand-mark{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--gold);font-size:20px}
+  .brand-name{font-family:var(--serif);font-size:18px;letter-spacing:.08em;text-transform:uppercase}
+  .brand-sub{font-size:10px;color:var(--ink-fg-2);letter-spacing:.32em;text-transform:uppercase;margin-top:2px}
+  .ribbon .meta{font-size:11px;color:var(--ink-fg-2);letter-spacing:.18em;text-transform:uppercase}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:56px 40px 96px}
+  .eyebrow{font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(36px,4.6vw,58px);line-height:1.02;margin:0 0 18px;color:var(--ink)}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lede{max-width:760px;font-size:16.5px;color:var(--text-2);line-height:1.7;margin:0 0 10px}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,36px);color:var(--ink);margin:64px 0 8px}
+  .sub{color:var(--text-3);font-size:13px;margin:0 0 28px;max-width:720px;line-height:1.6}
+
+  /* ==== PHONE ==== */
+  .stage{display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start}
+  .phone{width:400px;flex:0 0 auto;background:#0D1420;border-radius:44px;padding:12px;box-shadow:0 24px 60px rgba(46,56,40,.35)}
+  .screen{background:var(--tg-bg);border-radius:34px;overflow:hidden}
+  .tg-top{background:#212D3B;padding:12px 16px 10px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #0d1420}
+  .tg-ava{width:38px;height:38px;border-radius:50%;background:var(--ink-bg);border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:20px}
+  .tg-title{color:#fff;font-size:15px;font-weight:600;line-height:1.2}
+  .tg-subs{color:var(--tg-dim);font-size:11.5px}
+  .tg-pin{background:#1E2836;padding:8px 16px;border-bottom:1px solid #0d1420;display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .tg-pin .lab{color:var(--tg-link);font-size:11px;font-weight:600;letter-spacing:.02em}
+  .tg-pin .txt{color:var(--tg-dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+  .feed{padding:14px 10px 20px;display:flex;flex-direction:column;gap:12px}
+  .day{align-self:center;background:rgba(0,0,0,.25);color:#B6BDC9;font-size:11px;padding:3px 12px;border-radius:12px}
+
+  .post{background:var(--tg-card);border-radius:16px;max-width:352px;align-self:flex-start;overflow:hidden}
+  .post .body{padding:10px 14px 8px;color:var(--tg-text);font-size:14.5px;line-height:1.5}
+  .post .body b{color:#fff}
+  .post .body i{color:#CFC9B4}
+  .post .foot{display:flex;justify-content:space-between;align-items:center;padding:0 14px 9px;gap:10px}
+  .rx{display:flex;gap:6px}
+  .rx span{background:#2E3C4E;border-radius:12px;color:#CBD5E4;font-size:11.5px;padding:2px 8px}
+  .meta2{color:var(--tg-dim);font-size:10.5px;letter-spacing:.02em}
+  .sig{color:var(--tg-dim);font-size:12px;margin-top:10px}
+  .tg-quote{border-left:3px solid var(--gold);background:rgba(168,138,74,.09);padding:6px 10px;margin:8px 0;border-radius:4px;font-style:italic;color:#D8D2BD;font-size:13.5px}
+  .tg-quote cite{display:block;font-style:normal;color:var(--tg-dim);font-size:11px;margin-top:3px;letter-spacing:.08em;text-transform:uppercase}
+  .spoiler{filter:blur(5px);cursor:pointer;transition:filter .25s;border-radius:3px;background:rgba(255,255,255,.04)}
+  .spoiler:hover{filter:none}
+  .hint-spoiler{color:var(--tg-dim);font-size:10.5px;font-style:italic}
+  .dots{color:var(--gold);letter-spacing:.5em;text-align:center;margin:8px 0 2px;font-family:var(--serif)}
+
+  /* картинки в ленте = мини-версии шаблонов */
+  .img-cover{aspect-ratio:4/3;background:var(--bg);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:22px;position:relative}
+  .img-cover .frame{position:absolute;inset:10px;border:1px solid var(--gold)}
+  .img-cover .small{font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:var(--gold-2);margin-bottom:10px}
+  .img-cover .big{font-family:var(--serif);font-size:34px;color:var(--ink);line-height:1.02}
+  .img-cover .big em{font-style:italic;color:var(--gold-2)}
+  .img-cover .rule{width:44px;height:1px;background:var(--gold);margin:12px 0}
+  .img-cover .auth{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--text-2)}
+  .img-quote{aspect-ratio:1/1;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:26px;position:relative}
+  .img-quote .frame{position:absolute;inset:10px;border:1px solid var(--line)}
+  .img-quote .mark{font-family:var(--serif);font-size:44px;color:var(--gold);line-height:.4;margin-bottom:12px}
+  .img-quote .q{font-family:var(--serif);font-size:19.5px;line-height:1.35;color:var(--ink)}
+  .img-quote .q em{font-style:italic;color:var(--gold-2)}
+  .img-quote .from{margin-top:14px;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:var(--text-3)}
+
+  /* ==== ART DIRECTION BOARDS ==== */
+  .boards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin-top:8px}
+  .board .card{border:1px solid var(--line);box-shadow:0 10px 30px rgba(46,56,40,.12)}
+  .board .cap{font-size:12px;color:var(--text-3);margin-top:12px;line-height:1.6}
+  .board .cap b{color:var(--ink)}
+  .big-cover{aspect-ratio:16/10;background:var(--bg);position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px}
+  .big-cover .frame{position:absolute;inset:16px;border:1px solid var(--gold)}
+  .big-cover .small{font-size:11px;letter-spacing:.46em;text-transform:uppercase;color:var(--gold-2);margin-bottom:16px}
+  .big-cover .big{font-family:var(--serif);font-size:52px;color:var(--ink);line-height:1}
+  .big-cover .big em{font-style:italic;color:var(--gold-2)}
+  .big-cover .rule{width:64px;height:1px;background:var(--gold);margin:18px 0}
+  .big-cover .auth{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--text-2)}
+  .ch-cover{aspect-ratio:16/10;background:var(--ink-bg);position:relative;display:flex;flex-direction:column;justify-content:center;padding:44px}
+  .ch-cover .frame{position:absolute;inset:16px;border:1px solid rgba(168,138,74,.55)}
+  .ch-cover .num{font-family:var(--serif);font-style:italic;font-size:60px;color:var(--gold);line-height:1}
+  .ch-cover .name{font-family:var(--serif);font-size:34px;color:var(--pearl);line-height:1.08;margin-top:10px}
+  .ch-cover .small{font-size:10px;letter-spacing:.42em;text-transform:uppercase;color:var(--ink-fg-2);margin-top:18px}
+  .big-quote{aspect-ratio:1/1;background:var(--bg);position:relative;display:flex;flex-direction:column;justify-content:center;padding:44px}
+  .big-quote .frame{position:absolute;inset:16px;border:1px solid var(--line)}
+  .big-quote .mark{font-family:var(--serif);font-size:72px;color:var(--gold);line-height:.4;margin-bottom:20px}
+  .big-quote .q{font-family:var(--serif);font-size:29px;line-height:1.32;color:var(--ink)}
+  .big-quote .q em{font-style:italic;color:var(--gold-2)}
+  .big-quote .from{margin-top:22px;font-size:10px;letter-spacing:.36em;text-transform:uppercase;color:var(--text-3)}
+  .illu{aspect-ratio:16/10;background:var(--bg);position:relative;display:flex;align-items:center;justify-content:center}
+  .illu .frame{position:absolute;inset:16px;border:1px solid var(--line)}
+  .illu figcaption{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-family:var(--serif);font-style:italic;font-size:14px;color:var(--text-2)}
+
+  .palette{display:flex;gap:14px;flex-wrap:wrap;margin:22px 0 6px}
+  .chip{width:132px}
+  .chip .c{height:56px;border:1px solid var(--line)}
+  .chip .n{font-size:10.5px;color:var(--text-3);margin-top:6px;letter-spacing:.04em}
+  .rules{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+  .rules .col{background:var(--panel);padding:24px 26px}
+  .rules .col.no{background:var(--bg-2)}
+  .rules .lab{font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .rules .yes .lab{color:var(--gold-2)} .rules .no .lab{color:#A84C3A}
+  .rules ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--text-2);line-height:1.75}
+
+  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);padding:18px 22px;font-size:13.5px;color:var(--text-2);margin-top:28px;max-width:860px;line-height:1.65}
+  .note b{color:var(--ink)}
+  footer{margin-top:72px;padding-top:24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--text-3);text-align:center;letter-spacing:.04em}
+  @media (max-width:920px){ .wrap{padding:40px 20px 72px} .stage{gap:28px} .phone{width:100%;max-width:400px} .rules{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<div class="ribbon">
+  <div class="ribbon-inner">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">Матвей Богатырёв</div>
+        <div class="brand-sub">Психолог · Человековед</div>
+      </div>
+    </div>
+    <div class="meta">Прототип канала · «Записки»</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow">Визуальный прототип</div>
+  <h1>Канал, который читается <em>как книга.</em></h1>
+  <p class="lede">Слева — как выглядит лента для читателя: обложка, пролог, карточка, пауза. Справа и ниже — арт-дирекшн изображений: три шаблона в едином стиле «старой книги». Спойлер в Записке №1 — наведи курсор.</p>
+
+  <h2>I · Лента канала</h2>
+  <p class="sub">Тёмная тема Telegram. Картинка — событие (обложки и карточки), мысль — текстом. Реакции куратные, без клоунады.</p>
+
+  <div class="stage">
+    <!-- PHONE -->
+    <div class="phone"><div class="screen">
+      <div class="tg-top">
+        <div class="tg-ava">М</div>
+        <div>
+          <div class="tg-title">Матвей Богатырёв</div>
+          <div class="tg-subs">канал · 1 240 подписчиков</div>
+        </div>
+      </div>
+      <div class="tg-pin"><span class="lab">Закреплено</span><span class="txt">НАВИГАТОР · читать с начала → Записка №1</span></div>
+      <div class="feed">
+        <div class="day">3 сентября</div>
+
+        <!-- пост-обложка -->
+        <div class="post">
+          <div class="img-cover">
+            <div class="frame"></div>
+            <div class="small">Матвей Богатырёв</div>
+            <div class="big">Записки<br/><em>человековеда</em></div>
+            <div class="rule"></div>
+            <div class="auth">канал читается с начала — как книга</div>
+          </div>
+          <div class="body" style="font-size:13.5px;color:#CFC9B4">Форзац. Ниже — пролог.</div>
+          <div class="foot"><div class="rx"><span>❤ 41</span><span>⚡ 17</span></div><div class="meta2">👁 1.9K · 12:00</div></div>
+        </div>
+
+        <!-- Записка №1 -->
+        <div class="post">
+          <div class="body">
+            <b>В стенах академичности умирает живая мысль.</b><br/><br/>
+            Я учился на философском. Философия — это про мудрость: как уменьшить страдание, как улучшить жизнь. Так я в неё влюбился.<br/><br/>
+            А встретил — глоссарии, цитирования и «сначала прочитай десять тысяч страниц, потом тебе разрешат думать». <i>Мысль, которая не свободна, — не мысль.</i><br/><br/>
+            Я ушёл туда, где мысль обязана биться об реальность каждый день, — в работу с живым человеком. Если то, что я говорю, не меняет ничью жизнь — <span class="spoiler">это спам, а не знание.</span> <span class="hint-spoiler">← спойлер</span><br/>
+            <div class="dots">·&nbsp;&nbsp;·&nbsp;&nbsp;·</div>
+            Здесь я думаю вслух: смысл, эго, свобода, страдание — и во что выродилась популярная психология.
+            <div class="sig">Записка №1 · пролог</div>
+          </div>
+          <div class="foot"><div class="rx"><span>❤ 96</span><span>🤔 23</span><span>💬 31</span></div><div class="meta2">👁 2.4K · 12:04</div></div>
+        </div>
+
+        <div class="day">6 сентября</div>
+
+        <!-- цитатная карточка -->
+        <div class="post">
+          <div class="img-quote">
+            <div class="frame"></div>
+            <div class="mark">«</div>
+            <div class="q">Любовь к себе — это перестать <em>предавать себя</em> в мелочах.</div>
+            <div class="from">Записки · Матвей Богатырёв</div>
+          </div>
+          <div class="body" style="font-size:13.5px;color:#CFC9B4">«Просто полюби себя» — мантра за 30 тысяч. Разбор — в Записке №3.</div>
+          <div class="foot"><div class="rx"><span>❤ 210</span><span>⚡ 44</span></div><div class="meta2">👁 5.1K · 18:30</div></div>
+        </div>
+
+        <!-- реплика -->
+        <div class="post">
+          <div class="body">Всем, кому «нечего скрывать», желаю прозрачную дверь в туалете.<br/><br/>Границы — это не про секреты. Это про то, что у тебя есть <b>внутреннее</b>, и оно не обязано быть публичным.</div>
+          <div class="foot"><div class="rx"><span>⚡ 89</span><span>💬 12</span></div><div class="meta2">👁 3.2K · 21:15</div></div>
+        </div>
+
+        <!-- пауза -->
+        <div class="post" style="background:var(--tg-card-2)">
+          <div class="body"><i>Пауза. Один вопрос до следующей записки:</i><br/><br/><b>Что ты называешь ленью, чтобы не называть это страхом?</b><br/><br/><span style="color:#93A0B2;font-size:13px">Ответы — в комментарии. Читаю всё.</span></div>
+          <div class="foot"><div class="rx"><span>💬 57</span></div><div class="meta2">👁 2.8K · 10:00</div></div>
+        </div>
+
+        <!-- обложка главы -->
+        <div class="post">
+          <div class="img-cover" style="background:var(--ink-bg)">
+            <div class="frame" style="border-color:rgba(168,138,74,.55)"></div>
+            <div class="small" style="color:var(--gold)">Глава II</div>
+            <div class="big" style="color:var(--pearl)">Устройство<br/><em style="color:var(--gold)">человека</em></div>
+            <div class="rule"></div>
+            <div class="auth" style="color:var(--ink-fg-2)">эго · смерть · желания · тревога</div>
+          </div>
+          <div class="foot"><div class="rx"><span>❤ 33</span></div><div class="meta2">👁 1.6K · 12:00</div></div>
+        </div>
+
+      </div>
+    </div></div>
+
+    <!-- side commentary -->
+    <div style="flex:1;min-width:280px;max-width:420px">
+      <div class="note" style="margin-top:0"><b>Что здесь показано.</b><br/>1 — форзац-обложка: первый пост канала.<br/>2 — Записка №1: крюк жирным, курсив-ирония, спойлер-панчлайн, подпись вместо хэштега.<br/>3 — цитатная карточка: носитель репостов, подпись ведёт к записке.<br/>4 — реплика: короткий контраст.<br/>5 — пауза «на подумать»: поля книги, вход в комментарии.<br/>6 — обложка главы: маркер новой арки, тёмная инверсия стиля.</div>
+      <div class="note"><b>Ритм ленты:</b> плотное эссе → карточка или реплика → пауза. Картинка не чаще одной на 3–4 поста — тогда она читается как событие.</div>
+    </div>
+  </div>
+
+  <h2>II · Арт-дирекшн изображений</h2>
+  <p class="sub">Единый стиль: «старая книжная пластина». Кремовая бумага, глубокий зелёный, золото тонкой нитью, серифы, много воздуха. Эти карточки можно использовать как шаблоны: открой файл, замени текст, сделай скриншот блока — готовое изображение для поста.</p>
+
+  <div class="boards">
+    <div class="board">
+      <div class="card big-cover">
+        <div class="frame"></div>
+        <div class="small">Матвей Богатырёв</div>
+        <div class="big">Записки<br/><em>человековеда</em></div>
+        <div class="rule"></div>
+        <div class="auth">канал читается с начала — как книга</div>
+      </div>
+      <div class="cap"><b>Обложка канала (форзац).</b> Светлая. Один раз, первым постом. Тот же стиль — для «оглавления» и годовых вех.</div>
+    </div>
+    <div class="board">
+      <div class="card ch-cover">
+        <div class="frame"></div>
+        <div class="num">II</div>
+        <div class="name">Устройство человека</div>
+        <div class="small">эго · смерть · желания · тревога</div>
+      </div>
+      <div class="cap"><b>Обложка главы.</b> Тёмная инверсия: мшистый зелёный фон, римский номер золотом. Ставится на стыке смысловых арок.</div>
+    </div>
+    <div class="board">
+      <div class="card big-quote">
+        <div class="frame"></div>
+        <div class="mark">«</div>
+        <div class="q">Не таймер на стене решает, когда работа <em>закончена.</em></div>
+        <div class="from">Записки · Матвей Богатырёв</div>
+      </div>
+      <div class="cap"><b>Цитатная карточка (1:1).</b> Одна мысль, крупный сериф, кавычка-инициал золотом. Для самых острых формулировок — их пересылают.</div>
+    </div>
+    <div class="board">
+      <div class="card illu">
+        <div class="frame"></div>
+        <svg viewBox="0 0 640 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="#A88A4A" stroke-width="2">
+            <path d="M40 250 q40 -28 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" opacity=".9"/>
+            <path d="M40 290 q40 -24 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" opacity=".55"/>
+            <path d="M40 330 q40 -20 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" opacity=".3"/>
+          </g>
+          <g fill="none" stroke="#2E3828" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="300" cy="228" r="13"/>
+            <path d="M270 244 q22 14 60 2"/>
+            <path d="M330 240 q16 -18 34 -10"/>
+          </g>
+          <circle cx="510" cy="96" r="30" fill="none" stroke="#A88A4A" stroke-width="1.5" opacity=".8"/>
+        </svg>
+        <figcaption>«Мистик плавает там, где шизофреник тонет» — Записка №9</figcaption>
+      </div>
+      <div class="cap"><b>Иллюстрация-образ (редкая).</b> Гравюрная линия, один образ, подпись курсивом. Только когда образ несёт смысл — не «для оживления».</div>
+    </div>
+  </div>
+
+  <div class="palette">
+    <div class="chip"><div class="c" style="background:#EFE6CD"></div><div class="n">#EFE6CD · бумага</div></div>
+    <div class="chip"><div class="c" style="background:#2E3828"></div><div class="n">#2E3828 · чернила</div></div>
+    <div class="chip"><div class="c" style="background:#3F4A36"></div><div class="n">#3F4A36 · мох (фон глав)</div></div>
+    <div class="chip"><div class="c" style="background:#A88A4A"></div><div class="n">#A88A4A · золото, тонкой нитью</div></div>
+    <div class="chip"><div class="c" style="background:#FAF3DD"></div><div class="n">#FAF3DD · жемчуг (текст на тёмном)</div></div>
+  </div>
+
+  <div class="rules">
+    <div class="col yes"><div class="lab">Всегда</div>
+      <ul>
+        <li>Один стиль на все изображения — узнаваемость с одного кадра</li>
+        <li>Серифы, воздух, тонкая рамка-паспарту</li>
+        <li>Подпись «Записки · Матвей Богатырёв» мелко</li>
+        <li>Картинка = веха: обложка, цитата, редкий образ</li>
+      </ul>
+    </div>
+    <div class="col no"><div class="lab">Никогда</div>
+      <ul>
+        <li>Стоки с улыбающимися людьми, ИИ-глянец и пластиковые лица</li>
+        <li>Неон, градиенты, «дизайн из конструктора»</li>
+        <li>Текст-простыня на картинке (эссе живут текстом — лимит подписи 1024)</li>
+        <li>Мемы-жпеги «для оживления»</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note"><b>Как пользоваться шаблонами прямо сейчас:</b> открой этот файл в браузере → измени текст карточки (правой кнопкой → «Просмотреть код» → поправь слова, или попроси Клода) → скриншот блока — готово изображение для поста. Позже те же макеты можно перенести в Figma/Canva один-в-один.</div>
+
+  <footer>Прототип канала «Записки» · бренд «Матвей Богатырёв» · палитра и типографика — единые с сайтом</footer>
+</div>
+
+</body>
+</html>
